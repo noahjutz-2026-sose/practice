@@ -1,6 +1,10 @@
-def main():
-    print("Hello from ue1-3b!")
+import numpy as np
+from scipy.optimize import linprog
 
+c = np.array([-2000, -3000])
+b_ub = np.array([180, 135])
+A_ub = np.array([[3, 5], [3, 3]])
 
-if __name__ == "__main__":
-    main()
+res = linprog(c=c, b_ub=b_ub, A_ub=A_ub)
+
+print(f"result:\n{res}")
