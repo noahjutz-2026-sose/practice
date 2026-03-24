@@ -18,8 +18,8 @@ constraint2.SetCoefficient(x1, 3)
 constraint2.SetCoefficient(x2, 3)
 
 objective: pywraplp.Objective = solver.Objective()
-objective.SetCoefficient(x1, 1)
-objective.SetCoefficient(x2, 1)
+objective.SetCoefficient(x1, 2000)
+objective.SetCoefficient(x2, 3000)
 objective.SetMaximization()
 
 print(f"Solving with {solver.SolverVersion()}")
