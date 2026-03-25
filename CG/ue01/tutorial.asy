@@ -1,13 +1,9 @@
-unitsize(1cm);
-size(5cm, 10cm, keepAspect=false);
-
-draw((-.1,0) -- (2,0));
-draw((0,-.1) -- (0,2));
-draw((0,0){up} .. (1,1) .. (2,sqrt(2)));
-draw(unitcircle);
-draw(polygon(5), blue);
-
-for (int n = 3; n < 8; ++n) {
-    draw(shift(2*n-6, -2) * unitcircle);
-    draw(shift(2*n-6, -2) * polygon(n), red);
-}
+size(5cm,5cm, keepAspect=false);
+draw((0,0) -- (50,0),
+arrow=Arrow(TeXHead));
+draw((0,0) -- (0,10),
+arrow=Arrow(TeXHead));
+real r = 0.5;
+fill(circle((2,1),r));
+fill(circle((35,8),r));
+fill(circle((42,9),r));
