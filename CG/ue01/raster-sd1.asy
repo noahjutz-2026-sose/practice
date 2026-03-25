@@ -1,7 +1,7 @@
 /* Framework Code
  * Lesen Sie gerne mal rein um zu verstehen, was passiert, sich etwas an Asmyptote
  * zu gewöhnen, wir werden es noch ein paar mal verwenden.
- * 
+ *
  * Weiter unten sollen Sie selbst Code einfügen.
  *
  */
@@ -68,10 +68,33 @@ int res_x = 16, res_y = 9;
  *
  */
 void raster_signed_distance(tri tri) {
+	pair[] corners = {tri.a, tri.b, tri.c};
 	for (int y = 0; y <= res_y; y += 1)
 		for (int x = 0; x <= res_x; x += 1) {
-			// draw_pixel(x, y, B[1], B[2]);
-		} 
+		    bool is_inside_triangle = true;
+			for (int i = 0; i < corners.length; ++i) {
+			    pair p = (x+0.5, y+0.5);
+
+				pair v1 = corners[i];
+				pair v2 = corners[(i+1) % corners.length];
+
+				pair v = v2 - v1;
+				pair mid = v1 + v/2;
+
+				pair v_norm = line_normal(v1, v2);
+				pair v_p = p - mid;
+
+				// todo fix runtime error
+				// real angle_rad = acos(dot(v_p, v_norm)/(length(v_p)*length(v_norm)));
+				if (angle_rad > pi/2) {
+                    is_inside_triangle = false;
+				}
+			}
+			if (is_inside_triangle) {
+			    draw_pixel(x, y, B[1], B[2]);
+			}
+			//return;
+		}
 }
 
 /*
@@ -91,5 +114,3 @@ void raster_signed_distance(tri tri) {
 
 	shipout("raster-tri-1.pdf"); erase();
 }
-
-
