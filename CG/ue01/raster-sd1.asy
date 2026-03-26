@@ -73,6 +73,8 @@ int res_x = 16, res_y = 9;
 void raster_signed_distance(tri tri, bool conservative) {
   pair[] corners = {tri.a, tri.b, tri.c};
   path tri_path = tri.a-- tri.b-- tri.c-- cycle;
+  pair lo = min(tri_path) - (1, 1);
+  pair hi = max(tri_path) + (1, 1);
   for (int y = 0; y <= res_y; y += 1)
     for (int x = 0; x <= res_x; x += 1) {
       bool is_inside_triangle = true;
@@ -106,7 +108,13 @@ void raster_signed_distance(tri tri, bool conservative) {
         continue;
       }
       path pixel_path = (x, y)--(x + 1, y)--(x + 1, y + 1)--(x, y + 1)-- cycle;
-      if (intersect(pixel_path, tri_path).length > 0) {
+      if (
+          lo.x <= x &&
+          lo.y <= y &&
+          hi.x >= x &&
+          hi.y >= y &&
+          intersect(pixel_path, tri_path).length > 0
+      ) {
         draw_pixel(x, y, G[1], G[2]);
       }
     }
