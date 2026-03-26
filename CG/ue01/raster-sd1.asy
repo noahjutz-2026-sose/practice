@@ -62,7 +62,7 @@ struct tri {
   }
 };
 
-int res_x = 16, res_y = 9;
+int res_x = 500, res_y = 500;
 
 /*
  * Aufgabe 3 & 4.
@@ -75,8 +75,13 @@ void raster_signed_distance(tri tri, bool conservative) {
   path tri_path = tri.a-- tri.b-- tri.c-- cycle;
   pair lo = min(tri_path) - (1, 1);
   pair hi = max(tri_path) + (1, 1);
-  for (int y = 0; y <= res_y; y += 1)
-    for (int x = 0; x <= res_x; x += 1) {
+  int start_x = max(0, floor(lo.x));
+  int end_x   = min(res_x, ceil(hi.x));
+  int start_y = max(0, floor(lo.y));
+  int end_y   = min(res_y, ceil(hi.y));
+
+  for (int y = start_y; y <= end_y; y += 1)
+    for (int x = start_x; x <= end_x; x += 1) {
       bool is_inside_triangle = true;
       for (int i = 0; i < corners.length; ++i) {
         pair p = (x + 0.5, y + 0.5);
@@ -108,13 +113,7 @@ void raster_signed_distance(tri tri, bool conservative) {
         continue;
       }
       path pixel_path = (x, y)--(x + 1, y)--(x + 1, y + 1)--(x, y + 1)-- cycle;
-      if (
-          lo.x <= x &&
-          lo.y <= y &&
-          hi.x >= x &&
-          hi.y >= y &&
-          intersect(pixel_path, tri_path).length > 0
-      ) {
+      if (intersect(pixel_path, tri_path).length > 0) {
         draw_pixel(x, y, G[1], G[2]);
       }
     }
