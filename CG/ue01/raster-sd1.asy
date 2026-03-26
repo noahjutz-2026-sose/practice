@@ -84,16 +84,16 @@ void raster_signed_distance(tri tri) {
 				pair v_norm = line_normal(v1, v2);
 				pair v_p = p - mid;
 
-				// todo fix runtime error
-				// real angle_rad = acos(dot(v_p, v_norm)/(length(v_p)*length(v_norm)));
-				if (angle_rad > pi/2) {
-                    is_inside_triangle = false;
+				real angle_rad_acos = dot(v_p, v_norm)/(length(v_p)*length(v_norm));
+				if (angle_rad_acos > 1.0) angle_rad_acos = 1.0;
+                if (angle_rad_acos < -1.0) angle_rad_acos = -1.0;
+				if (acos(angle_rad_acos) > pi/2) {
+                     is_inside_triangle = false;
 				}
 			}
 			if (is_inside_triangle) {
 			    draw_pixel(x, y, B[1], B[2]);
 			}
-			//return;
 		}
 }
 
@@ -108,9 +108,9 @@ void raster_signed_distance(tri tri) {
 	tri tri = tri((10.2,8.3), (2.7,2.2), (14.3,1.1));
 
 	draw_pixelgrid(res_x,res_y,dots=lightgray);
-	tri.draw(B[1]+linewidth(2));
 
 	raster_signed_distance(tri);
+	tri.draw(B[1]+linewidth(2));
 
 	shipout("raster-tri-1.pdf"); erase();
 }
