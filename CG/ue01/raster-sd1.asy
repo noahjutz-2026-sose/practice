@@ -67,8 +67,9 @@ int res_x = 16, res_y = 9;
  * Der Code weiter oben muss dafür nicht verändert werden.
  *
  */
-void raster_signed_distance(tri tri) {
+void raster_signed_distance(tri tri, bool conservative) {
 	pair[] corners = {tri.a, tri.b, tri.c};
+	path tri_path = tri.a -- tri.b -- tri.c -- cycle;
 	for (int y = 0; y <= res_y; y += 1)
 		for (int x = 0; x <= res_x; x += 1) {
 		    bool is_inside_triangle = true;
@@ -89,10 +90,24 @@ void raster_signed_distance(tri tri) {
                 if (angle_rad_acos < -1.0) angle_rad_acos = -1.0;
 				if (acos(angle_rad_acos) > pi/2) {
                      is_inside_triangle = false;
+                     break;
 				}
 			}
 			if (is_inside_triangle) {
 			    draw_pixel(x, y, B[1], B[2]);
+				continue;
+			}
+			if (!conservative) {
+			    continue;
+			}
+	        path pixel_path = (x, y) -- (x+1, y) -- (x+1, y+1) -- (x, y+1) -- cycle;
+		    if (intersect(pixel_path, tri_path).length > 0) {
+			    draw_pixel(x, y, G[1], G[2]);
+			} else {
+			}
+
+			if (x == 0 && y == 0) {
+			    draw(pixel_path);
 			}
 		}
 }
@@ -105,11 +120,11 @@ void raster_signed_distance(tri tri) {
  */
 
 {
-	tri tri = tri((10.2,8.3), (2.7,2.2), (14.3,1.1));
+	tri tri = tri((1.2,8.3), (2.7,2.2), (14.3,1.1));
 
 	draw_pixelgrid(res_x,res_y,dots=lightgray);
 
-	raster_signed_distance(tri);
+	raster_signed_distance(tri, true);
 	tri.draw(B[1]+linewidth(2));
 
 	shipout("raster-tri-1.pdf"); erase();
