@@ -1,6 +1,5 @@
 #include <stdio.h>
-
-void tester(int *c, int k) { printf("x[%d] = %d\n", k, c[k]); }
+#include "tester.h"
 
 int main(int argc, char *argv[]) {
   int i, k, x[10000];
