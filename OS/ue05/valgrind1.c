@@ -3,7 +3,7 @@
 int main(int argc, char **argv) {
   char *cp;
   cp = (char *)malloc(50);
-  cp = "ohohoh";
+  strcpy(cp, "ohohoh");
   free(cp);
   return 0;
 }
