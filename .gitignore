@@ -1,0 +1,7 @@
+*.pdf
+*.eps
+*.o
+*.out
+*.a
+**/.venv
+**/__pycache__
