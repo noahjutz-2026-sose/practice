@@ -1,0 +1,3 @@
+Hi everybody, how is it going?
+
+This should all turn into uppercase text.
