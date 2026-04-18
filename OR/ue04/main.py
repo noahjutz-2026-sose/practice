@@ -9,8 +9,11 @@ x2 = solver.NumVar(0, infinity, "x2")
 solver.Add(5 * x1 + 9 * x2 <= 54)
 solver.Add(7 * x1 - 8 * x2 <= 14)
 
-# Branch: x1 <= 5
-solver.Add(x1 <= 5)
+if l := True:
+    solver.Add(x1 <= 5)  # 65 5 3
+
+if r := False:
+    solver.Add(x1 >= 6)  # infeasible
 
 solver.Maximize(7 * x1 + 10 * x2)
 
