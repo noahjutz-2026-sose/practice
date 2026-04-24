@@ -5,3 +5,5 @@
 *.a
 **/.venv
 **/__pycache__
+*.png
+*.mkv

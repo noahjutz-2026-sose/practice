@@ -14,8 +14,8 @@ real moon_rad = 1.7;
 real moon_to_earth = 384;
 real spaceelev_len = 35.8;
 
-bool video_demo = false;
-bool early_out = true;
+bool video_demo = true;
+bool early_out = false;
 
 if (video_demo) {
 	sun_rad /= 10;
@@ -36,16 +36,24 @@ for (int d = 0; d < 365; d += 1) {
 		// This is the proper animation time
 		real D = d + h/24;
 
+		transform earth_t = rotate(D / 365 * 360) * shift(earth_to_sun, 0);
+        transform moon_t = earth_t * rotate(D / 27.3 * 360) * shift(moon_to_earth, 0);
+
 		draw_planet(identity, sun_rad, orange+yellow);
-		draw_planet(identity, earth_rad, blue+.4green);
+		draw_planet(earth_t, earth_rad, blue+.4green);
 		draw(((0,0)--(spaceelev_len,0)), white);
-		draw_planet(identity, moon_rad, lightgray);
+		draw_planet(moon_t, moon_rad, lightgray);
 
 		shipout("solar_" + format("%03d", d) + format("%02d", h) + ".png");//, bbox(p,Fill));
 		erase();
 		if (early_out)
 			exit();
+
+		currentpicture = scale(D) * currentpicture;
+
+		// limit output
+		if (d == 5)
+		    exit();
 	}
 	if (d%10==0) write(".");
 }
-
