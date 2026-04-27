@@ -38,7 +38,9 @@ void *sub1(void *t) {
   */
   pthread_mutex_lock(&count_mutex);
   printf("sub1: thread=%ld going into wait. count=%d\n", tid, count);
-  pthread_cond_wait(&count_condvar, &count_mutex);
+  while (count < THRESHOLD) {
+      pthread_cond_wait(&count_condvar, &count_mutex);
+  }
   printf("sub1: thread=%ld Condition variable signal received.", tid);
   printf(" count=%d\n", count);
   count++;
