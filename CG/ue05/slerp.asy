@@ -47,16 +47,16 @@ triple lerp(triple q, triple r, real t) {
 }
 triple nlerp(triple q, triple r, real t) { return unit(lerp(q, r, t)); }
 Q slerp(Q q, Q r, real t) {
-  // TODO
-  // Achtung, hier wird nicht wie in nlerp mit tripeln gerechnet, sondern mit
-  // den in quat.asy implementierten Quaternionen.
-  return q;
+    real phi = acos(dot(q.v, r.v) + q.w * r.w);
+    real r1 = sin((1 - t) * phi)/sin(phi);
+    real r2 = sin(t * phi)/sin(phi);
+    return add(mult(quaternion(vector(0, 0, 0), r1), q), mult(quaternion(vector(0, 0, 0), r2), r));
 }
 
 int N = 10;
 path3 arc = p0.v.t();
 int lerp = 0, nlerp = 1, slerp = 2;
-int mode = nlerp;
+int mode = slerp;
 
 if (mode != slerp)
   for (int i = 1; i <= N; i = i + 1) {
