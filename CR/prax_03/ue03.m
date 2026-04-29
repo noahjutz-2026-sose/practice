@@ -21,3 +21,10 @@ function min = maxfac()
         end
     end
 end
+
+function b = binomial(n, k)
+    k = min([k, n-k]);
+    b = prod(k+1:n) / factorial(n-k);
+end
+
+binomial(100, 50);
