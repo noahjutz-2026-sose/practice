@@ -1,11 +1,10 @@
-function min = maxfac()
+function min = maxinp(fn)
     min = 0;
     max = realmax;
     while true
         i = floor(mean([min, max]));
-        disp(i)
         try
-            n = factorial(i);
+            n = fn(i);
         catch
             max = i;
             continue;
@@ -27,4 +26,6 @@ function b = binomial(n, k)
     b = prod(k+1:n) / factorial(n-k);
 end
 
-binomial(100, 50);
+%binomial(100, 50);
+
+disp(maxinp(@factorial))
