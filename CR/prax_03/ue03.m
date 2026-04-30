@@ -4,7 +4,7 @@ function lo = maxinp(fn)
     msg = "";
     while true
         mid = floor(lo + (hi - lo) / 2);
-        mid = clip(i, lo, hi);
+        mid = clip(mid, lo, hi);
         fprintf(repmat('\b', 1, length(msg)));
         msg = sprintf('Progress: %-25e %-25e %-25e', lo, hi, abs(lo - hi));
         fprintf('%s', msg);
@@ -37,4 +37,4 @@ end
 binomk1 = @(n) binomial(n, 1);
 
 % disp(maxinp(@factorial))
-disp(maxinp(binomk1))
+disp(maxinp(binomk1)) % todo too slow
