@@ -1,31 +1,42 @@
 function min = maxinp(fn)
     min = 0;
     max = realmax;
+    msg = "";
     while true
-        i = floor(mean([min, max]));
+        i = floor(min + (max - min) / 2);
+        i = clip(i, min, max);
+        fprintf(repmat('\b', 1, length(msg)));
+        msg = sprintf('Progress: %-25e %-25e %-25e', min, max, abs(max - min));
+        fprintf('%s', msg);
         try
             n = fn(i);
-        catch
-            max = i;
-            continue;
+        catch ME
+            if strcmp(ME.identifier, 'MATLAB:badsubscript')
+                n = inf; % Only handle out of bounds
+            else
+                rethrow(ME); % Fail for other errors
+            end
         end
     
-        if max - min <= 1
+        if abs(max - min) <= 1
             break
         end
-        if n == inf
+        if isinf(n)
             max = i;
-        else 
+        else
             min = i;
         end
     end
 end
 
 function b = binomial(n, k)
-    k = min([k, n-k]);
+    k = max([k, n-k]);
     b = prod(k+1:n) / factorial(n-k);
 end
 
-%binomial(100, 50);
+binomk1 = @(n) binomial(n, 1);
 
-disp(maxinp(@factorial))
+binomk1(1000000)
+
+% disp(maxinp(@factorial))
+disp(maxinp(@binomk1))
