@@ -1,30 +1,30 @@
-function min = maxinp(fn)
-    min = 0;
-    max = realmax;
+function lo = maxinp(fn)
+    lo = 0;
+    hi = realmax;
     msg = "";
     while true
-        i = floor(min + (max - min) / 2);
-        i = clip(i, min, max);
+        mid = floor(lo + (hi - lo) / 2);
+        mid = clip(i, lo, hi);
         fprintf(repmat('\b', 1, length(msg)));
-        msg = sprintf('Progress: %-25e %-25e %-25e', min, max, abs(max - min));
+        msg = sprintf('Progress: %-25e %-25e %-25e', lo, hi, abs(lo - hi));
         fprintf('%s', msg);
         try
-            n = fn(i);
+            n = fn(mid);
         catch ME
             if strcmp(ME.identifier, 'MATLAB:badsubscript')
-                n = inf; % Only handle out of bounds
+                n = inf;
             else
-                rethrow(ME); % Fail for other errors
+                rethrow(ME);
             end
         end
     
-        if abs(max - min) <= 1
+        if abs(hi - lo) <= 1
             break
         end
         if isinf(n)
-            max = i;
+            hi = mid;
         else
-            min = i;
+            lo = mid;
         end
     end
 end
@@ -36,7 +36,5 @@ end
 
 binomk1 = @(n) binomial(n, 1);
 
-binomk1(1000000)
-
 % disp(maxinp(@factorial))
-disp(maxinp(@binomk1))
+disp(maxinp(binomk1))
