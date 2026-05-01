@@ -1,5 +1,5 @@
 function [s, c, e, b, m, str] = IEEE754Custom(x, nc, nm)
-    bits = false(1, nm);
+    bits = false(1, nm + 3);
     i = 1;
     intPart = floor(x);
     while intPart >= 1
@@ -9,10 +9,10 @@ function [s, c, e, b, m, str] = IEEE754Custom(x, nc, nm)
         intPart = floor(intPart / 2);
     end
     bits(1:i-1) = flip(bits(1:i-1));
-    e = i - 1;
+    e = i - 2;
 
     fracPart = sym(x) - floor(sym(x));
-    while fracPart > 0 && i <= nm + 1
+    while fracPart > 0 && i <= nm + 3
         fracPart = fracPart * 2;
         bit = fracPart >= 1;
         if ~bits(1) && ~bit
@@ -24,7 +24,19 @@ function [s, c, e, b, m, str] = IEEE754Custom(x, nc, nm)
         fracPart = fracPart - floor(fracPart);
     end
 
-    bits = bits(2:end);
+    % Round to even
+    if bits(end-1) && (bits(end) || bits(end-2))
+        % increment
+        for k = numel(bits):-1:1
+            if bits(k) == 0
+                bits(k) = 1;
+                break
+            else
+                bits(k) = 0;
+            end
+        end
+    end
+    bits = bits(2:end-2);
 
     b = 2^(nc-1)-1;
     c = e + b;
@@ -33,22 +45,15 @@ function [s, c, e, b, m, str] = IEEE754Custom(x, nc, nm)
 
     str = [s, logical(int2bit(c, nc))', bits];
     str = sprintf('%d', str);
-
-
-    % str = sprintf('%d', bits);
-    % disp(str);
-    % disp(e);
 end
 
-[s, c, e, b, m, str] = IEEE754Custom(.000000100, 8, 23);
+[s, c, e, b, m, str] = IEEE754Custom(sym('1234.2323'), 8, 23);
 
-disp(s)
-disp(c)
-disp(e)
-disp(b)
+% str = insertAfter(str, 9, ' ');
+% str = insertAfter(str, 1, ' ');
+
 disp(str)
-
-[s, c, e, b, m, str] = IEEE754Custom(700, 10, 100);
+disp(e)
 
 function [s, c, m, str] = IEEE754Float(x)
     
