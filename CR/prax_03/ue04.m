@@ -47,14 +47,17 @@ function [s, c, e, b, m, str] = IEEE754Custom(x, nc, nm)
     str = sprintf('%d', str);
 end
 
+IEEE754Float = @(x) IEEE754Custom(x, 8, 23);
+IEEE754Double = @(x) IEEE754Custom(x, 11, 52);
+
 [s, c, e, b, m, str] = IEEE754Custom(sym('1234.2323'), 8, 23);
 
-% str = insertAfter(str, 9, ' ');
-% str = insertAfter(str, 1, ' ');
+disp(str)
+
+[s, c, e, b, m, str] = IEEE754Float(sym('1234.2323'));
 
 disp(str)
-disp(e)
 
-function [s, c, m, str] = IEEE754Float(x)
-    
-end
+[s, c, e, b, m, str] = IEEE754Double(sym('1234.2323'));
+
+disp(str)
