@@ -12,8 +12,8 @@ P = [2/(x_max-x_min), 0, 0, -(x_max+x_min)/(x_max-x_min);
     0, 0, 2/(n-f), -(f+n)/(f-n);
     0, 0, 0, 1];
 
-w = 1920;
-h = 1080;
+w = 10;
+h = 5;
 x_vp = 0;
 y_vp = 0;
 
@@ -22,14 +22,14 @@ W = [w/2, 0, 0, x_vp + w/2;
     0, 0, (f-n)/2, (f+n)/2;
     0, 0, 0, 1];
 
-t1 = [0, 1, 0;
-    0, 1, 2;
-    0, 0, 0;
+t1 = [-9.5, 5, 10;
+    -4.5, 5, 2.5;
+    4, 100, 33;
     1, 1, 1];
 
-t2 = [0, 1, 0;
-    0, 1, 2;
-    -5, -5, -5;
+t2 = [-10, 5.5, 9.5;
+    -3, -5, 5;
+    101, 50, 60;
     1, 1, 1];
 
 % Projection
@@ -39,7 +39,10 @@ t2p = P * t2;
 t1w = W * t1p;
 t2w = W * t2p;
 
-draw(t1, t1p, t2, t2p);
+draw(t1w, t2w);
+
+disp(t1w);
+disp(t2w);
 
 function draw(varargin)
     for i = 1:nargin
@@ -50,9 +53,11 @@ function draw(varargin)
     end
     grid on;
     axis equal;
+    axis([0 10 0 5]);
     for az = 0:5:360
         view(az, 30)
         drawnow
     end
+    view(0, 90)
     hold off;
 end
