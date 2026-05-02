@@ -46,8 +46,8 @@ disp(t2w);
 
 % Rasterization
 
-zbuff = ones(w, h) * inf;
-raster = zeros(w, h, 3);
+zbuff = ones(h, w) * inf;
+raster = zeros(h, w, 3);
 
 for t = {t1w, t2w}
     t = t{1};
@@ -58,12 +58,22 @@ for t = {t1w, t2w}
             b = t_2d \ [x; y; 1];
             if all(b >= 0)
                 z = b' * t(3, :)';
-                if z < zbuff(x, y)
-                    zbuff(x, y) = z;
-                    raster(x, y, :) = color;
+                if z < zbuff(y, x)
+                    zbuff(y, x) = z;
+                    raster(y, x, :) = color;
                 end
             end
         end
+    end
+end
+
+% Drawing
+
+hold on;
+for y = 1:h
+    for x = 1:w
+        clr = squeeze(raster(y, x, :))';
+        plot(x, y, '.', 'Color', clr, 'MarkerSize', 15);
     end
 end
 
