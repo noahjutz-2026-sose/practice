@@ -12,8 +12,8 @@ P = [2/(x_max-x_min), 0, 0, -(x_max+x_min)/(x_max-x_min);
     0, 0, 2/(n-f), -(f+n)/(f-n);
     0, 0, 0, 1];
 
-w = 10;
-h = 5;
+w = 100;
+h = 50;
 x_vp = 0;
 y_vp = 0;
 
@@ -39,7 +39,7 @@ t2p = P * t2;
 t1w = W * t1p;
 t2w = W * t2p;
 
-draw(t1w, t2w);
+% draw(t1w, t2w);
 
 disp(t1w);
 disp(t2w);
@@ -47,7 +47,7 @@ disp(t2w);
 % Rasterization
 
 zbuff = ones(h, w) * inf;
-raster = zeros(h, w, 3);
+raster = ones(h, w, 3);
 
 for t = {t1w, t2w}
     t = t{1};
@@ -67,7 +67,7 @@ for t = {t1w, t2w}
     end
 end
 
-% Drawing
+% Drawing pixels
 
 hold on;
 for y = 1:h
@@ -76,6 +76,9 @@ for y = 1:h
         plot(x, y, '.', 'Color', clr, 'MarkerSize', 15);
     end
 end
+hold off;
+
+% Drawing shapes (disabled)
 
 function draw(varargin)
     for i = 1:nargin
@@ -86,7 +89,7 @@ function draw(varargin)
     end
     grid on;
     %axis equal;
-    axis([0 10 0 5]);
+    axis([0 100 0 50]);
     % for az = 0:5:360
     %     view(az, 30)
     %     drawnow
