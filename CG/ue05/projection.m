@@ -27,9 +27,9 @@ t1 = [-9.5, 5, 10;
     4, 100, 33;
     1, 1, 1];
 
-t2 = [-10, 5.5, 9.5;
+t2 = [-10, 10, 9.5;
     -3, -5, 5;
-    101, 50, 60;
+    101, 50, 2;
     1, 1, 1];
 
 % Projection
@@ -44,6 +44,29 @@ draw(t1w, t2w);
 disp(t1w);
 disp(t2w);
 
+% Rasterization
+
+zbuff = ones(w, h) * inf;
+raster = zeros(w, h, 3);
+
+for t = {t1w, t2w}
+    t = t{1};
+    t_2d = [t(1:2, :); 1, 1, 1];
+    color = rand(1, 3);
+    for x=1:w
+        for y=1:h
+            b = t_2d \ [x; y; 1];
+            if all(b >= 0)
+                z = b' * t(3, :)';
+                if z < zbuff(x, y)
+                    zbuff(x, y) = z;
+                    raster(x, y, :) = color;
+                end
+            end
+        end
+    end
+end
+
 function draw(varargin)
     for i = 1:nargin
         V = varargin{i};
@@ -52,12 +75,12 @@ function draw(varargin)
         hold on;
     end
     grid on;
-    axis equal;
+    %axis equal;
     axis([0 10 0 5]);
-    for az = 0:5:360
-        view(az, 30)
-        drawnow
-    end
+    % for az = 0:5:360
+    %     view(az, 30)
+    %     drawnow
+    % end
     view(0, 90)
     hold off;
 end
