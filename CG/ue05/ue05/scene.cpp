@@ -24,9 +24,9 @@ vector<triangle> scene_triangles()
 		if (cmdline.user_z_defined)
 			z = cmdline.user_z;
 		// TODO Generieren Sie hier ein Dreieck das im Eye-Space interpretiert sichtbar ist.
-		tris.push_back({vec3(-50,-50,z),
-					    vec3(-50,50,z),
-						vec3(50,50,z)});
+		tris.push_back({vec3(-10,-10,z),
+					    vec3(10,-10,z),
+						vec3(10,10,z)});
 	}
 	else if (cmdline.scene == bunny) {
 		vector<vec3> verts;
