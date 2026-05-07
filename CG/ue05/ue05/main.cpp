@@ -69,7 +69,8 @@ int main(int argc, char **argv) {
   auto W_transform = [&](const vec3 &v) {
     // TODO Implementieren Sie die Transformation von NDC nach Viewport/Window
     // Koordinaten
-    return vec3(W * vec4(v, 1.0f));
+    float w = v.z;
+    return vec3(W * vec4(v / w, 1.0f));
   };
   auto PW_transform = [&](const vec3 &v) {
     // TODO Implementieren Sie die Transformation von Eye-Space in
