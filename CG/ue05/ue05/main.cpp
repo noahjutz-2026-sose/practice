@@ -6,8 +6,8 @@
 #include <iostream>
 
 // evtl für die Ausgabe nötig
-// #define GLM_ENABLE_EXPERIMENTAL
-// #include <glm/gtx/string_cast.hpp>
+#define GLM_ENABLE_EXPERIMENTAL
+#include <glm/gtx/string_cast.hpp>
 
 using namespace std;
 using namespace glm;
@@ -25,7 +25,13 @@ mat4 window_transform(int w, int h, float n, float f) {
   // ausgeben (beachten Sie dafür auch die beiden auskommentieren
   // Präprozessorzeilen oben)
   //
-  mat4 W(1);
+  float wf = (float)w;
+  float hf = (float)h;
+  mat4 W = mat4(vec4(wf/2.0f, 0, 0, 0),
+                vec4(0, hf/2.0f, 0, 0),
+                vec4(0, 0, (f-n)/2.0f, 0),
+                vec4(wf/2.0f, hf/2.0f, (f+n)/2.0f, 1));
+  cout << to_string(W) << endl;
   return W;
 }
 
@@ -63,7 +69,7 @@ int main(int argc, char **argv) {
   auto W_transform = [&](const vec3 &v) {
     // TODO Implementieren Sie die Transformation von NDC nach Viewport/Window
     // Koordinaten
-    return v;
+    return vec3(W * vec4(v, 1.0f));
   };
   auto PW_transform = [&](const vec3 &v) {
     // TODO Implementieren Sie die Transformation von Eye-Space in
