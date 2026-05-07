@@ -2,6 +2,7 @@
 #include "raster.h"
 #include "scene.h"
 
+#include <cmath>
 #include <functional>
 #include <iostream>
 
@@ -42,7 +43,16 @@ mat4 perspective_projection_transform(float fovy, float aspect, float n,
   // https://www.khronos.org/registry/OpenGL-Refpages/gl2.1/xhtml/gluPerspective.xml
   // Achtung, wie oben beschrieben verwenden wir Column-Major Matrizen.
   //
-  mat4 P(1);
+
+  float h = n * tan(fovy * M_PI / 360.0f);
+  float w = aspect * h;
+
+  mat4 P = mat4(
+      vec4(n/w, 0, 0, 0),
+      vec4(0, n/h, 0, 0),
+      vec4(0, 0, (n+f)/(n-f), -1),
+      vec4(0, 0, (2 * f * n)/(n-f), 0)
+  );
   return P;
 }
 
@@ -75,7 +85,14 @@ int main(int argc, char **argv) {
   auto PW_transform = [&](const vec3 &v) {
     // TODO Implementieren Sie die Transformation von Eye-Space in
     // Viewport/Window Koordinaten
-    return v;
+    // TODO fix bug triangle not shown
+    vec4 homo = vec4(v, 1.0f);
+    vec4 trans = P * homo;
+    vec4 norm = trans / trans.w;
+    vec3 norm3 = norm;
+    vec4 w = W * vec4(norm3, 1.0f);
+    vec3 final = w;
+    return final;
   };
   auto VPW_transform = [&](const vec3 &v) {
     // TODO Implementieren Sie die Transformation von Weltkoordinaten in
