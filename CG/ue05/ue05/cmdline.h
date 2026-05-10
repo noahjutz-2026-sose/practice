@@ -20,7 +20,7 @@ struct cmdline {
 	glm::vec3 cam_pos  = glm::vec3(0,0,0);
 	std::string outfile = "out.png";
 	scenes scene = ndc_tri;
-	pipeline_config pipeline = proj_window;
+	pipeline_config pipeline = view_proj_window;
 };
 
 extern struct cmdline cmdline;

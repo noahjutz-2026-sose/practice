@@ -61,7 +61,21 @@ mat4 viewing_transform(const vec3 &pos, const vec3 &dir, const vec3 &up) {
   // Die Transformationsrichtung ist von der Welt IN den Eye Space
   // Achtung, wie oben beschrieben verwenden wir Column-Major Matrizen.
   //
-  mat4 V(1);
+  vec3 w = normalize(-dir);
+  vec3 u = normalize(cross(up, w));
+  vec3 v = cross(w, u);
+  mat4 V = mat4(
+      vec4(u.x, v.x, w.x, 0),
+      vec4(u.y, v.y, w.y, 0),
+      vec4(u.z, v.z, w.z, 0),
+      vec4(0, 0, 0, 1)
+  );
+  V *= mat4(
+      vec4(1, 0, 0, 0),
+      vec4(0, 1, 0, 0),
+      vec4(0, 0, 1, 0),
+      vec4(-pos.x, -pos.y, -pos.z, 1)
+  );
   return V;
 }
 
@@ -95,9 +109,11 @@ int main(int argc, char **argv) {
     return final;
   };
   auto VPW_transform = [&](const vec3 &v) {
-    // TODO Implementieren Sie die Transformation von Weltkoordinaten in
-    // Viewport/Window Koordinaten
-    return v;
+      vec4 homo = vec4(v, 1.0f);
+      vec4 clip = P * V * homo;
+      vec3 ndc = clip / clip.w;
+      vec4 window = W * vec4(ndc, 1.0f);
+      return vec3(window);
   };
 
   function<vec3(const vec3 &)> vertex_trasnform;
