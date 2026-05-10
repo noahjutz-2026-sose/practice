@@ -20,6 +20,10 @@ render_target raster_triangles(const vector<triangle> &triangles) {
   // set up render target and clear to dark grey
   render_target target;
   target.framebuffer.resize(cmdline.vp_w, cmdline.vp_h);
+  target.depth_buffer.assign(
+      cmdline.vp_w * cmdline.vp_h,
+      std::numeric_limits<float>::infinity()
+  );
   for (png::uint_32 y = 0; y < cmdline.vp_h; ++y)
     for (png::uint_32 x = 0; x < cmdline.vp_w; ++x)
       target.framebuffer[y][x] = png::rgb_pixel(60, 60, 60);
@@ -36,13 +40,34 @@ render_target raster_triangles(const vector<triangle> &triangles) {
     bb_min.y = fmaxf(bb_min.y, 0.0f);
     bb_max.x = fminf(bb_max.x, cmdline.vp_w - 1.0f);
     bb_max.y = fminf(bb_max.y, cmdline.vp_h - 1.0f);
+
+    // baycentric interpolation precalculations
+    vec3 u = tri.b - tri.a;
+    vec3 v = tri.c - tri.a;
+    auto d = u.x * v.y - u.y * v.x;
+
     // go over all pixels in bounding box
     // NOTE: here, we assume to be in window coordinates, NOT NDC
     for (int y = int(bb_min.y); y < int(bb_max.y); ++y)
       for (int x = int(bb_min.x); x < int(bb_max.x); ++x) {
         if (overlaps_pixel(vec2(x + 0.5f, y + 0.5f), tri, target)) {
           int inv_y = target.framebuffer.get_height() - 1 - y;
-          target.framebuffer[inv_y][x] = color_palette[i];
+
+          // baycentric depth interpolation
+          auto p = vec2(x, y);
+          vec3 pma = vec3(p, 0.0f) - vec3(vec2(tri.a), 0.0f);
+          float beta = 1 / d * dot(vec3(v.y, -v.x, 0.0f), pma);
+          float gamma = 1 / d * dot(vec3(-u.y, u.x, 0.0f), pma);
+          float alpha = 1 - beta - gamma;
+
+          vec3 zs = vec3(tri.a.z, tri.b.z, tri.c.z);
+          vec3 bary = vec3(alpha, beta, gamma);
+          float z = dot(zs, bary);
+
+          if (z < target.depth_buffer[y * cmdline.vp_w + x]) {
+            target.depth_buffer[y * cmdline.vp_w + x] = z;
+            target.framebuffer[inv_y][x] = color_palette[i];
+          }
         }
       }
   }

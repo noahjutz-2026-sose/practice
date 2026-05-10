@@ -6,6 +6,7 @@
 
 struct render_target {
 	png::image<png::rgb_pixel> framebuffer;
+	std::vector<float> depth_buffer;
 };
 
 
