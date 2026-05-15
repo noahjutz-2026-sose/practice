@@ -64,6 +64,8 @@ int main() {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glClearColor(1, 0, 0, 1);
 
+		glDisable(GL_DEPTH_TEST);
+
 		bind_shader();
 		float aspect = float(Context::instance().vp_w) / Context::instance().vp_h;
 		mat4 P = perspective_projection_transform(65, aspect, 1, 300);
