@@ -49,7 +49,7 @@ static GLuint shader_prog = -1;
 
 void load_shader() {
 	shader_prog = glCreateProgram();
-	
+
 	GLuint vert_shader = glCreateShader(GL_VERTEX_SHADER);
 	std::string vert_source = read_file("shader.vert");
 	const char *vert_source_cstr = vert_source.c_str();
@@ -60,7 +60,7 @@ void load_shader() {
 
 	if (result != GL_TRUE) {
 		cerr << "Failed to compile shader 'shader.vert'" << endl;
-		cerr << get_log(vert_shader); 
+		cerr << get_log(vert_shader);
 		glDeleteShader(vert_shader);
 		glDeleteProgram(shader_prog);
 		shader_prog = -1;
@@ -78,7 +78,7 @@ void load_shader() {
 
 	if (result != GL_TRUE) {
 		cerr << "Failed to compile shader 'shader.frag'" << endl;
-		cerr << get_log(frag_shader); 
+		cerr << get_log(frag_shader);
 		glDeleteShader(vert_shader);
 		glDeleteShader(frag_shader);
 		glDeleteProgram(shader_prog);
@@ -88,13 +88,14 @@ void load_shader() {
 	glAttachShader(shader_prog, frag_shader);
 
 	glBindAttribLocation(shader_prog, 0, "local_vertex");
+	glBindAttribLocation(shader_prog, 1, "local_col");
 
 	glLinkProgram(shader_prog);
 	result = GL_FALSE;
 	glGetProgramiv(shader_prog, GL_LINK_STATUS, &result);
 	if (result != GL_TRUE) {
 		cerr << "Failed to link shaders 'shader.vert' and 'shader.frag'" << endl;
-		cerr << get_log(shader_prog); 
+		cerr << get_log(shader_prog);
 		glDeleteShader(vert_shader);
 		glDeleteShader(frag_shader);
 		glDeleteProgram(shader_prog);

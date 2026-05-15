@@ -9,6 +9,7 @@ using namespace glm;
 
 vector<vec3> vertices;
 vector<unsigned> indices;
+vector<vec3> colors;
 
 void add_tri(int a, int b, int c) {
 	indices.push_back(a);
@@ -25,6 +26,7 @@ static GLuint vao = -1;
 static GLuint vbo = -1;
 static GLuint vbo_col = -1;
 static GLuint ibo = -1;
+static GLuint colors_bo = -1;
 
 // #define CS_TRI
 // #define ES_TRI
@@ -46,6 +48,10 @@ void load_mesh() {
 #endif
 	add_tri(0,1,2);
 
+	for (vec3 a : vertices) {
+        colors.push_back({glm::linearRand(0.0f, 1.0f), glm::linearRand(0.0f, 1.0f), glm::linearRand(0.0f, 1.0f)});
+	}
+
 
 	// TODO: Aufgabe 1.3
 	// VAO aufsetzen
@@ -58,6 +64,13 @@ void load_mesh() {
 
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
 	glEnableVertexAttribArray(0);
+
+	glGenBuffers(1, &colors_bo);
+	glBindBuffer(GL_ARRAY_BUFFER, colors_bo);
+	glBufferData(GL_ARRAY_BUFFER, colors.size() * sizeof(vec3), colors.data(), GL_STATIC_DRAW);
+
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
+	glEnableVertexAttribArray(1);
 
 	glGenBuffers(1, &ibo);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
