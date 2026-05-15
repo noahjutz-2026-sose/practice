@@ -49,10 +49,25 @@ void load_mesh() {
 
 	// TODO: Aufgabe 1.3
 	// VAO aufsetzen
+	GLuint vao;
+	glGenVertexArrays(1, &vao);
+	glBindVertexArray(vao);
+
+	GLuint vbo;
+	glGenBuffers(1, &vbo);
+	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+	glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(vec3), vertices.data(), GL_STATIC_DRAW);
+	glBindBuffer(0, vbo);
+
+	GLuint ibo;
+	glGenBuffers(1, &ibo);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned), indices.data(), GL_STATIC_DRAW);
+	glBindBuffer(0, ibo);
+
 }
 
 void draw_mesh() {
 	// TODO: Aufgabe 1.3
 	// VAO rendern
 }
-
