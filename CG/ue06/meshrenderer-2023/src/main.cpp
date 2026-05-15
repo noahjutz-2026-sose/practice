@@ -59,6 +59,7 @@ int main() {
 	load_mesh();
 	load_shader();
 
+	float ang = 0.0f;
 	while (Context::running()) {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glClearColor(1, 0, 0, 1);
@@ -66,12 +67,21 @@ int main() {
 		bind_shader();
 		float aspect = float(Context::instance().vp_w) / Context::instance().vp_h;
 		mat4 P = perspective_projection_transform(65, aspect, 1, 300);
-		mat4 V = viewing_transform(vec3(180,0,50), vec3(-1, 0, 0), vec3(0,0,1));
+
+		float dx = cos(ang);
+		float dy = sin(ang);
+		vec3 pos = vec3(100 * dx, 100 * dy, 50);
+		mat4 R = glm::rotate(mat4(1), ang, vec3(0, 0, 1));
+		vec3 dir = R * vec4(-1, 0, 0, 0);
+
+		mat4 V = viewing_transform(pos, dir, vec3(0,0,1));
 		glUniformMatrix4fv(uniform_location("model"), 1, GL_FALSE, glm::value_ptr(mat4(1)));
 		glUniformMatrix4fv(uniform_location("view"), 1, GL_FALSE, glm::value_ptr(V));
 		glUniformMatrix4fv(uniform_location("proj"), 1, GL_FALSE, glm::value_ptr(P));
 		draw_mesh();
 		unbind_shader();
+
+		ang += 0.01f;
 
 		Context::swap_buffers();
 	}
