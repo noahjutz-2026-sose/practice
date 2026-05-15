@@ -39,6 +39,7 @@ int main() {
 
 	while (Context::running()) {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		glClearColor(1, 0, 0, 1);
 
 		bind_shader();
 		float aspect = float(Context::instance().vp_w) / Context::instance().vp_h;
