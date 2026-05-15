@@ -27,10 +27,25 @@ mat4 perspective_projection_transform(float fovy, float aspect, float n, float f
 }
 
 mat4 viewing_transform(const vec3 &pos, const vec3 &dir, const vec3 &up) {
-	mat4 V(1);
-	// TODO: Aufgabe 1.5
+    // TODO: Aufgabe 1.5
 	// OpenGL Viewingmatrix
-	return V;
+	vec3 z = normalize(-dir);
+	vec3 x = normalize(cross(up, z));
+	vec3 y = cross(z, x);
+
+	mat4 V = transpose(mat4(
+	    vec4(x, 0.0f),
+		vec4(y, 0.0f),
+		vec4(z, 0.0f),
+		vec4(0, 0, 0, 1.0f)
+	));
+	mat4 T = mat4(
+	    vec4(1, 0, 0, 0),
+		vec4(0, 1, 0, 0),
+		vec4(0, 0, 1, 0),
+		vec4(-pos, 1.0f)
+	);
+	return V * T;
 }
 
 
