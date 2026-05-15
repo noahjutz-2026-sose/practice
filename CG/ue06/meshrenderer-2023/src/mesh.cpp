@@ -70,4 +70,5 @@ void load_mesh() {
 void draw_mesh() {
 	// TODO: Aufgabe 1.3
 	// VAO rendern
+	glDrawArrays(GL_TRIANGLES, 0, 3);
 }
