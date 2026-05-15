@@ -87,6 +87,8 @@ void load_shader() {
 	}
 	glAttachShader(shader_prog, frag_shader);
 
+	glBindAttribLocation(shader_prog, 0, "local_vertex");
+
 	glLinkProgram(shader_prog);
 	result = GL_FALSE;
 	glGetProgramiv(shader_prog, GL_LINK_STATUS, &result);
