@@ -18,8 +18,8 @@ mat4 perspective_projection_transform(float fovy, float aspect, float n, float f
     float h = tan(fovy/2) * n;
     float w = aspect * h;
 	mat4 P = mat4(
-	    vec4((2*n)/(2*w), 0, 0, 0),
-		vec4(0, (2*n)/(2*h), 0, 0),
+	    vec4(n/w, 0, 0, 0),
+		vec4(0, n/h, 0, 0),
 		vec4(0, 0, (n+f)/(n-f), -1),
 		vec4(0, 0, (2*f*n)/(n-f), 0)
 	);
