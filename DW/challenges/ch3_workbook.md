@@ -2,31 +2,24 @@ Data Warehousing | Summer Semester 2026 | Prof. Schildgen | OTH Regensburg
 
 -----
 
-**Name:** 🖊️ *Write your name here*
+**Name:** Noah Jutz
 
 # Challenge 3: Data Modelling and Importing the Data
 
 **Tasks:** 
-1. Fill out this workbook. You can use a markdown software (e.g., [Zettlr](https://www.zettlr.com/)) for that, or an online editor (e.g., [md2pdf](https://md2pdf.netlify.app/) or Notion). 
-2. You can use a [Markdown Cheat Sheet](https://padomi.id.lv/PRG/par__/Markdown-Cheat-Sheet.pdf) to understand how to write *italic*, **bold**, `code`, etc.
+
 3. Fill out this workbook with care. It will be graded with points. Write high-class content, but compact. Before you submit, read everything again and improve. 
+
 4. When you are finished, export your workbook as a PDF and upload it to ELO before the deadline. Open your PDF in a PDF viewer to check whether everything was exported correctly and no code blocks are cut off.
 5. In this workbook, you need to write SQL commands. Put them in code blocks and split long queries into multiple lines.
-
-```sql
--- This is just an example. You do not need to write anything here.
-```
-
-*You can fill out this workbook in English or German. You need to write everywhere where you see this:* 🖊️
-
 
 ## Title
 
 *Please, again write your project title (as in the first workbook) here). If you want to change your title, write here the old and the new title.*
 
-🖊️
+**Old:** CyberRunner Warehouse - Analyse von Reinforcement Learning Daten
 
-
+**New:** Bundestag Election Data Warehouse: Politische Stimmungs- und Ergebnisdatenbank
 
 ## Staging Area: Tables
 *Write down your `CREATE TABLE` commands to create your tables in which you import your data from the data sources.  (Ex. Sheet 3, Exercise 1.3)*
