@@ -4,16 +4,16 @@ SELECT OBJECT_NAME
 FROM EXA_ALL_SCHEMA_OBJECTS;
 
 CREATE TABLE st_Bundestagswahl_Historische_Wahlkreis_Daten (
-    jahr INT,
-    wahlkreis_nr INT,
-    wahlkreis_name VARCHAR(500),
-    partei VARCHAR(100),
-    stimmen INT,
-    anteil DOUBLE,
-    wahlberechtigte INT,
-    waehlende INT,
-    gueltige INT,
-    ungueltige INT
+    year INT, -- "jahr"
+    district_id INT, -- "wahlkreis_nr"
+    district_name VARCHAR(500), -- "wahlkreis_name"
+    party VARCHAR(100), -- "partei"
+    votes INT, -- "stimmen"
+    percentage DOUBLE, -- "anteil"
+    eligible_voters INT, -- "wahlberechtigte"
+    voters INT, -- "waehlende"
+    valid INT, -- "gueltige"
+    invalid INT -- "ungueltige"
 );
 
 CREATE TABLE st_Politbarometer (
