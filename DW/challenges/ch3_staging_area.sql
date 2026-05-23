@@ -4,7 +4,7 @@ SELECT OBJECT_NAME
 FROM EXA_ALL_SCHEMA_OBJECTS;
 
 CREATE TABLE st_Bundestag_Elections (
-    year INT, -- "jahr"
+    intyear INT, -- "jahr"
     district_id INT, -- "wahlkreis_nr"
     district_name VARCHAR(500), -- "wahlkreis_name"
     party VARCHAR(100), -- "partei"
@@ -18,8 +18,8 @@ CREATE TABLE st_Bundestag_Elections (
 
 CREATE TABLE st_Politbarometer_Survey (
     respondent_id INT, -- PK respondent; "respid"
-    year INT,
-    month INT,
+    intyear INT,
+    intmonth INT,
     study_id INT, -- PK respondent
     version INT, -- "split"
     p_weight DOUBLE, -- Weight before 1999; "pwght"
@@ -72,11 +72,11 @@ CREATE TABLE st_Politbarometer_Survey (
     v72_preferred_party INT,
     v73_preference_intensity INT,
     v74_workers_union INT,
-    v75_state INT -- TODO translate in M/ER
+    v75_state INT
 );
 
 CREATE TABLE st_Seat_Distribution (
-    year INT,
+    intyear INT,
     total_seats INT, -- TODO add to M/ER
     cdu INT,
     afd INT,
