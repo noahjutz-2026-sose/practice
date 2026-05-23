@@ -1,7 +1,9 @@
 OPEN SCHEMA NOAH_JUTZ;
 
-SELECT OBJECT_NAME
-FROM EXA_ALL_SCHEMA_OBJECTS;
+SELECT * FROM EXA_USER_TABLES;
+DROP TABLE ST_POLITBAROMETER_SURVEY;
+DROP TABLE ST_SEAT_DISTRIBUTION;
+DROP TABLE ST_BUNDESTAG_ELECTIONS;
 
 CREATE TABLE st_Bundestag_Elections (
     intyear INT, -- "jahr"
@@ -54,7 +56,6 @@ CREATE TABLE st_Politbarometer_Survey (
     v52_religion INT,
     v54_gender INT,
     v55_age INT,
-    v56_age_group INT,
     v57_marital_status INT,
     v59_education_pre_87 INT,
     v60_education INT,
