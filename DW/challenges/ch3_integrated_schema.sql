@@ -3,14 +3,14 @@ OPEN SCHEMA NOAH_JUTZ;
 -- Dimensions
 
 CREATE TABLE Party (
-    id INT,
+    id INT PRIMARY KEY,
     shortname VARCHAR(50),
     full_name VARCHAR(200)
 );
 
 CREATE TABLE Respondent (
-    id INT,
-    location_id INT,
+    id INT PRIMARY KEY, -- generate this ("respid" is not unique)
+    location_id INT REFERENCES Location(id),
     financial_standing_level INT,
     financial_standing_name VARCHAR(50),
     financial_standing_forecast_level INT,
@@ -27,7 +27,7 @@ CREATE TABLE Respondent (
 );
 
 CREATE TABLE Location (
-    id INT,
+    id INT PRIMARY KEY, -- generate this
     voting_district_name VARCHAR(100),
     voting_district_id INT,
     municipality VARCHAR(100),
@@ -41,13 +41,13 @@ CREATE TABLE Location (
 
 CREATE TABLE Seat_Distribution (
     date DATE, -- YYYY-01-01
-    party_id INT,
+    party_id INT REFERENCES Party(id),
     seats INT
 );
 
 CREATE TABLE Bundestag_Election_Census (
     date DATE, -- YYYY-01-01
-    location_id INT,
+    location_id INT REFERENCES Location(id),
     voting_eligible_population INT,
     voters INT,
     valid_votes INT,
@@ -56,15 +56,15 @@ CREATE TABLE Bundestag_Election_Census (
 
 CREATE TABLE Bundestag_Election_Result (
     date DATE, -- YYYY-01-01
-    party_id INT,
-    location_id INT,
+    party_id INT REFERENCES Party(id),
+    location_id INT REFERENCES Location(id),
     votes INT,
     percentage DOUBLE
 );
 
 CREATE TABLE Politbarometer_Opinion_Poll (
     date DATE, -- YYYY-MM-01
-    respondent_id INT,
+    respondent_id INT REFERENCES Respondent(id),
     weight DOUBLE, -- p_weight and d_weight
     is_willing_to_vote BOOL, -- v5
     rating_government INT, -- v15
@@ -85,8 +85,8 @@ CREATE TABLE Politbarometer_Opinion_Poll (
 
 CREATE TABLE Politbarometer_Election_Poll (
     date DATE, -- YYYY-MM-01
-    respondent_id INT,
-    party_id INT,
+    respondent_id INT REFERENCES Respondent(id),
+    party_id INT REFERENCES Party(id),
     is_intended_vote BOOL, -- v6
     was_last_vote BOOL, -- v7
     is_preferred_party BOOL, -- v72
