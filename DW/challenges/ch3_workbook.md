@@ -204,7 +204,7 @@ CREATE TABLE Party
 
 CREATE TABLE Location
 (
-    id                      INT PRIMARY KEY, -- generate this
+    id                      INT PRIMARY KEY,
     voting_district_name    VARCHAR(100),
     voting_district_id      INT,
     municipality            VARCHAR(100),
@@ -216,7 +216,7 @@ CREATE TABLE Location
 
 CREATE TABLE Respondent
 (
-    id                                INT PRIMARY KEY, -- generate this ("respid" is not unique)
+    id                                INT PRIMARY KEY,
     location_id                       INT REFERENCES Location (id),
     financial_standing_level          INT,
     financial_standing_name           VARCHAR(50),
