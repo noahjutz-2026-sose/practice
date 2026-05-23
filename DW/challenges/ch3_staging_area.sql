@@ -12,10 +12,10 @@ CREATE TABLE st_Bundestag_Elections (
     party VARCHAR(100), -- "partei"
     votes INT, -- "stimmen"
     percentage DOUBLE, -- "anteil"
-    eligible_voters INT, -- "wahlberechtigte"
+    voting_eligible_population INT, -- "wahlberechtigte"
     voters INT, -- "waehlende"
-    valid INT, -- "gueltige"
-    invalid INT -- "ungueltige"
+    valid_votes INT, -- "gueltige"
+    invalid_votes INT -- "ungueltige"
 );
 
 CREATE TABLE st_Politbarometer_Survey (
