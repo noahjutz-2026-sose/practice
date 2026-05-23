@@ -1,28 +1,29 @@
 Data Warehousing | Summer Semester 2026 | Prof. Schildgen | OTH Regensburg
 
------
+---
 
 **Name:** Noah Jutz
 
 # Challenge 3: Data Modelling and Importing the Data
 
-**Tasks:** 
+**Tasks:**
 
-3. Fill out this workbook with care. It will be graded with points. Write high-class content, but compact. Before you submit, read everything again and improve. 
+3. Fill out this workbook with care. It will be graded with points. Write high-class content, but compact. Before you submit, read everything again and improve.
 
 4. When you are finished, export your workbook as a PDF and upload it to ELO before the deadline. Open your PDF in a PDF viewer to check whether everything was exported correctly and no code blocks are cut off.
 5. In this workbook, you need to write SQL commands. Put them in code blocks and split long queries into multiple lines.
 
 ## Title
 
-*Please, again write your project title (as in the first workbook) here). If you want to change your title, write here the old and the new title.*
+_Please, again write your project title (as in the first workbook) here). If you want to change your title, write here the old and the new title._
 
 **Old:** CyberRunner Warehouse - Analyse von Reinforcement Learning Daten
 
 **New:** Bundestag Election Data Warehouse: Politische Stimmungs- und Ergebnisdatenbank
 
 ## Staging Area: Tables
-*Write down your `CREATE TABLE` commands to create your tables in which you import your data from the data sources.  (Ex. Sheet 3, Exercise 1.3)*
+
+_Write down your `CREATE TABLE` commands to create your tables in which you import your data from the data sources. (Ex. Sheet 3, Exercise 1.3)_
 
 ```sql
 CREATE TABLE st_Bundestag_Elections (
@@ -125,40 +126,45 @@ CREATE TABLE st_Seat_Distribution (
 ```
 
 ## Forms of Heterogeneity
-*Which forms of heterogeneity exist between two of your data sources? Write at least one example. (Ex. Sheet 3, Exercise 1.4)*
 
-* 🖊️ 
+_Which forms of heterogeneity exist between two of your data sources? Write at least one example. (Ex. Sheet 3, Exercise 1.4)_
+
+| Type                        | Example                                                                               |
+| --------------------------- | ------------------------------------------------------------------------------------- |
+| **Technical Heterogeneity** | Politbarometer uses DTA, Bundestag_Election uses CSV (resolves after CSV conversion).          |
+| **Syntactic Heterogeneity** | Politbarometer uses numbers (1=CDU), Bundestag_Election uses shortnames (linke=Die Linke/PDS). |
+| **Semantic Heterogeneity**  | Politbarometer separates CDU/CSU, Bundestag_Election groups as Union=CDU+CSU.             |
+| **Schematic Heterogeneity** | Politbarometer uses one column per party per question, Bundestag_Election uses one row per party.           |
 
 ## Star / Snowflake Schema
-*Your task was to decide whether to use a star schema or a snowflake schema (or a mix of both) within your data warehouse. Provide the `CREATE TABLE` commands of your final schema here. (Ex. Sheet 3, Exercise 1.6)*
+
+_Your task was to decide whether to use a star schema or a snowflake schema (or a mix of both) within your data warehouse. Provide the `CREATE TABLE` commands of your final schema here. (Ex. Sheet 3, Exercise 1.6)_
 
 **Fact table(s):**
 
-🖊️ 
+🖊️
 
 **Dimension table(s):**
 
 🖊️
 
-
 ## IMPORT
-*Write down IMPORT commands to import data from your data sources into your staging area tables. (Ex. Sheet 3, Exercise 2.1)*
+
+_Write down IMPORT commands to import data from your data sources into your staging area tables. (Ex. Sheet 3, Exercise 2.1)_
 
 🖊️
 
-
 ## Numbers
-* Numbers of rows in your biggest table: 🖊️
-* Size (KB, MB, or GB) of your biggest table: 🖊️
-* Name of that biggest table: 🖊️
-* Total size (KB, MB, or GB) of your schema: 🖊️
 
+- Numbers of rows in your biggest table: 🖊️
+- Size (KB, MB, or GB) of your biggest table: 🖊️
+- Name of that biggest table: 🖊️
+- Total size (KB, MB, or GB) of your schema: 🖊️
 
 ## ME/R Model
-*If you use Zettlr, Notion, or another local Markdown editor, embed the image of your ME/R Model here by writing `![ME/R Model](mer.jpg)`. If you create your PDF with a markdown-to-PDF conversion tool, then create this workbook PDF (without the image), and the image PDF as two separate files and combine them into one single PDF (e.g., with PDFSAM or pdftk). (Ex. Sheet 2, Exercise 1.1)*
 
-🖊️ 
+_If you use Zettlr, Notion, or another local Markdown editor, embed the image of your ME/R Model here by writing `![ME/R Model](mer.jpg)`. If you create your PDF with a markdown-to-PDF conversion tool, then create this workbook PDF (without the image), and the image PDF as two separate files and combine them into one single PDF (e.g., with PDFSAM or pdftk). (Ex. Sheet 2, Exercise 1.1)_
 
-
+🖊️
 
 **Please check: Have you written your name on the very top?**
