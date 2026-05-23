@@ -5,11 +5,12 @@ OPEN SCHEMA NOAH_JUTZ;
 CREATE TABLE Party (
     id INT,
     shortname VARCHAR(50),
-    full_name VARCHAR(200),
+    full_name VARCHAR(200)
 );
 
 CREATE TABLE Respondent (
     id INT,
+    location_id INT,
     financial_standing_level INT,
     financial_standing_name VARCHAR(50),
     financial_standing_forecast_level INT,
@@ -40,12 +41,13 @@ CREATE TABLE Location (
 
 CREATE TABLE Seat_Distribution (
     date DATE, -- YYYY-01-01
-    party_shortname VARCHAR(50),
+    party_id INT,
     seats INT
 );
 
 CREATE TABLE Bundestag_Election_Census (
     date DATE, -- YYYY-01-01
+    location_id INT,
     voting_eligible_population INT,
     voters INT,
     valid_votes INT,
@@ -54,7 +56,7 @@ CREATE TABLE Bundestag_Election_Census (
 
 CREATE TABLE Bundestag_Election_Result (
     date DATE, -- YYYY-01-01
-    party_shortname VARCHAR(50),
+    party_id INT,
     location_id INT,
     votes INT,
     percentage DOUBLE
@@ -62,6 +64,7 @@ CREATE TABLE Bundestag_Election_Result (
 
 CREATE TABLE Politbarometer_Opinion_Poll (
     date DATE, -- YYYY-MM-01
+    respondent_id INT,
     weight DOUBLE, -- p_weight and d_weight
     is_willing_to_vote BOOL, -- v5
     rating_government INT, -- v15
@@ -83,7 +86,7 @@ CREATE TABLE Politbarometer_Opinion_Poll (
 CREATE TABLE Politbarometer_Election_Poll (
     date DATE, -- YYYY-MM-01
     respondent_id INT,
-    party_shortname VARCHAR(50),
+    party_id INT,
     is_intended_vote BOOL, -- v6
     was_last_vote BOOL, -- v7
     is_preferred_party BOOL, -- v72
