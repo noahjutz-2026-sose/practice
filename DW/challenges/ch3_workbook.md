@@ -24,7 +24,105 @@ Data Warehousing | Summer Semester 2026 | Prof. Schildgen | OTH Regensburg
 ## Staging Area: Tables
 *Write down your `CREATE TABLE` commands to create your tables in which you import your data from the data sources.  (Ex. Sheet 3, Exercise 1.3)*
 
-🖊️
+```sql
+CREATE TABLE st_Bundestag_Elections (
+    intyear INT, -- "jahr"
+    district_id INT, -- "wahlkreis_nr"
+    district_name VARCHAR(500), -- "wahlkreis_name"
+    party VARCHAR(100), -- "partei"
+    votes INT, -- "stimmen"
+    percentage DOUBLE, -- "anteil"
+    eligible_voters INT, -- "wahlberechtigte"
+    voters INT, -- "waehlende"
+    valid INT, -- "gueltige"
+    invalid INT -- "ungueltige"
+);
+```
+
+```sql
+CREATE TABLE st_Politbarometer_Survey (
+    respondent_id INT, -- PK respondent; "respid"
+    intyear INT,
+    intmonth INT,
+    study_id INT, -- PK respondent
+    version INT, -- "split"
+    p_weight DOUBLE, -- Weight before 1999; "pwght"
+    d_weight DOUBLE, -- Weight from 1999; "dwght"
+    v4a_east_west INT,
+    v5_turnout INT,
+    v6_intended_vote INT,
+    v7_last_vote INT,
+    v8_rating_spd INT,
+    v9_rating_cdu INT,
+    v10_rating_csu INT,
+    v11_rating_fdp INT,
+    v12_rating_gruene INT,
+    v13_rating_afd INT,
+    v14_rating_linke INT,
+    v15_rating_government INT,
+    v16_rating_opposition INT,
+    v18_democracy_satisfaction INT,
+    v20_political_interest INT,
+    v21_political_interest_intensity INT,
+    v22_left_right INT,
+    v23_left INT,
+    v24_right INT,
+    v25_economy_brd INT,
+    v26_economy_forecast INT,
+    v27_financial_standing INT,
+    v28_financial_standing_forecast INT,
+    v29_reunification INT,
+    v30_asylum INT,
+    v31_foreigners INT,
+    v32_abortion INT,
+    v39_nuclear_energy INT,
+    v41_crime_threat INT,
+    v42_eu_membership INT,
+    v43_responsibility_foreign_policy INT,
+    v44_society INT,
+    v48_military_threat INT,
+    v49_security INT,
+    v50_year_review INT,
+    v51_year_forecast INT,
+    v52_religion INT,
+    v54_gender INT,
+    v55_age INT,
+    v56_age_group INT,
+    v57_marital_status INT,
+    v59_education_pre_87 INT,
+    v60_education INT,
+    v64_employment_status INT,
+    v65_occupation INT,
+    v72_preferred_party INT,
+    v73_preference_intensity INT,
+    v74_workers_union INT,
+    v75_state INT
+);
+```
+
+```sql
+CREATE TABLE st_Seat_Distribution (
+    intyear INT,
+    total_seats INT,
+    cdu INT,
+    afd INT,
+    spd INT,
+    gruene INT,
+    linke INT,
+    csu INT,
+    ssw INT,
+    fdp INT,
+    bp INT,
+    dp INT,
+    kpd INT,
+    wav INT,
+    zentrum INT,
+    dkpdrp INT,
+    gbbhe INT,
+    fdv INT,
+    independent INT
+);
+```
 
 ## Forms of Heterogeneity
 *Which forms of heterogeneity exist between two of your data sources? Write at least one example. (Ex. Sheet 3, Exercise 1.4)*
