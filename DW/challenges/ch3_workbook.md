@@ -338,10 +338,10 @@ IMPORT INTO ST_POLITBAROMETER_SURVEY
 
 ## Numbers
 
-- Numbers of rows in your biggest table: 🖊️
-- Size (KB, MB, or GB) of your biggest table: 🖊️
-- Name of that biggest table: 🖊️
-- Total size (KB, MB, or GB) of your schema: 🖊️
+- Numbers of rows in your biggest table: 1103059
+- Size (KB, MB, or GB) of your biggest table: 414MB
+- Name of that biggest table: ST_POLITBAROMETER_SURVEY
+- Total size (KB, MB, or GB) of your schema: 426MB
 
 ## ME/R Model
 
