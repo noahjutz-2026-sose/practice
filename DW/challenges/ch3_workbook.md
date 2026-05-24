@@ -6,13 +6,6 @@ Data Warehousing | Summer Semester 2026 | Prof. Schildgen | OTH Regensburg
 
 # Challenge 3: Data Modelling and Importing the Data
 
-**Tasks:**
-
-3. Fill out this workbook with care. It will be graded with points. Write high-class content, but compact. Before you submit, read everything again and improve.
-
-4. When you are finished, export your workbook as a PDF and upload it to ELO before the deadline. Open your PDF in a PDF viewer to check whether everything was exported correctly and no code blocks are cut off.
-5. In this workbook, you need to write SQL commands. Put them in code blocks and split long queries into multiple lines.
-
 ## Title
 
 _Please, again write your project title (as in the first workbook) here). If you want to change your title, write here the old and the new title._
