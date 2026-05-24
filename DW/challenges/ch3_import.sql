@@ -9,6 +9,10 @@ FROM ST_BUNDESTAG_ELECTIONS
 LIMIT 50;
 
 SELECT *
+FROM ST_POLITBAROMETER_SURVEY
+LIMIT 50;
+
+SELECT *
 FROM error_tbl
 LIMIT 50;
 
@@ -103,7 +107,6 @@ IMPORT INTO ST_POLITBAROMETER_SURVEY (
                                       v74_workers_union,
                                       v75_state
     )
-    FROM LOCAL CSV FILE '/tmp/st_politbarometer_survey.tsv'
-    ( 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 25, 28, 29, 32, 33, 34, 35, 36, 37, 48, 49, 51, 57, 58, 59, 61, 62, 64, 66, 67, 71, 72, 79, 80, 81, 82 ) COLUMN SEPARATOR = '\t'
-    ROW SEPARATOR = 'CRLF'
+    FROM LOCAL CSV FILE '/tmp/st_politbarometer_survey.csv'
+    (4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 25, 28, 29, 32, 33, 34, 35, 36, 37, 48, 49, 51, 57, 58, 59, 61, 62, 64, 66, 67, 71, 72, 79, 80, 81, 82)
     SKIP = 1 IGNORE CERTIFICATE ERRORS INTO error_tbl REJECT LIMIT UNLIMITED;
