@@ -1,0 +1,15 @@
+src/src/cg
+src/src/cg-kart
+
+*.o
+*.Po
+**/.deps
+aclocal.m4
+configure
+Makefile
+config.h
+config.log
+config.status
+stamp-h1
+autom4te.cache/
+*~

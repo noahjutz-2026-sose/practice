@@ -1,0 +1,36 @@
+FROM docker.io/debian:bookworm-slim
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    automake \
+    autoconf \
+    libassimp-dev \
+    libglew-dev \
+    libglfw3-dev \
+    libglm-dev \
+    bzip2 \
+    pkg-config \
+    tar \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /deps
+
+COPY imgui-2021.tar.bz2 .
+RUN tar xf imgui-2021.tar.bz2 \
+    && cd imgui-2021 \
+    && ./configure \
+    && make -j$(nproc) \
+    && make install
+
+COPY bigduckgl-2022.tar.bz2 .
+RUN tar xf bigduckgl-2022.tar.bz2 \
+    && cd bigduckgl-2022 \
+    && ./configure \
+    && make -j$(nproc) \
+    && make install
+
+RUN ldconfig
+
+WORKDIR /app
+
+CMD ["sh", "-c", "./configure && make -j$(nproc)"]
