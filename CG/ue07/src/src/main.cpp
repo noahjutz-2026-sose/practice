@@ -46,7 +46,7 @@ int main(int argc, char** argv) {
     namespace mk = mario_kart;
     mk::Scene track;
 	track.load_model_from_file("render-data/models/cg-kart/MooMoo/MooMoo_fixed_and_normalmapped.obj");
-	const std::string starting_lines_name = "gate_WhiteLine18__mm_StartGrad";  
+	const std::string starting_lines_name = "gate_WhiteLine18__mm_StartGrad";
 	const mk::SceneObject* starting_line = track.find_object_by_name(starting_lines_name);
 
 	mk::Kart kart(glm::vec3(0, 0, 1));
@@ -74,7 +74,7 @@ int main(int argc, char** argv) {
 
 	shader_ptr light_rep_shader = make_shader("light-rep", "shaders/light_rep.vert", "shaders/light_rep.frag");
 	std::vector<drawelement_ptr> light_rep = MeshLoader::load("render-data/models/sphere.obj", false, [&](const material_ptr &) { return light_rep_shader; });
-	
+
 
 	TimerQuery input_timer("input");
 	TimerQuery update_timer("update");
@@ -100,7 +100,7 @@ int main(int argc, char** argv) {
 		                               "Material Color",
 									   "Phong Lighting",
 		};
-		enum { 
+		enum {
 			PlainColor,
 			MaterialColor,
 			PhongLighting,
@@ -186,6 +186,9 @@ int main(int argc, char** argv) {
 			shader_plain_color->uniform("proj", Camera::current()->proj);
 			// TODO
 			// Teilaufgabe 1
+
+			glUniform4fv(glGetUniformLocation(shader_plain_color->id, "cols"), 100, glm::value_ptr(cols[0]));
+
 			for (auto &de : *scene) {
 				de->material->bind(shader_plain_color);
 				de->draw(glm::mat4(1));
