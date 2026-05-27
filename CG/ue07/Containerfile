@@ -33,4 +33,8 @@ RUN ldconfig
 
 WORKDIR /app
 
-CMD ["sh", "-c", "./configure && make -j$(nproc)"]
+COPY ./src/ .
+
+RUN ./configure && make -j$(nproc)
+
+CMD ["sh", "-c", "./src/cg"]
