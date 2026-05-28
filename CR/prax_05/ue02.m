@@ -51,6 +51,13 @@ for n=5:5:20
     x = 1:n;
     
     x_calc = solve(A, b);
-    c1 = cond(A, 1)
-    c_inf = cond(A, inf)
 end
+
+% b. Wikinson matrix
+
+n=5;
+
+W = tril(-ones(n)) + diag([2*ones(1,n-1) 1]) + [zeros(n,n-1) ones(n,1)];
+
+c1 = cond(W, 1)
+c_inf = cond(W, inf)
