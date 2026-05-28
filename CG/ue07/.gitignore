@@ -1,5 +1,6 @@
 src/src/cg
 src/src/cg-kart
+src/imgui.ini
 
 *.o
 *.Po
