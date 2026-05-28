@@ -36,10 +36,6 @@ RUN ldconfig
 
 WORKDIR /app
 
-COPY ./src/ .
+RUN mkdir -p /app/render-data/models
 
-RUN cp -r /deps/models ./render-data
-
-RUN ./configure && make -j$(nproc)
-
-CMD ["sh", "-c", "./src/cg"]
+CMD ["sh", "-c", "ln -s /deps/models /app/render-data/models && ./configure && make -j$(nproc) && ./src/cg"]
