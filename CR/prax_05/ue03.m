@@ -32,3 +32,15 @@ hold on;
 yline(mu_x, 'r--', 'Mean X'); yline(mu_x + sqrt(var_x), 'r:'); yline(mu_x - sqrt(var_x), 'r:');
 yline(mu_y, 'g--', 'Mean Y'); yline(mu_y + sqrt(var_y), 'g:'); yline(mu_y - sqrt(var_y), 'g:');
 yline(mu_z, 'b--', 'Mean Z'); yline(mu_z + sqrt(var_z), 'b:'); yline(mu_z - sqrt(var_z), 'b:');
+
+% c. norm probability density function
+
+cols = [ax, ay, az, norm];
+names = {'x', 'y', 'z', 'norm'};
+for i = 1:4
+    figure;
+    histogram(cols(:,i), 'Normalization', 'pdf'); hold on;
+    x_range = linspace(min(cols(:,i)), max(cols(:,i)), 200);
+    plot(x_range, normpdf(x_range, mean(cols(:,i)), std(cols(:,i))), 'LineWidth', 2);
+    title(['Dist ' names{i}]);
+end
