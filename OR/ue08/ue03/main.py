@@ -1,18 +1,24 @@
 import numpy as np
 from scipy.optimize import linprog
 
-c = [0, 0, 0, -1]  # p1, p2, p3, z
+c = [0, 0, 0, 0, -1]  # p1, p2, p3, p4, z
 
-A_ub = [[0, 1, -1, 1], [-1, 0, 1, 1], [1, -1, 0, 1]]
-b_ub = [0, 0, 0]
+A_ub = [
+    [0, 1, -1, -1, 1],
+    [-1, 0, 1, -1, 1],
+    [1, -1, 0, 1, 1],
+    [1, 1, -1, 0, 1],
+    #
+]
+b_ub = [0, 0, 0, 0]
 
-# p1 + p2 + p3 = 1
-A_eq = [[1, 1, 1, 0]]
+# p1 + p2 + p3 + p4 = 1
+A_eq = [[1, 1, 1, 1, 0]]
 b_eq = [1]
 
-# p1, p2, p3 >= 0
+# p1, p2, p3, p4 >= 0
 # z in R
-bounds = [(0, None), (0, None), (0, None), (None, None)]
+bounds = [(0, None), (0, None), (0, None), (0, None), (None, None)]
 
 res = linprog(
     c, A_ub=A_ub, b_ub=b_ub, A_eq=A_eq, b_eq=b_eq, bounds=bounds, method="highs"
