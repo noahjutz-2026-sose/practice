@@ -5,7 +5,12 @@
 --   st_Politbarometer_Survey.v72_preferred_party
 --   st_Meta_Politbarometer_Value_Labels.v6
 --   st_Meta_Politbarometer_Value_Labels.v7
---   st_Meta_Politbarometer_Value_Labels.v72
+--   st_Meta_Politbarometer_Value_Labels[v72]
 --   st_Seat_Distribution.cdu, etc. (todo denormalize schema)
 --   st_Bundestag_Elections.party
 --   st_Meta_Bundestag_Parties
+-- Geographic:
+--   st_Politbarometer_Survey.v75_state
+--   st_Meta_Politbarometer_Value_Labels[v75]
+--   st_Meta_Bundestag_Districts.state -- TODO create table
+--   st_Bundestag_Elections.district_id
