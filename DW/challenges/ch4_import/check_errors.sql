@@ -31,12 +31,13 @@ FROM ST_SEAT_DISTRIBUTION;
 
 -- ST_POLITBAROMETER_SURVEY
 -- Cross-check with ST_META_POLITBAROMETER_VALUE_LABELS
-SELECT s.v6_intended_vote
+SELECT s.V6_INTENDED_VOTE, COUNT(*)
 FROM st_Politbarometer_Survey s
          LEFT JOIN st_Meta_Politbarometer_Value_Labels l
                    ON l.variable_id = 'v6'
                        AND l.value_id = s.v6_intended_vote
-WHERE l.value_id IS NULL;
+WHERE l.value_id IS NULL
+GROUP BY s.V6_INTENDED_VOTE;
 
 -- ST_BUNDESTAG_ELECTIONS
 -- Check if district_id 1..1 district_name
