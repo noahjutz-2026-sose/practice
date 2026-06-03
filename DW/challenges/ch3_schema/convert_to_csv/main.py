@@ -9,16 +9,16 @@ df = cast(pd.DataFrame, df)
 
 df.to_csv("/tmp/st_politbarometer_survey.csv", index=False)
 
-questions = meta.column_names_to_labels
-answers = meta.value_labels
+column_labels = meta.column_names_to_labels
+value_labels = meta.value_labels
 
-with open("/tmp/st_politbarometer_questions.csv", "w") as f:
+with open("/tmp/st_meta_politbarometer_column_labels.csv", "w") as f:
     writer = csv.writer(f)
-    for k, v in questions.items():
+    for k, v in column_labels.items():
         writer.writerow([k, v])
 
-with open("/tmp/st_politbarometer_answers.csv", "w") as f:
+with open("/tmp/st_meta_politbarometer_value_labels.csv", "w") as f:
     writer = csv.writer(f)
-    for q, d in answers.items():
+    for q, d in value_labels.items():
         for k, v in d.items():
             writer.writerow([q, k, v])
