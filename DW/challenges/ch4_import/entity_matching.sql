@@ -8,4 +8,4 @@
 --   st_Meta_Politbarometer_Value_Labels.v72
 --   st_Seat_Distribution.cdu, etc. (todo denormalize schema)
 --   st_Bundestag_Elections.party
---
+--   st_Meta_Bundestag_Parties
