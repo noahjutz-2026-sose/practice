@@ -39,7 +39,22 @@ FROM st_Politbarometer_Survey s
 WHERE l.value_id IS NULL;
 
 -- ST_BUNDESTAG_ELECTIONS
+-- Check if district_id 1..1 district_name
 SELECT DISTINCT DISTRICT_ID, COUNT(DISTINCT DISTRICT_NAME)
 FROM ST_BUNDESTAG_ELECTIONS
 GROUP BY DISTRICT_ID
-ORDER BY DISTRICT_ID
+ORDER BY DISTRICT_ID;
+
+-- ST_SEAT_DISTRIBUTION
+-- Check if totaL_seats equals summation of seats
+WITH CUM AS (SELECT intyear, total_seats, (zeroifnull(CDU) + zeroifnull(AFD) + zeroifnull(SPD) + zeroifnull(GRUENE) + zeroifnull(LINKE) +
+                     zeroifnull(CSU) +
+                     zeroifnull(SSW) + zeroifnull(FDP) + zeroifnull(BP) + zeroifnull(DP) + zeroifnull(KPD) +
+                     zeroifnull(WAV) +
+                     zeroifnull(WAV) + zeroifnull(ZENTRUM) + zeroifnull(DKPDRP) + zeroifnull(GBBHE) + zeroifnull(FDV) +
+                     zeroifnull(INDEPENDENT)) AS cum FROM ST_SEAT_DISTRIBUTION)
+SELECT INTYEAR,
+       TOTAL_SEATS,
+        cum
+FROM CUM
+WHERE TOTAL_SEATS != cum
