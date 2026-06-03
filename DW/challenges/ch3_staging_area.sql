@@ -92,3 +92,7 @@ CREATE TABLE st_Seat_Distribution
     fdv         INT,
     independent INT
 );
+
+CREATE TABLE st_Politbarometer_Column_Labels (); -- TODO
+
+CREATE TABLE st_Politbarometer_Value_Labels (); -- TODO

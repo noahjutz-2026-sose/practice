@@ -6,7 +6,7 @@ SELECT * FROM ST_POLITBAROMETER_SURVEY;
 
 -- ST_POLITBAROMETER_SURVEY
 -- Unique: (study_id, v4a_east_west, respondent_id)
--- Result: Some duplicates
+-- Result: Some respondent show up twice, however I do not interpret these as duplicates
 SELECT * WITH INVALID UNIQUE (study_id, v4a_east_west, respondent_id) FROM ST_POLITBAROMETER_SURVEY;
 
 
