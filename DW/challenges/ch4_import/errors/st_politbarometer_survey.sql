@@ -23,21 +23,8 @@ FROM st_Politbarometer_Survey s
 WHERE l.value_id IS NULL
 GROUP BY s.version;
 
-SELECT s.p_weight, COUNT(*)
-FROM st_Politbarometer_Survey s
-         LEFT JOIN st_Meta_Politbarometer_Value_Labels l
-                   ON l.variable_id = 'pwght'
-                       AND l.value_id = s.p_weight
-WHERE l.value_id IS NULL
-GROUP BY s.p_weight;
-
-SELECT s.d_weight, COUNT(*)
-FROM st_Politbarometer_Survey s
-         LEFT JOIN st_Meta_Politbarometer_Value_Labels l
-                   ON l.variable_id = 'dwght'
-                       AND l.value_id = s.d_weight
-WHERE l.value_id IS NULL
-GROUP BY s.d_weight;
+SELECT min(P_WEIGHT), max(P_WEIGHT) FROM ST_POLITBAROMETER_SURVEY;
+SELECT min(D_WEIGHT), max(D_WEIGHT) FROM ST_POLITBAROMETER_SURVEY;
 
 SELECT s.v4a_east_west, COUNT(*)
 FROM st_Politbarometer_Survey s
@@ -55,6 +42,7 @@ FROM st_Politbarometer_Survey s
 WHERE l.value_id IS NULL
 GROUP BY s.v5_turnout;
 
+-- Errors!
 SELECT s.v6_intended_vote, COUNT(*)
 FROM st_Politbarometer_Survey s
          LEFT JOIN st_Meta_Politbarometer_Value_Labels l
@@ -63,6 +51,7 @@ FROM st_Politbarometer_Survey s
 WHERE l.value_id IS NULL
 GROUP BY s.v6_intended_vote;
 
+-- Errors!
 SELECT s.v7_last_vote, COUNT(*)
 FROM st_Politbarometer_Survey s
          LEFT JOIN st_Meta_Politbarometer_Value_Labels l
@@ -167,6 +156,7 @@ FROM st_Politbarometer_Survey s
 WHERE l.value_id IS NULL
 GROUP BY s.v22_left_right;
 
+-- Errors!
 SELECT s.v25_economy_brd, COUNT(*)
 FROM st_Politbarometer_Survey s
          LEFT JOIN st_Meta_Politbarometer_Value_Labels l
@@ -183,6 +173,7 @@ FROM st_Politbarometer_Survey s
 WHERE l.value_id IS NULL
 GROUP BY s.v26_economy_forecast;
 
+-- Errors!
 SELECT s.v27_financial_standing, COUNT(*)
 FROM st_Politbarometer_Survey s
          LEFT JOIN st_Meta_Politbarometer_Value_Labels l
@@ -271,14 +262,12 @@ FROM st_Politbarometer_Survey s
 WHERE l.value_id IS NULL
 GROUP BY s.v54_gender;
 
-SELECT s.v55_age, COUNT(*)
-FROM st_Politbarometer_Survey s
-         LEFT JOIN st_Meta_Politbarometer_Value_Labels l
-                   ON l.variable_id = 'v55'
-                       AND l.value_id = s.v55_age
-WHERE l.value_id IS NULL
-GROUP BY s.v55_age;
+SELECT v55_age, COUNT(*)
+FROM ST_POLITBAROMETER_SURVEY
+WHERE (V55_AGE < 0 OR V55_AGE > 120) AND V55_AGE != -94
+GROUP BY V55_AGE;
 
+-- Errors!
 SELECT s.v57_marital_status, COUNT(*)
 FROM st_Politbarometer_Survey s
          LEFT JOIN st_Meta_Politbarometer_Value_Labels l
@@ -303,6 +292,7 @@ FROM st_Politbarometer_Survey s
 WHERE l.value_id IS NULL
 GROUP BY s.v60_education;
 
+-- Errors!
 SELECT s.v64_employment_status, COUNT(*)
 FROM st_Politbarometer_Survey s
          LEFT JOIN st_Meta_Politbarometer_Value_Labels l
@@ -311,6 +301,7 @@ FROM st_Politbarometer_Survey s
 WHERE l.value_id IS NULL
 GROUP BY s.v64_employment_status;
 
+-- Errors!
 SELECT s.v65_occupation, COUNT(*)
 FROM st_Politbarometer_Survey s
          LEFT JOIN st_Meta_Politbarometer_Value_Labels l
@@ -319,6 +310,7 @@ FROM st_Politbarometer_Survey s
 WHERE l.value_id IS NULL
 GROUP BY s.v65_occupation;
 
+-- Errors!
 SELECT s.v72_preferred_party, COUNT(*)
 FROM st_Politbarometer_Survey s
          LEFT JOIN st_Meta_Politbarometer_Value_Labels l
@@ -335,6 +327,7 @@ FROM st_Politbarometer_Survey s
 WHERE l.value_id IS NULL
 GROUP BY s.v73_preference_intensity;
 
+-- Errors!
 SELECT s.v74_workers_union, COUNT(*)
 FROM st_Politbarometer_Survey s
          LEFT JOIN st_Meta_Politbarometer_Value_Labels l
