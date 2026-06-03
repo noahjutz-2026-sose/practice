@@ -1,21 +1,11 @@
 OPEN SCHEMA NOAH_JUTZ;
 
-SELECT s.respondent_id, COUNT(*)
-FROM st_Politbarometer_Survey s
-         LEFT JOIN st_Meta_Politbarometer_Value_Labels l
-                   ON l.variable_id = 'respid'
-                       AND l.value_id = s.respondent_id
-WHERE l.value_id IS NULL
-GROUP BY s.respondent_id;
+-- No errors
+SELECT intyear
+FROM st_Politbarometer_Survey
+WHERE INTYEAR > 2026 OR INTYEAR < 1977;
 
-SELECT s.intyear, COUNT(*)
-FROM st_Politbarometer_Survey s
-         LEFT JOIN st_Meta_Politbarometer_Value_Labels l
-                   ON l.variable_id = 'intyear'
-                       AND l.value_id = s.intyear
-WHERE l.value_id IS NULL
-GROUP BY s.intyear;
-
+-- No errors
 SELECT s.intmonth, COUNT(*)
 FROM st_Politbarometer_Survey s
          LEFT JOIN st_Meta_Politbarometer_Value_Labels l
@@ -24,14 +14,7 @@ FROM st_Politbarometer_Survey s
 WHERE l.value_id IS NULL
 GROUP BY s.intmonth;
 
-SELECT s.study_id, COUNT(*)
-FROM st_Politbarometer_Survey s
-         LEFT JOIN st_Meta_Politbarometer_Value_Labels l
-                   ON l.variable_id = 'studyid'
-                       AND l.value_id = s.study_id
-WHERE l.value_id IS NULL
-GROUP BY s.study_id;
-
+-- No errors
 SELECT s.version, COUNT(*)
 FROM st_Politbarometer_Survey s
          LEFT JOIN st_Meta_Politbarometer_Value_Labels l
