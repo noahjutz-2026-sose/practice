@@ -1,11 +1,9 @@
 OPEN SCHEMA NOAH_JUTZ;
 
--- No errors
 SELECT intyear
 FROM st_Politbarometer_Survey
 WHERE INTYEAR > 2026 OR INTYEAR < 1977;
 
--- No errors
 SELECT s.intmonth, COUNT(*)
 FROM st_Politbarometer_Survey s
          LEFT JOIN st_Meta_Politbarometer_Value_Labels l
@@ -14,7 +12,6 @@ FROM st_Politbarometer_Survey s
 WHERE l.value_id IS NULL
 GROUP BY s.intmonth;
 
--- No errors
 SELECT s.version, COUNT(*)
 FROM st_Politbarometer_Survey s
          LEFT JOIN st_Meta_Politbarometer_Value_Labels l
