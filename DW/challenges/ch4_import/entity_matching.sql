@@ -1,0 +1,11 @@
+-- to match
+-- Party:
+--   st_Politbarometer_Survey.v6_intended_vote
+--   st_Politbarometer_Survey.v7_intended_vote
+--   st_Politbarometer_Survey.v72_preferred_party
+--   st_Meta_Politbarometer_Value_Labels.v6
+--   st_Meta_Politbarometer_Value_Labels.v7
+--   st_Meta_Politbarometer_Value_Labels.v72
+--   st_Seat_Distribution.cdu, etc. (todo denormalize schema)
+--   st_Bundestag_Elections.party
+--

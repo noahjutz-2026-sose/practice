@@ -104,3 +104,8 @@ CREATE TABLE st_Meta_Politbarometer_Value_Labels (
     label VARCHAR(500),
     PRIMARY KEY (variable_id, value_id)
 );
+
+CREATE TABLE st_Meta_Bundestag_Parties (
+    shortname VARCHAR(50),
+    name VARCHAR(500)
+);
