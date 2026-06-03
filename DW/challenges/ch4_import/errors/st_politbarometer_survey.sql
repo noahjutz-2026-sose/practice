@@ -3,7 +3,7 @@ OPEN SCHEMA NOAH_JUTZ;
 SELECT s.respondent_id, COUNT(*)
 FROM st_Politbarometer_Survey s
          LEFT JOIN st_Meta_Politbarometer_Value_Labels l
-                   ON l.variable_id = 'respondent'
+                   ON l.variable_id = 'respid'
                        AND l.value_id = s.respondent_id
 WHERE l.value_id IS NULL
 GROUP BY s.respondent_id;
@@ -27,7 +27,7 @@ GROUP BY s.intmonth;
 SELECT s.study_id, COUNT(*)
 FROM st_Politbarometer_Survey s
          LEFT JOIN st_Meta_Politbarometer_Value_Labels l
-                   ON l.variable_id = 'study'
+                   ON l.variable_id = 'studyid'
                        AND l.value_id = s.study_id
 WHERE l.value_id IS NULL
 GROUP BY s.study_id;
@@ -35,7 +35,7 @@ GROUP BY s.study_id;
 SELECT s.version, COUNT(*)
 FROM st_Politbarometer_Survey s
          LEFT JOIN st_Meta_Politbarometer_Value_Labels l
-                   ON l.variable_id = 'version'
+                   ON l.variable_id = 'split'
                        AND l.value_id = s.version
 WHERE l.value_id IS NULL
 GROUP BY s.version;
@@ -43,7 +43,7 @@ GROUP BY s.version;
 SELECT s.p_weight, COUNT(*)
 FROM st_Politbarometer_Survey s
          LEFT JOIN st_Meta_Politbarometer_Value_Labels l
-                   ON l.variable_id = 'p'
+                   ON l.variable_id = 'pwght'
                        AND l.value_id = s.p_weight
 WHERE l.value_id IS NULL
 GROUP BY s.p_weight;
@@ -51,7 +51,7 @@ GROUP BY s.p_weight;
 SELECT s.d_weight, COUNT(*)
 FROM st_Politbarometer_Survey s
          LEFT JOIN st_Meta_Politbarometer_Value_Labels l
-                   ON l.variable_id = 'd'
+                   ON l.variable_id = 'dwght'
                        AND l.value_id = s.d_weight
 WHERE l.value_id IS NULL
 GROUP BY s.d_weight;
