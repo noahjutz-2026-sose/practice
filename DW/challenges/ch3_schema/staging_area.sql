@@ -93,6 +93,14 @@ CREATE TABLE st_Seat_Distribution
     independent INT
 );
 
-CREATE TABLE st_Politbarometer_Column_Labels (); -- TODO
+CREATE TABLE st_Meta_Politbarometer_Column_Labels (
+    variable_id VARCHAR(50) PRIMARY KEY,
+    label VARCHAR(500)
+);
 
-CREATE TABLE st_Politbarometer_Value_Labels (); -- TODO
+CREATE TABLE st_Meta_Politbarometer_Value_Labels (
+    variable_id VARCHAR(50),
+    value_id INT,
+    label VARCHAR(500),
+    PRIMARY KEY (variable_id, value_id)
+);
