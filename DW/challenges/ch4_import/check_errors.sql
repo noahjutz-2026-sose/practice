@@ -33,10 +33,10 @@ FROM ST_SEAT_DISTRIBUTION;
 -- Cross-check with ST_META_POLITBAROMETER_VALUE_LABELS
 SELECT s.v6_intended_vote
 FROM st_Politbarometer_Survey s
-         LEFT JOIN st_Meta_Politbarometer_Value_Labels lbl
-                   ON lbl.variable_id = 'v6'
-                       AND lbl.value_id = s.v6_intended_vote
-WHERE lbl.value_id IS NULL;
+         LEFT JOIN st_Meta_Politbarometer_Value_Labels l
+                   ON l.variable_id = 'v6'
+                       AND l.value_id = s.v6_intended_vote
+WHERE l.value_id IS NULL;
 
 -- ST_BUNDESTAG_ELECTIONS
 SELECT DISTINCT DISTRICT_ID, COUNT(DISTINCT DISTRICT_NAME)
