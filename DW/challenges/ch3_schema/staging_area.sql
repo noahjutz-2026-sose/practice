@@ -109,3 +109,9 @@ CREATE TABLE st_Meta_Bundestag_Parties (
     shortname VARCHAR(50),
     name VARCHAR(500)
 );
+
+CREATE TABLE st_Meta_Bundestag_Districts (
+    district INT PRIMARY KEY,
+    state VARCHAR(100),
+
+)
