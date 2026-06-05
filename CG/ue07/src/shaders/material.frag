@@ -1,14 +1,9 @@
 #version 150
 
-// TODO
-// Teilaufgabe 2
-// Uniform aus Framework
 uniform vec4 k_diff;
 
 out vec4 out_col;
 
 void main() {
-    // TODO
-    // Teilaufgabe 2
-    out_col = k_diff;
+	out_col = k_diff;
 }

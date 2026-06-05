@@ -3,6 +3,7 @@ EXTRA_DIST = default.frag default.vert \
 			 material.frag material.vert \
 			 shading.frag shading.vert
 
+EXTRA_DIST += tex.frag tex.vert
 
 
 

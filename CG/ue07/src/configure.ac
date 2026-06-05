@@ -1,4 +1,4 @@
-AC_INIT([cg], [2025-a01], [selgrad])
+AC_INIT([cg], [2025-a02], [selgrad])
 
 AC_CONFIG_SRCDIR([src/main.cpp])
 AC_CONFIG_HEADERS(config.h)

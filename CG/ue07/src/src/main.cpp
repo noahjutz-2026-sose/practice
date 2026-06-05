@@ -46,7 +46,7 @@ int main(int argc, char** argv) {
     namespace mk = mario_kart;
     mk::Scene track;
 	track.load_model_from_file("render-data/models/cg-kart/MooMoo/MooMoo_fixed_and_normalmapped.obj");
-	const std::string starting_lines_name = "gate_WhiteLine18__mm_StartGrad";
+	const std::string starting_lines_name = "gate_WhiteLine18__mm_StartGrad";  
 	const mk::SceneObject* starting_line = track.find_object_by_name(starting_lines_name);
 
 	mk::Kart kart(glm::vec3(0, 0, 1));
@@ -71,10 +71,11 @@ int main(int argc, char** argv) {
 	shader_ptr shader_plain_color  = make_shader("a1", "shaders/default.vert", "shaders/default.frag");
 	shader_ptr shader_material     = make_shader("a2", "shaders/material.vert", "shaders/material.frag");
 	shader_ptr shader_lighting     = make_shader("a3", "shaders/shading.vert", "shaders/shading.frag");
+	shader_ptr shader_textured     = make_shader("a4", "shaders/tex.vert", "shaders/tex.frag");
 
 	shader_ptr light_rep_shader = make_shader("light-rep", "shaders/light_rep.vert", "shaders/light_rep.frag");
 	std::vector<drawelement_ptr> light_rep = MeshLoader::load("render-data/models/sphere.obj", false, [&](const material_ptr &) { return light_rep_shader; });
-
+	
 
 	TimerQuery input_timer("input");
 	TimerQuery update_timer("update");
@@ -99,11 +100,13 @@ int main(int argc, char** argv) {
 		static const char *items[] = { "Plain Color",
 		                               "Material Color",
 									   "Phong Lighting",
+									   "Textured",
 		};
-		enum {
+		enum { 
 			PlainColor,
 			MaterialColor,
 			PhongLighting,
+			Textured,
 			N
 		};
 		static int active_mode = PlainColor;
@@ -184,11 +187,8 @@ int main(int argc, char** argv) {
 			shader_plain_color->uniform("model", glm::mat4(1));
 			shader_plain_color->uniform("view", Camera::current()->view);
 			shader_plain_color->uniform("proj", Camera::current()->proj);
-			// TODO
-			// Teilaufgabe 1
-
-			glUniform4fv(glGetUniformLocation(shader_plain_color->id, "cols"), 100, glm::value_ptr(cols[0]));
-
+			int loc = glGetUniformLocation(shader_plain_color->id, "cols");
+			glUniform4fv(loc, 100, (float*)&cols[0]);
 			for (auto &de : *scene) {
 				de->material->bind(shader_plain_color);
 				de->draw(glm::mat4(1));
@@ -210,6 +210,7 @@ int main(int argc, char** argv) {
 				shader_ptr shader;
 				if (active_mode == MaterialColor)      shader = shader_material;
 				else if (active_mode == PhongLighting) shader = shader_lighting;
+				else if (active_mode == Textured)      shader = shader_textured;
 
 				de->shader = shader;
 				de->bind();
@@ -228,6 +229,7 @@ int main(int argc, char** argv) {
 				shader_ptr shader;
 				if (active_mode == MaterialColor)      shader = shader_material;
 				else if (active_mode == PhongLighting) shader = shader_lighting;
+				else if (active_mode == Textured)      shader = shader_textured;
 
 				de->shader = shader;
 				de->bind();
