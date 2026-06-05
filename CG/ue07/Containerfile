@@ -38,4 +38,5 @@ WORKDIR /app
 
 RUN mkdir -p /app/render-data/models
 
-CMD ["sh", "-c", "ln -s /deps/models /app/render-data/models && ./configure && make -j$(nproc) && ./src/cg"]
+CMD ["sh", "-c", "ln -sf /deps/models /app/render-data/models && autoreconf -i && ./configure && make -j$(nproc) && ./src/cg"]
+

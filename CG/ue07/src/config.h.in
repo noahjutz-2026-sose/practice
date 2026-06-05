@@ -1,21 +1,21 @@
 /* config.h.in.  Generated from configure.ac by autoheader.  */
 
-/* Define to 1 if you have the 'assimp' library (-lassimp). */
+/* Define to 1 if you have the `assimp' library (-lassimp). */
 #undef HAVE_LIBASSIMP
 
-/* Define to 1 if you have the 'bigduckgl' library (-lbigduckgl). */
+/* Define to 1 if you have the `bigduckgl' library (-lbigduckgl). */
 #undef HAVE_LIBBIGDUCKGL
 
-/* Define to 1 if you have the 'GL' library (-lGL). */
+/* Define to 1 if you have the `GL' library (-lGL). */
 #undef HAVE_LIBGL
 
-/* Define to 1 if you have the 'GLEW' library (-lGLEW). */
+/* Define to 1 if you have the `GLEW' library (-lGLEW). */
 #undef HAVE_LIBGLEW
 
-/* Define to 1 if you have the 'glfw' library (-lglfw). */
+/* Define to 1 if you have the `glfw' library (-lglfw). */
 #undef HAVE_LIBGLFW
 
-/* Define to 1 if you have the 'imgui' library (-limgui). */
+/* Define to 1 if you have the `imgui' library (-limgui). */
 #undef HAVE_LIBIMGUI
 
 /* Name of package */
