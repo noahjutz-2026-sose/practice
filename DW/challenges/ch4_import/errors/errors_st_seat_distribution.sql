@@ -1,3 +1,5 @@
+OPEN SCHEMA NOAH_JUTZ;
+
 -- Check if totaL_seats equals summation of seats
 WITH CUM AS (SELECT intyear,
                     total_seats,
