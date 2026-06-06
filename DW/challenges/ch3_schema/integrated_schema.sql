@@ -13,6 +13,7 @@ CREATE TABLE Location
 (
     voting_district_id   INT PRIMARY KEY,
     voting_district_name VARCHAR(500),
+    state_value_id       INT,
     state_name           VARCHAR(100),
     is_west_germany      BOOL
 );
