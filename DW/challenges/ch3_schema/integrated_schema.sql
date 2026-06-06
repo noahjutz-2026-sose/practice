@@ -21,7 +21,7 @@ CREATE TABLE Location
 CREATE TABLE Respondent
 (
     id                                INT PRIMARY KEY, -- generate this ("respid" is not unique)
-    location_id                       INT REFERENCES Location (id),
+    location_id                       INT REFERENCES Location (voting_district_id),
     financial_standing_level          INT,
     financial_standing_name           VARCHAR(50),
     financial_standing_forecast_level INT,
@@ -49,7 +49,6 @@ CREATE TABLE Seat_Distribution
 CREATE TABLE Bundestag_Election_Census
 (
     term                       DATE, -- YYYY-01-01
-    location_id                INT REFERENCES Location (id),
     voting_eligible_population INT,
     voters                     INT,
     valid_votes                INT,
