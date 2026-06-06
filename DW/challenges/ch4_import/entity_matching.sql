@@ -12,8 +12,9 @@
 -- Geographic:
 --   st_Politbarometer_Survey.v75_state
 --   st_Meta_Politbarometer_Value_Labels[v75]
---   st_Meta_Bundestag_Districts.state -- TODO create table
+--   st_Meta_Bundestag_Districts.state_name
 --   st_Bundestag_Elections.district_id
 -- Politbarometer Variables:
---   st_Politbarometer.v4a_state etc. (columns)
+--   st_Politbarometer.v4a_east_west etc. (columns)
 --   st_Meta_Politbarometer_Column_Labels.variable_id
+--   st_Meta_Politbarometer_Value_Labels.variable_id
