@@ -111,7 +111,8 @@ CREATE TABLE st_Meta_Bundestag_Parties (
 );
 
 CREATE TABLE st_Meta_Bundestag_Districts (
-    district INT PRIMARY KEY,
-    state VARCHAR(100),
-
-)
+    district_id INT,
+    district_name VARCHAR(500),
+    state_name VARCHAR(100)
+);
+DROP TABLE ST_META_BUNDESTAG_DISTRICTS;
