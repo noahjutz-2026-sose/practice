@@ -10,7 +10,6 @@ SELECT *
 WITH INVALID UNIQUE (study_id, v4a_east_west, respondent_id)
 FROM ST_POLITBAROMETER_SURVEY;
 
-
 -- ST_BUNDESTAG_ELECTIONS
 -- Unique: (intyear, district_id, party)
 -- Result: No duplicates
