@@ -39,7 +39,6 @@ FROM st_Politbarometer_Survey s
 WHERE l.value_id IS NULL
 GROUP BY s.v5_turnout;
 
--- Errors!
 SELECT s.v6_intended_vote, COUNT(*)
 FROM st_Politbarometer_Survey s
          LEFT JOIN st_Meta_Politbarometer_Value_Labels l
@@ -48,7 +47,6 @@ FROM st_Politbarometer_Survey s
 WHERE l.value_id IS NULL
 GROUP BY s.v6_intended_vote;
 
--- Errors!
 SELECT s.v7_last_vote, COUNT(*)
 FROM st_Politbarometer_Survey s
          LEFT JOIN st_Meta_Politbarometer_Value_Labels l
@@ -170,7 +168,6 @@ FROM st_Politbarometer_Survey s
 WHERE l.value_id IS NULL
 GROUP BY s.v26_economy_forecast;
 
--- Errors!
 SELECT s.v27_financial_standing, COUNT(*)
 FROM st_Politbarometer_Survey s
          LEFT JOIN st_Meta_Politbarometer_Value_Labels l
@@ -289,7 +286,6 @@ FROM st_Politbarometer_Survey s
 WHERE l.value_id IS NULL
 GROUP BY s.v60_education;
 
--- Errors!
 SELECT s.v64_employment_status, COUNT(*)
 FROM st_Politbarometer_Survey s
          LEFT JOIN st_Meta_Politbarometer_Value_Labels l
@@ -298,7 +294,6 @@ FROM st_Politbarometer_Survey s
 WHERE l.value_id IS NULL
 GROUP BY s.v64_employment_status;
 
--- Errors!
 SELECT s.v65_occupation, COUNT(*)
 FROM st_Politbarometer_Survey s
          LEFT JOIN st_Meta_Politbarometer_Value_Labels l
@@ -307,7 +302,6 @@ FROM st_Politbarometer_Survey s
 WHERE l.value_id IS NULL
 GROUP BY s.v65_occupation;
 
--- Errors!
 SELECT s.v72_preferred_party, COUNT(*)
 FROM st_Politbarometer_Survey s
          LEFT JOIN st_Meta_Politbarometer_Value_Labels l
@@ -324,7 +318,6 @@ FROM st_Politbarometer_Survey s
 WHERE l.value_id IS NULL
 GROUP BY s.v73_preference_intensity;
 
--- Errors!
 SELECT s.v74_workers_union, COUNT(*)
 FROM st_Politbarometer_Survey s
          LEFT JOIN st_Meta_Politbarometer_Value_Labels l
