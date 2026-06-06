@@ -12,12 +12,12 @@ CREATE TABLE Party
 CREATE TABLE Location
 (
     id                      INT PRIMARY KEY, -- generate this
-    voting_district_name    VARCHAR(100),
+    voting_district_name    VARCHAR(500),
     voting_district_id      INT,
-    municipality            VARCHAR(100),
+    municipality            VARCHAR(500),
     municipality_population INT,
-    region                  VARCHAR(100),
-    state_bundesland        VARCHAR(50),
+    region                  VARCHAR(500),
+    state_bundesland        VARCHAR(100),
     is_west_germany         BOOL
 );
 
