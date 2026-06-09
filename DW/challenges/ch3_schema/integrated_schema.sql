@@ -18,7 +18,7 @@ CREATE TABLE Bundesland
 CREATE TABLE Voting_District
 (
     voting_district_id   INT PRIMARY KEY,
-    state_value_id       INT REFERENCES Bundesland (state_value_id),
+    state_id       INT REFERENCES Bundesland (state_value_id),
     voting_district_name VARCHAR(500),
     is_west_germany      BOOL
 );
@@ -27,7 +27,7 @@ CREATE TABLE Voting_District
 CREATE TABLE Respondent
 (
     id                                INT PRIMARY KEY, -- generate this ("respid" is not unique)
-    location_id                       INT REFERENCES Bundesland (state_value_id),
+    bundesland_id                       INT REFERENCES Bundesland (state_value_id),
     financial_standing_level          INT,
     financial_standing_name           VARCHAR(50),
     financial_standing_forecast_level INT,
