@@ -154,7 +154,6 @@ FROM st_Politbarometer_Survey s
 WHERE l.value_id IS NULL
 GROUP BY s.v22_left_right;
 
--- Errors!
 SELECT s.v25_economy_brd, COUNT(*)
 FROM st_Politbarometer_Survey s
          LEFT JOIN st_Meta_Politbarometer_Value_Labels l
