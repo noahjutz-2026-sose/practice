@@ -21,30 +21,86 @@ Bundestag Election Data Warehouse: Politische Stimmungs- und Ergebnisdatenbank
 ## Data Transformation
 *How did you perform your data transformation? Fill out the following list with short answers and optionally one example SQL query each. Which tasks were necessary for your project? Why? Why not? How did you do it? Write at least one SQL query here. (Ex. Sheet 4, Exercise 1)*
 
-* Checking data quality and fixing data errors:
+* Checking data quality and fixing data errors: Cross-check data sources for inconsistencies and verify that cumulative datapoints add up correctly. For example:
 
-**Duplicate detection:** Determine unique constraint columns and find duplicates using ```sql GROUP BY``` or ```sql WITH INVALID UNIQUE``` or ```sql OVER (PARTITION BY ...)```. For example:
+```sql
+-- Cross-check data table (st_politbarometer_survey) with allowed values (st_meta_politbarometer_value_labels).
+SELECT s.v22_left_right, COUNT(*)
+FROM st_Politbarometer_Survey s
+         LEFT JOIN st_Meta_Politbarometer_Value_Labels l
+                   ON l.variable_id = 'v22'
+                       AND l.value_id = s.v22_left_right
+WHERE l.value_id IS NULL
+GROUP BY s.v22_left_right;
+```
+
+All queries: [errors](https://github.com/noahjutz-2026-sose/practice/tree/0b9e8195ea95ae221228af1f68794807d9a61b5d/DW/challenges/ch4_import/errors)
+
+* Harmonization / Normalization: Not applicable.
+
+* Deduplication: Determine unique constraint columns and find duplicates using ```sql GROUP BY``` or ```sql WITH INVALID UNIQUE``` or ```sql OVER (PARTITION BY ...)```. For example:
 
 ```sql
 SELECT * WITH INVALID UNIQUE (SHORTNAME) FROM ST_META_BUNDESTAG_PARTIES;
 ```
 
-All queries: [duplicates_st_meta_bundestag_districts.sql](https://github.com/noahjutz-2026-sose/practice/blob/0891c10747405181a5e6485fd12577a7383198cc/DW/challenges/ch4_import/duplicates/duplicates_st_meta_bundestag_districts.sql), [duplicates.sql](https://github.com/noahjutz-2026-sose/practice/blob/0891c10747405181a5e6485fd12577a7383198cc/DW/challenges/ch4_import/duplicates/duplicates.sql).
+All queries: [duplicates](https://github.com/noahjutz-2026-sose/practice/tree/0b9e8195ea95ae221228af1f68794807d9a61b5d/DW/challenges/ch4_import/duplicates)
 
-* Harmonization / Normalization: 🖊️
+* Fuzzy entity matching (Levensthein, Soundex, ...):
+    * Match parties (st_meta_politbarometer_value_labels, st_bundestag_elections, st_seat_distribution (columns), st_meta_bundestag_parties)
+    * Match districts and states (st_meta_politbarometer_survey_labels, st_meta_bundestag_districts, st_bundestag_elections)
+    * For example:
 
-* Deduplication: 🖊️
+```sql
+-- Match states (variable 75) from bundeswahlleiterin (st_meta_bundestag_districts) and politbarometer (st_meta_politbarometer_value_labels)
+SELECT d.*, v.VALUE_ID AS STATE_VALUE_ID
+FROM ST_META_BUNDESTAG_DISTRICTS d
+    JOIN ST_META_POLITBAROMETER_VALUE_LABELS v
+        ON edit_distance(d.STATE_NAME, v.label) < 2
+WHERE d.ERROR_INFO IS NULL
+AND v.VARIABLE_ID = 'v75'
+ORDER BY d.DISTRICT_ID
+```
 
-* Fuzzy entity matching (Levensthein, Soundex, ...): 🖊️
+* Data Fusion (merge multiple rows into one target row): Mark duplicates and ignore them during import. For example:
 
-* Data Fusion (merge multiple rows into one target row): 🖊️
-
+```sql
+UPDATE ST_META_BUNDESTAG_DISTRICTS
+SET error_info = COALESCE(error_info, '') || 'DUPLICATE;'
+WHERE unique_id IN (SELECT unique_id
+                    FROM (
+                             SELECT unique_id,
+                                    ROW_NUMBER() OVER (PARTITION BY district_id ORDER BY unique_id) AS rn
+                             FROM ST_META_BUNDESTAG_DISTRICTS
+                             ) sub
+                    WHERE rn > 1);
+```
 
 ## Data Integration
 *Write down a MERGE command to integrate data from your staging area into your target data-warehouse schema: (Ex. Sheet 4, Exercise 2)*
 
 ```sql
-🖊️ 
+MERGE INTO Bundesland t
+USING (SELECT MAX(VALUE_ID) AS VALUE_ID, LABEL
+       FROM (
+                SELECT DISTINCT v.VALUE_ID, v.LABEL
+                FROM ST_META_POLITBAROMETER_VALUE_LABELS v
+                WHERE v.VARIABLE_ID = 'v75'
+                  AND v.VALUE_ID > 0
+                UNION
+                SELECT DISTINCT null, state_name
+                FROM ST_META_BUNDESTAG_DISTRICTS d
+                WHERE d.ERROR_INFO IS NULL
+                )
+       GROUP BY LABEL) AS s
+ON t.STATE_VALUE_ID = s.VALUE_ID
+WHEN MATCHED THEN
+    UPDATE
+    SET t.state_name = s.LABEL
+WHEN NOT MATCHED THEN
+    INSERT (STATE_VALUE_ID, STATE_NAME)
+    VALUES (s.VALUE_ID,
+            s.LABEL);
 ```
 
 ## Analytical Queries
