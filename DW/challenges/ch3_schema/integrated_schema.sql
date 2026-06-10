@@ -74,7 +74,9 @@ CREATE TABLE Bundestag_Election_Result
 CREATE TABLE Politbarometer_Opinion_Poll
 (
     date_month             DATE,   -- YYYY-MM-01
-    respondent_id          INT REFERENCES Respondent (id),
+    respondent_id          INT,
+    respondent_study_id    INT,
+    respondent_east_west   INT,
     weight                 DOUBLE, -- p_weight and d_weight
     is_willing_to_vote     BOOL,   -- v5
     rating_government      INT,    -- v15
@@ -90,7 +92,8 @@ CREATE TABLE Politbarometer_Opinion_Poll
     eu_membership          INT,    -- v42
     society                INT,    -- v44
     was_last_year_good     BOOL,   -- v50
-    year_forecast          INT     -- v51
+    year_forecast          INT,    -- v51
+    FOREIGN KEY (respondent_id, respondent_study_id, respondent_east_west) REFERENCES respondent
 );
 
 CREATE TABLE Politbarometer_Election_Poll
