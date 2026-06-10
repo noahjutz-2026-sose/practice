@@ -4,7 +4,7 @@ OPEN SCHEMA NOAH_JUTZ;
 
 CREATE TABLE Party
 (
-    value_id    INT,
+    value_id    INT PRIMARY KEY,
     value_label VARCHAR(100),
     shortname   VARCHAR(100),
     full_name   VARCHAR(200)
@@ -49,7 +49,7 @@ CREATE TABLE Respondent
 CREATE TABLE Seat_Distribution
 (
     term     DATE, -- YYYY-01-01
-    party_id INT REFERENCES Party (id),
+    party_id INT REFERENCES Party (value_id),
     seats    INT
 );
 
@@ -65,7 +65,7 @@ CREATE TABLE Bundestag_Election_Census
 CREATE TABLE Bundestag_Election_Result
 (
     term        DATE, -- YYYY-01-01
-    party_id    INT REFERENCES Party (id),
+    party_id    INT REFERENCES Party (value_id),
     district_id INT REFERENCES Voting_District (VOTING_DISTRICT_ID),
     votes       INT,
     percentage  DOUBLE
@@ -97,7 +97,7 @@ CREATE TABLE Politbarometer_Election_Poll
 (
     date_month           DATE, -- YYYY-MM-01
     respondent_id        INT REFERENCES Respondent (id),
-    party_id             INT REFERENCES Party (id),
+    party_id             INT REFERENCES Party (value_id),
     is_intended_vote     BOOL, -- v6
     was_last_vote        BOOL, -- v7
     is_preferred_party   BOOL, -- v72
