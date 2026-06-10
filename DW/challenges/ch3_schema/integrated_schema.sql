@@ -4,8 +4,9 @@ OPEN SCHEMA NOAH_JUTZ;
 
 CREATE TABLE Party
 (
-    id        INT PRIMARY KEY,
-    shortname VARCHAR(50),
+    value_id        INT,
+    value_label VARCHAR(100),
+    shortname VARCHAR(100),
     full_name VARCHAR(200)
 );
 
