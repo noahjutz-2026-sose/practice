@@ -56,10 +56,12 @@ CREATE TABLE Seat_Distribution
 CREATE TABLE Bundestag_Election_Census
 (
     term                       DATE, -- YYYY-01-01
+    district_id                INT REFERENCES Voting_District (voting_district_id),
     voting_eligible_population INT,
     voters                     INT,
     valid_votes                INT,
-    invalid_votes              INT
+    invalid_votes              INT,
+    PRIMARY KEY (term, district_id)
 );
 
 CREATE TABLE Bundestag_Election_Result
