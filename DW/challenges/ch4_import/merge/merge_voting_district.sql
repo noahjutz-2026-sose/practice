@@ -6,18 +6,20 @@ USING (
     FROM ST_META_BUNDESTAG_DISTRICTS d
              JOIN ST_META_POLITBAROMETER_VALUE_LABELS v
                   ON edit_distance(d.STATE_NAME, v.label) < 2
+                      OR (d.DISTRICT_ID IN (74, 75, 83, 84, 85) AND lower(v.LABEL) = 'berlin-ost')
+                      OR (d.DISTRICT_ID IN (76, 77, 78, 79, 80, 81, 82) AND lower(v.LABEL) = 'berlin-west')
     WHERE d.ERROR_INFO IS NULL
-      AND v.VARIABLE_ID = 'v75'
+      AND COALESCE(v.VARIABLE_ID, 'v75') = 'v75'
     ORDER BY d.DISTRICT_ID
     ) AS s
 ON t.VOTING_DISTRICT_ID = s.DISTRICT_ID
 WHEN MATCHED THEN
     UPDATE
     SET t.voting_district_name = s.DISTRICT_NAME,
-        t.STATE_VALUE_ID       = s.STATE_VALUE_ID,
+        t.STATE_ID             = s.STATE_VALUE_ID,
         t.is_west_germany      = default
 WHEN NOT MATCHED THEN
-    INSERT (VOTING_DISTRICT_ID, STATE_VALUE_ID, VOTING_DISTRICT_NAME, IS_WEST_GERMANY)
+    INSERT (VOTING_DISTRICT_ID, STATE_ID, VOTING_DISTRICT_NAME, IS_WEST_GERMANY)
     VALUES (s.DISTRICT_ID,
             s.STATE_VALUE_ID,
             s.DISTRICT_NAME,
@@ -28,4 +30,3 @@ WHEN NOT MATCHED THEN
                 WHEN s.STATE_NAME = 'Berlin' AND s.DISTRICT_ID IN (74, 75, 83, 84, 85) THEN FALSE
                 ELSE TRUE
                 END);
-

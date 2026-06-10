@@ -17,7 +17,8 @@ CREATE TABLE st_Bundestag_Elections
     voting_eligible_population INT,          -- "wahlberechtigte"
     voters                     INT,          -- "waehlende"
     valid_votes                INT,          -- "gueltige"
-    invalid_votes              INT           -- "ungueltige"
+    invalid_votes              INT,          -- "ungueltige"
+    PRIMARY KEY (intyear, district_id, party)
 );
 
 CREATE TABLE st_Politbarometer_Survey
@@ -93,26 +94,30 @@ CREATE TABLE st_Seat_Distribution
     independent INT
 );
 
-CREATE TABLE st_Meta_Politbarometer_Column_Labels (
+CREATE TABLE st_Meta_Politbarometer_Column_Labels
+(
     variable_id VARCHAR(50) PRIMARY KEY,
-    label VARCHAR(500)
+    label       VARCHAR(500)
 );
 
-CREATE TABLE st_Meta_Politbarometer_Value_Labels (
+CREATE TABLE st_Meta_Politbarometer_Value_Labels
+(
     variable_id VARCHAR(50),
-    value_id INT,
-    label VARCHAR(500),
+    value_id    INT,
+    label       VARCHAR(500),
     PRIMARY KEY (variable_id, value_id)
 );
 
-CREATE TABLE st_Meta_Bundestag_Parties (
+CREATE TABLE st_Meta_Bundestag_Parties
+(
     shortname VARCHAR(50),
-    name VARCHAR(500)
+    name      VARCHAR(500)
 );
 
-CREATE TABLE st_Meta_Bundestag_Districts (
-    district_id INT,
+CREATE TABLE st_Meta_Bundestag_Districts
+(
+    district_id   INT,
     district_name VARCHAR(500),
-    state_name VARCHAR(100)
+    state_name    VARCHAR(100)
 );
 DROP TABLE ST_META_BUNDESTAG_DISTRICTS;
