@@ -1,6 +1,7 @@
 data = readmatrix("data/2020-05-18_corona_data_germany.csv");
 data = data(:, 2:6); % d, m, y, cases, deaths
 data = data(:, end-1:end); % cases, deaths
+data = data(end:-1:1, :); % reverse
 
 % a) visualize
 
@@ -18,9 +19,21 @@ legend('Daily Cases', '7-Day Mean Cases', 'Daily Deaths', '7-Day Mean Deaths');
 
 % b)
 
-x = 30:50;
+x = 1:85;
 y = data(x, 1); % cases at highest growth
+idx = find(y > 0);
+y = y(idx);
+x = x(idx);
 Y = log(y);
 
+
 A = [x' x'.^0];
-A
+
+Theta = A \ Y;
+a = Theta(1);
+c = exp(Theta(2));
+
+hold on
+x_fit = linspace(min(x), max(x), 100);
+y_fit = c * exp(a * x_fit);
+plot(x_fit, y_fit, 'g', 'LineWidth', 2);
