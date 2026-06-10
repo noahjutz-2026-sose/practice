@@ -73,10 +73,10 @@ CREATE TABLE Bundestag_Election_Result
 
 CREATE TABLE Politbarometer_Opinion_Poll
 (
-    date_month             DATE,   -- YYYY-MM-01
     respondent_id          INT,
     respondent_study_id    INT,
     respondent_east_west   INT,
+    date_month             DATE,   -- YYYY-MM-01
     weight                 DOUBLE, -- p_weight and d_weight
     turnout                INT,    -- v5
     rating_government      INT,    -- v15

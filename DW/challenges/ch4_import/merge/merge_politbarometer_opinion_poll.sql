@@ -5,7 +5,7 @@ USING ST_POLITBAROMETER_SURVEY s
 ON s.RESPONDENT_ID = t.RESPONDENT_ID AND s.V4A_EAST_WEST = t.RESPONDENT_EAST_WEST AND s.STUDY_ID = t.RESPONDENT_STUDY_ID
 WHEN MATCHED THEN
     UPDATE
-    SET t.DATE_MONTH = ,
+    SET t.DATE_MONTH             = TO_DATE(INTYEAR || '-' || LPAD(INTMONTH, 2, '0'), 'YYYY-MM'),
         t.WEIGHT                 = s.D_WEIGHT,
         t.TURNOUT                = s.V5_TURNOUT,
         t.RATING_GOVERNMENT      = s.V15_RATING_GOVERNMENT,
@@ -13,16 +13,36 @@ WHEN MATCHED THEN
         t.DEMOCRACY_SATISFACTION = s.V18_DEMOCRACY_SATISFACTION,
         t.POLITICAL_INTEREST     = s.V21_POLITICAL_INTEREST_INTENSITY,
         t.LEFT_RIGHT             = s.V22_LEFT_RIGHT,
-        t.ECONOMY_CURRENT = s.V25_ECONOMY_BRD,
-        t.ECONOMY_FORECAST = s.V26_ECONOMY_FORECAST,
-        t.REUNIFICATION = s.V29_REUNIFICATION,
-        t.ASYLUM = s.V30_ASYLUM,
-        t.CRIME_THREAT = s.V41_CRIME_THREAT,
-        t.EU_MEMBERSHIP = s.V42_EU_MEMBERSHIP,
-        t.SOCIETY = s.V44_SOCIETY,
-        t.YEAR_REVIEW = s.V50_YEAR_REVIEW,
-        t.YEAR_FORECAST = s.V51_YEAR_FORECAST
-WHEN NOT MATCHED THEN INSERT VALUES (
-
-                                    )
-
+        t.ECONOMY_CURRENT        = s.V25_ECONOMY_BRD,
+        t.ECONOMY_FORECAST       = s.V26_ECONOMY_FORECAST,
+        t.REUNIFICATION          = s.V29_REUNIFICATION,
+        t.ASYLUM                 = s.V30_ASYLUM,
+        t.CRIME_THREAT           = s.V41_CRIME_THREAT,
+        t.EU_MEMBERSHIP          = s.V42_EU_MEMBERSHIP,
+        t.SOCIETY                = s.V44_SOCIETY,
+        t.YEAR_REVIEW            = s.V50_YEAR_REVIEW,
+        t.YEAR_FORECAST          = s.V51_YEAR_FORECAST
+WHEN NOT MATCHED THEN
+    INSERT
+    VALUES (
+            s.RESPONDENT_ID,
+            s.STUDY_ID,
+            s.V4A_EAST_WEST,
+           TO_DATE(INTYEAR || '-' || LPAD(INTMONTH, 2, '0'), 'YYYY-MM'),
+           s.D_WEIGHT,
+           s.V5_TURNOUT,
+           s.V15_RATING_GOVERNMENT,
+           s.V16_RATING_OPPOSITION,
+           s.V18_DEMOCRACY_SATISFACTION,
+           s.V21_POLITICAL_INTEREST_INTENSITY,
+           s.V22_LEFT_RIGHT,
+           s.V25_ECONOMY_BRD,
+           s.V26_ECONOMY_FORECAST,
+           s.V29_REUNIFICATION,
+           s.V30_ASYLUM,
+           s.V41_CRIME_THREAT,
+           s.V42_EU_MEMBERSHIP,
+           s.V44_SOCIETY,
+           s.V50_YEAR_REVIEW,
+           s.V51_YEAR_FORECAST
+    )
