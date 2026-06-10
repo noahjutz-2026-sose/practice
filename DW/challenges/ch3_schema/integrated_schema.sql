@@ -4,10 +4,10 @@ OPEN SCHEMA NOAH_JUTZ;
 
 CREATE TABLE Party
 (
-    value_id        INT,
+    value_id    INT,
     value_label VARCHAR(100),
-    shortname VARCHAR(100),
-    full_name VARCHAR(200)
+    shortname   VARCHAR(100),
+    full_name   VARCHAR(200)
 );
 
 CREATE TABLE Bundesland
@@ -19,7 +19,7 @@ CREATE TABLE Bundesland
 CREATE TABLE Voting_District
 (
     voting_district_id   INT PRIMARY KEY,
-    state_id       INT REFERENCES Bundesland (state_value_id),
+    state_id             INT REFERENCES Bundesland (state_value_id),
     voting_district_name VARCHAR(500),
     is_west_germany      BOOL
 );
@@ -27,21 +27,21 @@ CREATE TABLE Voting_District
 
 CREATE TABLE Respondent
 (
-    id                                INT PRIMARY KEY, -- generate this ("respid" is not unique)
-    bundesland_id                       INT REFERENCES Bundesland (state_value_id),
-    financial_standing_level          INT,
-    financial_standing_name           VARCHAR(50),
-    financial_standing_forecast_level INT,
-    financial_standing_forecast_name  VARCHAR(50),
-    religion                          VARCHAR(50),
-    is_male                           BOOL,
-    age                               INT,
-    marital_status                    VARCHAR(50),
-    education_level                   INT,
-    education_name                    VARCHAR(50),
-    is_employed                       BOOL,
-    occupation                        VARCHAR(50),
-    is_unionized                      BOOL
+    respondent_id               INT,
+    study_id                    INT,
+    east_west                   INT,
+    bundesland_id               INT REFERENCES Bundesland (state_value_id),
+    financial_standing          INT,
+    financial_standing_forecast INT,
+    religion                    INT,
+    gender                      INT,
+    age                         INT,
+    marital_status              INT,
+    education                   INT,
+    employment_status           INT,
+    occupation                  INT,
+    workers_union               INT,
+    PRIMARY KEY (respondent_id, study_id, east_west)
 );
 
 -- Facts
