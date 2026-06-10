@@ -78,7 +78,7 @@ CREATE TABLE Politbarometer_Opinion_Poll
     respondent_study_id    INT,
     respondent_east_west   INT,
     weight                 DOUBLE, -- p_weight and d_weight
-    is_willing_to_vote     BOOL,   -- v5
+    turnout                INT,    -- v5
     rating_government      INT,    -- v15
     rating_opposition      INT,    -- v16
     democracy_satisfaction INT,    -- v18
@@ -91,7 +91,7 @@ CREATE TABLE Politbarometer_Opinion_Poll
     crime_threat           INT,    -- v41
     eu_membership          INT,    -- v42
     society                INT,    -- v44
-    was_last_year_good     BOOL,   -- v50
+    year_review            INT,    -- v50
     year_forecast          INT,    -- v51
     FOREIGN KEY (respondent_id, respondent_study_id, respondent_east_west) REFERENCES respondent
 );
