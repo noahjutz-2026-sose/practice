@@ -48,3 +48,57 @@ plot(idx, res(1) + cos(idx'.*omega) * res(2) + sin(idx'.*omega) * res(3), 'Displ
 
 legend;
 
+% Data2
+
+figure
+x = data2.xMeasure;
+y = data2.yMeasure;
+plot(x, y, 'o', 'DisplayName', 'Data2');
+hold on;
+
+% Data2 Quadratic
+
+A = [x'.^2 x'.^1 x'.^0];
+res = A \ y';
+plot(idx, idx'.^2 * res(1) + idx'.^1 * res(2) + idx'.^0 * res(3), 'DisplayName', 'Quadratic');
+
+legend;
+
+% Data3
+
+figure
+x = data3.xMeasure;
+y = data3.yMeasure;
+plot(x, y, 'o', 'DisplayName', 'Data3');
+hold on;
+
+% Data3 Trigonometric
+
+omega = 1;
+A = [x'.^0 cos(x'.*omega) sin(x'.*omega)];
+res = A \ y';
+plot(idx, res(1) + cos(idx'.*omega) * res(2) + sin(idx'.*omega) * res(3), 'DisplayName', 'Trigonometric');
+
+% Data4
+
+figure
+x = data4.xMeasure;
+y = data4.yMeasure;
+plot(x, y, 'o', 'DisplayName', 'Data4');
+hold on;
+
+% Data4 Circular
+
+Z = (x.^2 + y.^2)';
+A = [x' y' x'.^0];
+theta = A \ Z;
+xc = theta(1) / 2;
+yc = theta(2) / 2;
+r = sqrt(theta(3) - xc^2 - yc^2);
+
+thetaCircle = linspace(0, 2*pi, 100);
+xCircle = xc + r * cos(thetaCircle);
+yCircle = yc + r * sin(thetaCircle);
+plot(xCircle, yCircle, 'DisplayName', 'Circular Fit');
+
+legend;
