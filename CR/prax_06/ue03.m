@@ -20,7 +20,31 @@ hold on;
 
 idx = linspace(0, 10);
 plot(idx, m*idx + b, 'DisplayName', 'Linear');
-legend;
 
-% Data1 Polynomial model
+% Data1 Quadratic model
+
+A = [x'.^2 x'.^1 x'.^0];
+res = A \ y';
+plot(idx, res(1)*idx.^2 + res(2)*idx + res(3), 'DisplayName', 'Quadratic');
+
+% Data1 Polynomial Model
+
+A = [x'.^5 x'.^4 x'.^3 x'.^2 x'.^1 x'.^0];
+res = A \ y';
+plot(idx, res(1)*idx.^5 + res(2)*idx.^4 + res(3)*idx.^3 + res(4)*idx.^2 + res(5)*idx + res(6), 'DisplayName', 'Quintic');
+
+% Data1 Exponential Model
+
+A = [x' x'.^0];
+res = A \ log(y');
+plot(idx, exp(res(1)) + exp(res(2)) * idx, 'DisplayName', 'exp');
+
+% Data1 Trig Model
+
+omega = .4;
+A = [x'.^0 cos(x'.*omega) sin(x'.*omega)];
+res = A \ y';
+plot(idx, res(1) + cos(idx'.*omega) * res(2) + sin(idx'.*omega) * res(3), 'DisplayName', 'Trigonometric');
+
+legend;
 
