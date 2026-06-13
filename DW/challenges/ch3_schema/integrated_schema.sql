@@ -104,13 +104,16 @@ CREATE TABLE Politbarometer_Opinion_Poll
 CREATE TABLE Politbarometer_Election_Poll
 (
     date_month           DATE, -- YYYY-MM-01
-    respondent_id        INT REFERENCES Respondent (id),
-    party_id             INT REFERENCES Party (value_id),
+    respondent_id        INT,
+    respondent_study_id  INT,
+    respondent_east_west INT,
+    party                VARCHAR(100) REFERENCES Party (shortname),
     is_intended_vote     BOOL, -- v6
     was_last_vote        BOOL, -- v7
     is_preferred_party   BOOL, -- v72
     preference_intensity INT,  -- v73
-    rating               INT   -- v8
+    rating               INT,  -- v8
+    FOREIGN KEY (respondent_id, respondent_study_id, respondent_east_west) REFERENCES respondent
 );
 
 CREATE TABLE POLITBAROMETER_VALUE_LABELS
