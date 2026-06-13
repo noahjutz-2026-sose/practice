@@ -70,8 +70,10 @@ CREATE TABLE Bundestag_Election_Result
     party_id    INT REFERENCES Party (value_id),
     district_id INT REFERENCES Voting_District (VOTING_DISTRICT_ID),
     votes       INT,
-    percentage  DOUBLE
+    percentage  DOUBLE,
+    PRIMARY KEY (term, party_id, district_id)
 );
+DROP TABLE BUNDESTAG_ELECTION_RESULT
 
 CREATE TABLE Politbarometer_Opinion_Poll
 (
