@@ -12,9 +12,6 @@ ORDER BY cnt desc;
 
 -- Add missing parties
 
-SELECT *
-FROM ST_META_BUNDESTAG_PARTIES;
-
 INSERT INTO ST_META_BUNDESTAG_PARTIES
 VALUES ('linke', 'PDS / Die LINKE');
 INSERT INTO ST_META_BUNDESTAG_PARTIES
@@ -23,6 +20,11 @@ INSERT INTO ST_META_BUNDESTAG_PARTIES
 VALUES ('afd', 'AfD');
 INSERT INTO ST_META_BUNDESTAG_PARTIES
 VALUES ('spd', 'SPD');
+
+-- Remove duplicates
+
+DELETE FROM ST_META_BUNDESTAG_PARTIES
+WHERE SHORTNAME IN ('mlpd', 'npd', 'bp', 'dib', 'dkp', 'tierschutzpartei', 'tierschutz', 'violetten', 'familie', 'piraten');
 
 -- Rename / normalize in st_bundestag_elections
 
