@@ -128,3 +128,5 @@ WHERE PARTY = 'nichtwaehler';
 UPDATE ST_BUNDESTAG_ELECTIONS
 SET PARTY='uebrige'
 WHERE PARTY = 'unabhaengige';
+
+-- see errors_st_meta_bundestag_parties for insertion of remaining missing parties
