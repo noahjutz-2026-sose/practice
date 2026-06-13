@@ -4,9 +4,9 @@ OPEN SCHEMA NOAH_JUTZ;
 
 CREATE TABLE Party
 (
-    value_id    INT PRIMARY KEY,
+    value_id    INT,
     value_label VARCHAR(100),
-    shortname   VARCHAR(100),
+    shortname   VARCHAR(100) PRIMARY KEY,
     full_name   VARCHAR(200)
 );
 
@@ -73,7 +73,6 @@ CREATE TABLE Bundestag_Election_Result
     percentage  DOUBLE,
     PRIMARY KEY (term, party_id, district_id)
 );
-DROP TABLE BUNDESTAG_ELECTION_RESULT
 
 CREATE TABLE Politbarometer_Opinion_Poll
 (
