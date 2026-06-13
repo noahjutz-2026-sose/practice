@@ -112,3 +112,11 @@ CREATE TABLE Politbarometer_Election_Poll
     preference_intensity INT,  -- v73
     rating               INT   -- v8
 );
+
+CREATE TABLE POLITBAROMETER_VALUE_LABELS
+(
+    variable_id VARCHAR(50),
+    value_id    INT,
+    label       VARCHAR(500),
+    PRIMARY KEY (variable_id, value_id)
+)
