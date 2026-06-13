@@ -112,7 +112,7 @@ CREATE TABLE Politbarometer_Election_Poll
     was_last_vote        BOOL, -- v7
     is_preferred_party   BOOL, -- v72
     preference_intensity INT,  -- v73
-    rating               INT,  -- v8
+    rating               INT,  -- v8, v9, v10, v11, v12, v13, v14
     FOREIGN KEY (respondent_id, respondent_study_id, respondent_east_west) REFERENCES respondent
 );
 
