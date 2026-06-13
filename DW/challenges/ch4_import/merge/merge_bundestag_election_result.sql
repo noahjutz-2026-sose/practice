@@ -8,12 +8,12 @@ USING (
                     VOTES,
                     PERCENTAGE,
                     TO_DATE(TO_CHAR(INTYEAR), 'YYYY') AS INTYEAR_DATE,
-                    p.VALUE_ID
+                    p.VALUE_ID AS PARTY_ID
     FROM ST_BUNDESTAG_ELECTIONS e
              LEFT JOIN PARTY p
                        ON e.party = p.SHORTNAME
     ) AS s
-ON t.term = s.INTYEAR_DATE AND t.DISTRICT_ID = s.DISTRICT_ID AND t.PARTY_ID = s.PARTY
+ON t.term = s.INTYEAR_DATE AND t.DISTRICT_ID = s.DISTRICT_ID AND t.PARTY_ID = s.PARTY_ID
 WHEN MATCHED THEN
     UPDATE
     SET t.PERCENTAGE = s.PERCENTAGE,
@@ -21,7 +21,7 @@ WHEN MATCHED THEN
 WHEN NOT MATCHED THEN
     INSERT
     VALUES (s.INTYEAR_DATE,
-            s.VALUE_ID,
+            s.PARTY_ID,
             s.DISTRICT_ID,
             s.VOTES,
             s.PERCENTAGE);
