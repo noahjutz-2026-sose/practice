@@ -1,38 +1,173 @@
 OPEN SCHEMA NOAH_JUTZ;
 
--- Normalize st_Meta_Politbarometer_Value_Labels[v6] (party names)
-
-ALTER TABLE ST_META_POLITBAROMETER_VALUE_LABELS
-    ADD COLUMN LABEL_PART1 VARCHAR(100);
-ALTER TABLE ST_META_POLITBAROMETER_VALUE_LABELS
-    ADD COLUMN LABEL_PART2 VARCHAR(100);
-
-UPDATE ST_META_POLITBAROMETER_VALUE_LABELS
-SET LABEL_PART1 = TRIM(REGEXP_SUBSTR(LABEL, '^[^-/,]+')),
-    LABEL_PART2 = TRIM(REGEXP_REPLACE(
-            REGEXP_SUBSTR(LABEL, '[-/,].*$'),
-            '^[-/,]',
-            ''
-                       ))
-WHERE VARIABLE_ID = 'v6';
-
 -- Merge
 
 MERGE INTO PARTY t
-USING (
-    SELECT v.VALUE_ID, v.LABEL, b.SHORTNAME, b.NAME
-    FROM ST_META_BUNDESTAG_PARTIES b
-             RIGHT JOIN ST_META_POLITBAROMETER_VALUE_LABELS v
-                             ON lower(v.LABEL_PART1) = replace(lower(b.SHORTNAME), '_', ' ')
-                                 OR lower(v.LABEL_PART1) = lower(b.name)
-                                 OR lower(v.LABEL_PART2) = replace(lower(b.SHORTNAME), '_', ' ')
-                                 OR lower(v.LABEL_PART2) = lower(b.name)
-    WHERE coalesce(v.VARIABLE_ID, 'v6') = 'v6'
-      AND coalesce(v.VALUE_ID, 1) > 0
-    QUALIFY ROW_NUMBER() OVER (PARTITION BY v.VALUE_ID) = 1
+USING ( SELECT DISTINCT SHORTNAME
+        FROM ST_META_BUNDESTAG_PARTIES
     ) AS s
-ON s.VALUE_ID = t.VALUE_ID
-WHEN MATCHED THEN UPDATE SET t.VALUE_LABEL = s.LABEL,
-                             t.SHORTNAME = s.SHORTNAME,
-                             t.FULL_NAME = s.NAME
-WHEN NOT MATCHED THEN INSERT (VALUE_ID, VALUE_LABEL, SHORTNAME, FULL_NAME) VALUES (VALUE_ID, LABEL, SHORTNAME, NAME);
+ON t.SHORTNAME = s.SHORTNAME
+WHEN NOT MATCHED THEN
+    INSERT (SHORTNAME)
+    VALUES (SHORTNAME);
+
+UPDATE PARTY
+SET VALUE_ID=1,
+    VALUE_LABEL='CDU / CSU'
+WHERE SHORTNAME = 'union';
+UPDATE PARTY
+SET VALUE_ID=4,
+    VALUE_LABEL='SPD'
+WHERE SHORTNAME = 'spd';
+UPDATE PARTY
+SET VALUE_ID=5,
+    VALUE_LABEL='FDP'
+WHERE SHORTNAME = 'fdp';
+UPDATE PARTY
+SET VALUE_ID=6,
+    VALUE_LABEL='GRÜNE'
+WHERE SHORTNAME = 'gruene';
+UPDATE PARTY
+SET VALUE_ID=7,
+    VALUE_LABEL='PDS, Die Linke'
+WHERE SHORTNAME = 'linke';
+UPDATE PARTY
+SET VALUE_ID=105,
+    VALUE_LABEL='ADM - Allianz der Mitte'
+WHERE SHORTNAME = 'adm';
+UPDATE PARTY
+SET VALUE_ID=118,
+    VALUE_LABEL='Bund Freier Bürger (Brunner Partei)'
+WHERE SHORTNAME = 'bfb';
+UPDATE PARTY
+SET VALUE_ID=126,
+    VALUE_LABEL='BP - Bayernpartei'
+WHERE SHORTNAME = 'bp';
+UPDATE PARTY
+SET VALUE_ID=127,
+    VALUE_LABEL='Bürgerpartei'
+WHERE SHORTNAME = 'buergerp';
+UPDATE PARTY
+SET VALUE_ID=134,
+    VALUE_LABEL='BüSo - Bürgerrechtsbewegung Solidarität'
+WHERE SHORTNAME = 'solidaritaet';
+UPDATE PARTY
+SET VALUE_ID=138,
+    VALUE_LABEL='CM - Christliche Mitte'
+WHERE SHORTNAME = 'cm';
+UPDATE PARTY
+SET VALUE_ID=147,
+    VALUE_LABEL='Feministische Partei'
+WHERE SHORTNAME = 'frauen';
+UPDATE PARTY
+SET VALUE_ID=149,
+    VALUE_LABEL='Die Grauen'
+WHERE SHORTNAME = 'graue';
+UPDATE PARTY
+SET VALUE_ID=151,
+    VALUE_LABEL='Die Partei'
+WHERE SHORTNAME = 'die_partei';
+UPDATE PARTY
+SET VALUE_ID=152,
+    VALUE_LABEL='Die Violetten Alternativen'
+WHERE SHORTNAME = 'die_violetten';
+UPDATE PARTY
+SET VALUE_ID=156,
+    VALUE_LABEL='DKP'
+WHERE SHORTNAME = 'dkp';
+UPDATE PARTY
+SET VALUE_ID=165,
+    VALUE_LABEL='DSU'
+WHERE SHORTNAME = 'dsu';
+UPDATE PARTY
+SET VALUE_ID=168,
+    VALUE_LABEL='DVU'
+WHERE SHORTNAME = 'dvu';
+UPDATE PARTY
+SET VALUE_ID=171,
+    VALUE_LABEL='Familie - Familien-Partei Deutschlands'
+WHERE SHORTNAME = 'familie';
+UPDATE PARTY
+SET VALUE_ID=176,
+    VALUE_LABEL='Das Neue Forum'
+WHERE SHORTNAME = 'forum';
+UPDATE PARTY
+SET VALUE_ID=180,
+    VALUE_LABEL='FWD - Freie Wähler Deutschlands'
+WHERE SHORTNAME = 'fwd';
+UPDATE PARTY
+SET VALUE_ID=202,
+    VALUE_LABEL='MLPD - Marxistisch-Leninistische Partei Deutschlands'
+WHERE SHORTNAME = 'mlpd';
+UPDATE PARTY
+SET VALUE_ID=206,
+    VALUE_LABEL='NPD'
+WHERE SHORTNAME = 'npd';
+UPDATE PARTY
+SET VALUE_ID=209,
+    VALUE_LABEL='ÖDP - Ökologisch-Demokratische Partei'
+WHERE SHORTNAME = 'oedp';
+UPDATE PARTY
+SET VALUE_ID=214,
+    VALUE_LABEL='PBC - Partei Bibeltreuer Christen'
+WHERE SHORTNAME = 'pbc';
+UPDATE PARTY
+SET VALUE_ID=215,
+    VALUE_LABEL='Piratenpartei Deutschland'
+WHERE SHORTNAME = 'piraten';
+UPDATE PARTY
+SET VALUE_ID=219,
+    VALUE_LABEL='Pro DM'
+WHERE SHORTNAME = 'pro_dm';
+UPDATE PARTY
+SET VALUE_ID=221,
+    VALUE_LABEL='PSG - Partei für soziale Gerechtigkeit'
+WHERE SHORTNAME = 'psg';
+UPDATE PARTY
+SET VALUE_ID=224,
+    VALUE_LABEL='Rentnerpartei Deutschlands'
+WHERE SHORTNAME = 'rentner';
+UPDATE PARTY
+SET VALUE_ID=225,
+    VALUE_LABEL='Republikaner'
+WHERE SHORTNAME = 'rep';
+UPDATE PARTY
+SET VALUE_ID=226,
+    VALUE_LABEL='RRP - Rentnerinnen und Rentner Partei'
+WHERE SHORTNAME = 'rrp';
+UPDATE PARTY
+SET VALUE_ID=228,
+    VALUE_LABEL='Schill-Partei'
+WHERE SHORTNAME = 'schill';
+UPDATE PARTY
+SET VALUE_ID=235,
+    VALUE_LABEL='Statt-Partei'
+WHERE SHORTNAME = 'stattpartei';
+UPDATE PARTY
+SET VALUE_ID=237,
+    VALUE_LABEL='Die Tierschutzpartei'
+WHERE SHORTNAME = 'die_tierschutzpartei';
+UPDATE PARTY
+SET VALUE_ID=256,
+    VALUE_LABEL='Zentrum - Deutsche Zentrumspartei'
+WHERE SHORTNAME = 'zentrum';
+UPDATE PARTY
+SET VALUE_ID=322,
+    VALUE_LABEL='AfD - Alternative für Deutschland'
+WHERE SHORTNAME = 'afd';
+UPDATE PARTY
+SET VALUE_ID=331,
+    VALUE_LABEL='ALFA, Liberal-Konservative Reformer'
+WHERE SHORTNAME = 'liberalkonservative_reformer';
+UPDATE PARTY
+SET VALUE_ID=364,
+    VALUE_LABEL='Volt'
+WHERE SHORTNAME = 'volt_deutschland';
+UPDATE PARTY
+SET VALUE_ID=372,
+    VALUE_LABEL='die Basis'
+WHERE SHORTNAME = 'basisdemokratische_partei_deutschland';
+UPDATE PARTY
+SET VALUE_ID=801,
+    VALUE_LABEL='Andere Partei'
+WHERE SHORTNAME = 'uebrige';
