@@ -3,13 +3,18 @@ OPEN SCHEMA NOAH_JUTZ;
 -- Merge
 
 MERGE INTO PARTY t
-USING ( SELECT DISTINCT SHORTNAME
+USING ( SELECT SHORTNAME, MAX(NAME) AS NAME
         FROM ST_META_BUNDESTAG_PARTIES
+        GROUP BY SHORTNAME
     ) AS s
 ON t.SHORTNAME = s.SHORTNAME
+WHEN MATCHED THEN
+    UPDATE
+    SET FULL_NAME = NAME
 WHEN NOT MATCHED THEN
-    INSERT (SHORTNAME)
-    VALUES (SHORTNAME);
+    INSERT
+        (SHORTNAME, FULL_NAME)
+    VALUES (SHORTNAME, NAME);
 
 UPDATE PARTY
 SET VALUE_ID=1,
@@ -42,7 +47,7 @@ WHERE SHORTNAME = 'bfb';
 UPDATE PARTY
 SET VALUE_ID=126,
     VALUE_LABEL='BP - Bayernpartei'
-WHERE SHORTNAME = 'bp';
+WHERE SHORTNAME = 'bayernpartei';
 UPDATE PARTY
 SET VALUE_ID=127,
     VALUE_LABEL='Bürgerpartei'
@@ -74,7 +79,7 @@ WHERE SHORTNAME = 'die_violetten';
 UPDATE PARTY
 SET VALUE_ID=156,
     VALUE_LABEL='DKP'
-WHERE SHORTNAME = 'dkp';
+WHERE SHORTNAME = 'deutsche_kommunistische_partei';
 UPDATE PARTY
 SET VALUE_ID=165,
     VALUE_LABEL='DSU'
@@ -86,7 +91,7 @@ WHERE SHORTNAME = 'dvu';
 UPDATE PARTY
 SET VALUE_ID=171,
     VALUE_LABEL='Familie - Familien-Partei Deutschlands'
-WHERE SHORTNAME = 'familie';
+WHERE SHORTNAME = 'familienpartei_deutschlands';
 UPDATE PARTY
 SET VALUE_ID=176,
     VALUE_LABEL='Das Neue Forum'
@@ -98,11 +103,11 @@ WHERE SHORTNAME = 'fwd';
 UPDATE PARTY
 SET VALUE_ID=202,
     VALUE_LABEL='MLPD - Marxistisch-Leninistische Partei Deutschlands'
-WHERE SHORTNAME = 'mlpd';
+WHERE SHORTNAME = 'marxistischleninistische_partei_deutschlands';
 UPDATE PARTY
 SET VALUE_ID=206,
     VALUE_LABEL='NPD'
-WHERE SHORTNAME = 'npd';
+WHERE SHORTNAME = 'nationaldemokratische_partei_deutschlands';
 UPDATE PARTY
 SET VALUE_ID=209,
     VALUE_LABEL='ÖDP - Ökologisch-Demokratische Partei'
@@ -114,7 +119,7 @@ WHERE SHORTNAME = 'pbc';
 UPDATE PARTY
 SET VALUE_ID=215,
     VALUE_LABEL='Piratenpartei Deutschland'
-WHERE SHORTNAME = 'piraten';
+WHERE SHORTNAME = 'piratenpartei_deutschland';
 UPDATE PARTY
 SET VALUE_ID=219,
     VALUE_LABEL='Pro DM'
