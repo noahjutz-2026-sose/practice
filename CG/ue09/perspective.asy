@@ -256,7 +256,13 @@ pen fragment_shader(real x, real y, tri triangle, pair tc) {
 
 pen fixed_function_fragment(real x, real y, tri triangle) {
   barycentric_coordinate bc = compute_barycentric_coord((x, y), triangle);
-  pair tc = bc.interpolate(triangle.a.tc, triangle.b.tc, triangle.c.tc);
+  real z = bc.interpolate(triangle.a.rcp_z, triangle.b.rcp_z, triangle.c.rcp_z);
+  pair tc = bc.interpolate(
+      triangle.a.tc,
+      triangle.b.tc,
+      triangle.c.tc
+  );
+  tc /= z;
   return fragment_shader(x, y, triangle, tc);
 }
 
@@ -281,6 +287,7 @@ void fixed_function_vertex(vertex_attributes vattr) {
   vec4 ndc = make_vec(vattr.pos.x * vattr.rcp_z, vattr.pos.y * vattr.rcp_z,
                       vattr.pos.z * vattr.rcp_z, 1);
   vattr.pos = mul(W, ndc);
+  vattr.tc *= vattr.rcp_z;
 }
 tri pipe(tri in) {
   tri out;
@@ -299,8 +306,8 @@ tri pipe(tri in) {
 
 tri t1, t2;
 string mode = "head-on";
-// mode = "slant";
-// mode = "SLANT";
+mode = "slant";
+mode = "SLANT";
 real tc_max = 3;
 
 if (mode == "head-on") {
