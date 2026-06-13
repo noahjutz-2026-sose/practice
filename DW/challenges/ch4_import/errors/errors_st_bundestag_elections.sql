@@ -128,5 +128,11 @@ WHERE PARTY = 'nichtwaehler';
 UPDATE ST_BUNDESTAG_ELECTIONS
 SET PARTY='uebrige'
 WHERE PARTY = 'unabhaengige';
+UPDATE ST_BUNDESTAG_ELECTIONS
+SET PARTY='verjuengungsforschung'
+WHERE PARTY = 'partei_fuer_gesundheitsforschung';
+UPDATE ST_BUNDESTAG_ELECTIONS
+SET PARTY='allianz_fuer_menschenrechte_tier_und_naturschutz'
+WHERE PARTY = 'tierschutzallianz';
 
 -- see errors_st_meta_bundestag_parties for insertion of remaining missing parties
