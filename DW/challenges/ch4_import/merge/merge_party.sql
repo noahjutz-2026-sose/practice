@@ -1,6 +1,6 @@
 OPEN SCHEMA NOAH_JUTZ;
 
--- Merge
+-- Merge from st_meta_bundestag_parties
 
 MERGE INTO PARTY t
 USING ( SELECT SHORTNAME, MAX(NAME) AS NAME
@@ -15,6 +15,8 @@ WHEN NOT MATCHED THEN
     INSERT
         (SHORTNAME, FULL_NAME)
     VALUES (SHORTNAME, NAME);
+
+-- Integrate st_politbarometer_survey manually
 
 UPDATE PARTY
 SET VALUE_ID=1,
@@ -176,3 +178,54 @@ UPDATE PARTY
 SET VALUE_ID=801,
     VALUE_LABEL='Andere Partei'
 WHERE SHORTNAME = 'uebrige';
+
+-- impossible many-to-many mappings:
+-- UPDATE PARTY
+-- SET VALUE_ID=250,
+--     VALUE_LABEL='WASG - Wahlalternative Arbeit und soziale Gerechtigkeit'
+-- WHERE SHORTNAME = 'linke';
+--
+-- UPDATE PARTY
+-- SET VALUE_ID=305,
+--     VALUE_LABEL='DBD'
+-- WHERE SHORTNAME = 'union';
+--
+-- UPDATE PARTY
+-- SET VALUE_ID=309,
+--     VALUE_LABEL='NDPD'
+-- WHERE SHORTNAME = 'fdp';
+--
+-- UPDATE PARTY
+-- SET VALUE_ID=371,
+--     VALUE_LABEL='Widerstand 2020'
+-- WHERE SHORTNAME = 'basisdemokratische_partei_deutschland';
+--
+-- UPDATE PARTY
+-- SET VALUE_ID=400,
+--     VALUE_LABEL='GLU'
+-- WHERE SHORTNAME = 'gruene';
+--
+-- UPDATE PARTY
+-- SET VALUE_ID=401,
+--     VALUE_LABEL='GAZ'
+-- WHERE SHORTNAME = 'gruene';
+--
+-- UPDATE PARTY
+-- SET VALUE_ID=402,
+--     VALUE_LABEL='Bündnis 90'
+-- WHERE SHORTNAME = 'gruene';
+--
+-- UPDATE PARTY
+-- SET VALUE_ID=403,
+--     VALUE_LABEL='DA'
+-- WHERE SHORTNAME = 'union';
+
+-- Check if everything is integrated
+
+SELECT *
+FROM PARTY P
+RIGHT JOIN ST_META_POLITBAROMETER_VALUE_LABELS L
+ON P.VALUE_ID = L.VALUE_ID
+WHERE L.VARIABLE_ID = 'v6'
+AND L.VALUE_ID > 0
+AND P.VALUE_ID IS NULL;
