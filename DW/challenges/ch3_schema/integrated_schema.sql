@@ -67,12 +67,14 @@ CREATE TABLE Bundestag_Election_Census
 CREATE TABLE Bundestag_Election_Result
 (
     term        DATE, -- YYYY-01-01
-    party_id    INT REFERENCES Party (value_id),
+    party       VARCHAR(100) REFERENCES Party (shortname),
     district_id INT REFERENCES Voting_District (VOTING_DISTRICT_ID),
     votes       INT,
     percentage  DOUBLE,
-    PRIMARY KEY (term, party_id, district_id)
+    PRIMARY KEY (term, party, district_id)
 );
+
+DROP TABLE BUNDESTAG_ELECTION_RESULT
 
 CREATE TABLE Politbarometer_Opinion_Poll
 (
