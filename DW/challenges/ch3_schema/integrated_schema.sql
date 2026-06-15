@@ -74,7 +74,7 @@ CREATE TABLE Bundestag_Election_Result
     PRIMARY KEY (term, party, district_id)
 );
 
-CREATE TABLE Politbarometer_Opinion_Poll
+CREATE TABLE Politbarometer_Survey
 (
     respondent_id          INT,
     respondent_study_id    INT,
@@ -104,7 +104,7 @@ CREATE TABLE Politbarometer_Opinion_Poll
     PRIMARY KEY (respondent_id, respondent_study_id, respondent_east_west, date_month)
 );
 
-CREATE TABLE Politbarometer_Election_Poll
+CREATE TABLE Politbarometer_Party_Ratings
 (
     respondent_id        INT,
     respondent_study_id  INT,
