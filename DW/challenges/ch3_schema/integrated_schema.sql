@@ -4,8 +4,8 @@ OPEN SCHEMA NOAH_JUTZ;
 
 CREATE TABLE Party
 (
-    shortname   VARCHAR(100) PRIMARY KEY,
-    full_name   VARCHAR(200)
+    shortname VARCHAR(100) PRIMARY KEY,
+    full_name VARCHAR(200)
 );
 
 CREATE TABLE Bundesland
@@ -46,9 +46,9 @@ CREATE TABLE Respondent
 
 CREATE TABLE Seat_Distribution
 (
-    term     DATE, -- YYYY-01-01
-    party_id INT REFERENCES Party (value_id),
-    seats    INT
+    term  DATE, -- YYYY-01-01
+    party VARCHAR(100) REFERENCES Party (shortname),
+    seats INT
 );
 
 CREATE TABLE Bundestag_Election_Census
