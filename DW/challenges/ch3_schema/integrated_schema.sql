@@ -4,11 +4,8 @@ OPEN SCHEMA NOAH_JUTZ;
 
 CREATE TABLE Party
 (
-    value_id    INT,
-    value_label VARCHAR(100),
-    shortname   VARCHAR(100),
-    full_name   VARCHAR(200),
-    PRIMARY KEY (value_id, shortname)
+    shortname   VARCHAR(100) PRIMARY KEY,
+    full_name   VARCHAR(200)
 );
 
 CREATE TABLE Bundesland
@@ -117,10 +114,19 @@ CREATE TABLE Politbarometer_Party_Ratings
     PRIMARY KEY (respondent_id, respondent_study_id, respondent_east_west, date_month)
 );
 
-CREATE TABLE POLITBAROMETER_VALUE_LABELS
+CREATE TABLE Politbarometer_Value_Labels
 (
     variable_id VARCHAR(50),
     value_id    INT,
     label       VARCHAR(500),
     PRIMARY KEY (variable_id, value_id)
+)
+
+CREATE TABLE Mapping_Party_Politbarometer_Value_Labels
+(
+    vid       VARCHAR(50) DEFAULT 'v6', -- do not change
+    value_id  INT,
+    shortname VARCHAR(100) REFERENCES PARTY (shortname),
+    PRIMARY KEY (value_id, shortname),
+    FOREIGN KEY (vid, value_id) REFERENCES POLITBAROMETER_VALUE_LABELS (VARIABLE_ID, value_id)
 )
