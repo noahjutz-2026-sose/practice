@@ -6,8 +6,9 @@ CREATE TABLE Party
 (
     value_id    INT,
     value_label VARCHAR(100),
-    shortname   VARCHAR(100) PRIMARY KEY,
-    full_name   VARCHAR(200)
+    shortname   VARCHAR(100),
+    full_name   VARCHAR(200),
+    PRIMARY KEY (value_id, shortname)
 );
 
 CREATE TABLE Bundesland
