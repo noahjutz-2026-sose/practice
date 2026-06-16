@@ -13,8 +13,8 @@ WHEN MATCHED THEN
     SET FULL_NAME = NAME
 WHEN NOT MATCHED THEN
     INSERT
-        (SHORTNAME, FULL_NAME)
-    VALUES (SHORTNAME, NAME);
+        (VALUE_ID, SHORTNAME, FULL_NAME)
+    VALUES (-1, SHORTNAME, NAME);
 
 -- Integrate st_politbarometer_survey manually
 
