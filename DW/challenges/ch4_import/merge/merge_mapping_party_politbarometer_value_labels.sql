@@ -104,10 +104,12 @@ INSERT INTO Mapping_Party_Politbarometer_Value_Labels
 VALUES (default, 402, 'gruene');
 INSERT INTO Mapping_Party_Politbarometer_Value_Labels
 VALUES (default, 403, 'union');
--- INSERT INTO Mapping_Party_Politbarometer_Value_Labels
--- VALUES (default, 2, 'union');
--- INSERT INTO Mapping_Party_Politbarometer_Value_Labels
--- VALUES (default, 3, 'union');
+INSERT INTO Mapping_Party_Politbarometer_Value_Labels
+VALUES ('v72', 2, 'union');
+INSERT INTO Mapping_Party_Politbarometer_Value_Labels
+VALUES ('v72', 3, 'union');
+INSERT INTO Mapping_Party_Politbarometer_Value_Labels
+VALUES ('v72', 811, 'uebrige');
 
 -- Check if everything is integrated
 
