@@ -200,6 +200,10 @@ INSERT INTO PARTY
 VALUES (402, 'Bündnis 90', 'gruene', null);
 INSERT INTO PARTY
 VALUES (403, 'DA', 'union', null);
+INSERT INTO PARTY
+VALUES (2, 'CDU', 'union', null);
+INSERT INTO PARTY
+VALUES (3, 'CSU', 'union', null);
 
 -- Check if everything is integrated
 
