@@ -68,47 +68,79 @@ All queries: [duplicates](https://github.com/noahjutz-2026-sose/practice/tree/ma
     ORDER BY d.DISTRICT_ID
     ```
 
-- Data Fusion (merge multiple rows into one target row): Mark duplicates and ignore them during import. For example:
+- Data Fusion (merge multiple rows into one target row): N/A
 
-    ```sql
-    UPDATE ST_META_BUNDESTAG_DISTRICTS
-    SET error_info = COALESCE(error_info, '') || 'DUPLICATE;'
-    WHERE unique_id IN (SELECT unique_id
-                        FROM (
-                                SELECT unique_id,
-                                        ROW_NUMBER() OVER (PARTITION BY district_id ORDER BY unique_id) AS rn
-                                FROM ST_META_BUNDESTAG_DISTRICTS
-                                ) sub
-                        WHERE rn > 1);
-    ```
 
 ## Data Integration
 
 _Write down a MERGE command to integrate data from your staging area into your target data-warehouse schema: (Ex. Sheet 4, Exercise 2)_
 
 ```sql
-MERGE INTO Bundesland t
-USING (SELECT MAX(VALUE_ID) AS VALUE_ID, LABEL
-       FROM (
-                SELECT DISTINCT v.VALUE_ID, v.LABEL
-                FROM ST_META_POLITBAROMETER_VALUE_LABELS v
-                WHERE v.VARIABLE_ID = 'v75'
-                  AND v.VALUE_ID > 0
-                UNION
-                SELECT DISTINCT null, state_name
-                FROM ST_META_BUNDESTAG_DISTRICTS d
-                WHERE d.ERROR_INFO IS NULL
-                )
-       GROUP BY LABEL) AS s
-ON t.STATE_VALUE_ID = s.VALUE_ID
+MERGE INTO POLITBAROMETER_PARTY_RATINGS t
+USING (
+    SELECT *
+    FROM (
+             SELECT RESPONDENT_ID,
+                    STUDY_ID,
+                    V4A_EAST_WEST,
+                    TO_DATE(INTYEAR || '-' || LPAD(INTMONTH, 2, '0'), 'YYYY-MM') AS DATE_MONTH,
+                    'spd'                                                        AS party,
+                    V8_RATING_SPD                                                AS rating
+             FROM ST_POLITBAROMETER_SURVEY
+             UNION ALL
+             SELECT RESPONDENT_ID,
+                    STUDY_ID,
+                    V4A_EAST_WEST,
+                    TO_DATE(INTYEAR || '-' || LPAD(INTMONTH, 2, '0'), 'YYYY-MM') AS DATE_MONTH,
+                    'union'                                                      AS party,
+                    V9_RATING_CDU                                                AS rating
+             FROM ST_POLITBAROMETER_SURVEY
+             UNION ALL
+             SELECT RESPONDENT_ID,
+                    STUDY_ID,
+                    V4A_EAST_WEST,
+                    TO_DATE(INTYEAR || '-' || LPAD(INTMONTH, 2, '0'), 'YYYY-MM') AS DATE_MONTH,
+                    'fdp'                                                        AS party,
+                    V11_RATING_FDP                                               AS rating
+             FROM ST_POLITBAROMETER_SURVEY
+             UNION ALL
+             SELECT RESPONDENT_ID,
+                    STUDY_ID,
+                    V4A_EAST_WEST,
+                    TO_DATE(INTYEAR || '-' || LPAD(INTMONTH, 2, '0'), 'YYYY-MM') AS DATE_MONTH,
+                    'gruene'                                                     AS party,
+                    V12_RATING_GRUENE                                            AS rating
+             FROM ST_POLITBAROMETER_SURVEY
+             UNION ALL
+             SELECT RESPONDENT_ID,
+                    STUDY_ID,
+                    V4A_EAST_WEST,
+                    TO_DATE(INTYEAR || '-' || LPAD(INTMONTH, 2, '0'), 'YYYY-MM') AS DATE_MONTH,
+                    'afd'                                                        AS party,
+                    V13_RATING_AFD                                               AS rating
+             FROM ST_POLITBAROMETER_SURVEY
+             UNION ALL
+             SELECT RESPONDENT_ID,
+                    STUDY_ID,
+                    V4A_EAST_WEST,
+                    TO_DATE(INTYEAR || '-' || LPAD(INTMONTH, 2, '0'), 'YYYY-MM') AS DATE_MONTH,
+                    'linke'                                                      AS party,
+                    V14_RATING_LINKE                                             AS rating
+             FROM ST_POLITBAROMETER_SURVEY
+             ) AS x
+    QUALIFY row_number() OVER (PARTITION BY RESPONDENT_ID, STUDY_ID, V4A_EAST_WEST, DATE_MONTH) = 1
+    ) AS s
+ON t.RESPONDENT_ID = s.RESPONDENT_ID AND t.RESPONDENT_STUDY_ID = s.STUDY_ID AND
+   t.RESPONDENT_EAST_WEST = s.V4A_EAST_WEST AND t.PARTY = s.party
 WHEN MATCHED THEN
     UPDATE
-    SET t.state_name = s.LABEL
+    SET t.RATING = s.RATING
 WHEN NOT MATCHED THEN
-    INSERT (STATE_VALUE_ID, STATE_NAME)
-    VALUES (s.VALUE_ID,
-            s.LABEL);
+    INSERT
+    VALUES (s.RESPONDENT_ID, s.STUDY_ID, s.V4A_EAST_WEST, s.DATE_MONTH, s.party, s.rating)
 ```
+
+All queries: [merge](https://github.com/noahjutz-2026-sose/practice/tree/main/DW/challenges/ch4_import/merge)
 
 ## Analytical Queries
 
