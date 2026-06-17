@@ -52,6 +52,7 @@ USING (
                     V14_RATING_LINKE                                             AS rating
              FROM ST_POLITBAROMETER_SURVEY
              ) AS x
+    WHERE rating > 0
     QUALIFY row_number() OVER (PARTITION BY RESPONDENT_ID, STUDY_ID, V4A_EAST_WEST, DATE_MONTH) = 1
     ) AS s
 ON t.RESPONDENT_ID = s.RESPONDENT_ID AND t.RESPONDENT_STUDY_ID = s.STUDY_ID AND
@@ -61,4 +62,4 @@ WHEN MATCHED THEN
     SET t.RATING = s.RATING
 WHEN NOT MATCHED THEN
     INSERT
-    VALUES (s.RESPONDENT_ID, s.STUDY_ID, s.V4A_EAST_WEST, s.DATE_MONTH, s.party, s.rating)
+    VALUES (s.RESPONDENT_ID, s.STUDY_ID, s.V4A_EAST_WEST, s.DATE_MONTH, s.party, s.rating);
