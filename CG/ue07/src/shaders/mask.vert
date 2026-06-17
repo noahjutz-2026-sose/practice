@@ -15,8 +15,8 @@ out vec3 n_ws;
 out vec2 tc;
 
 void main() {
-	n_ws = normalize(mat3(model_normal) * in_norm);
-	pos_ws = (model * vec4(in_pos, 1.0)).xyz;
-	tc = in_tc;
-	gl_Position = proj * view * model * vec4(in_pos, 1.0);
+    n_ws = normalize(mat3(model_normal) * in_norm);
+    pos_ws = (model * vec4(in_pos, 1.0)).xyz;
+    tc = in_tc;
+    gl_Position = proj * view * model * vec4(in_pos, 1.0);
 }
