@@ -12,3 +12,49 @@ FROM POLITBAROMETER_PARTY_RATINGS
 WHERE WEIGHT > 0
 GROUP BY PARTY, DATE_MONTH
 ORDER BY DATE_MONTH;
+
+-- What is the dominant party in each district for each term?
+
+WITH RankedVotes AS (
+    SELECT
+        TERM,
+        DISTRICT_ID,
+        PARTY,
+        VOTES,
+        RANK() OVER (PARTITION BY TERM, DISTRICT_ID ORDER BY VOTES DESC) as VoteRank
+    FROM BUNDESTAG_ELECTION_RESULT
+)
+SELECT TERM, DISTRICT_ID, PARTY, VOTES
+FROM RankedVotes
+WHERE VoteRank = 1;
+
+-- What is the dominant party in each state for each term?
+
+WITH StatePartyVotes AS (
+    SELECT
+        er.TERM,
+        b.STATE_NAME,
+        er.PARTY,
+        SUM(er.VOTES) AS TOTAL_STATE_VOTES
+    FROM BUNDESTAG_ELECTION_RESULT er
+    JOIN VOTING_DISTRICT vd ON er.DISTRICT_ID = vd.VOTING_DISTRICT_ID
+    JOIN BUNDESLAND b      ON vd.STATE_ID = b.STATE_VALUE_ID
+    GROUP BY er.TERM, b.STATE_NAME, er.PARTY
+),
+RankedStateVotes AS (
+    SELECT
+        TERM,
+        STATE_NAME,
+        PARTY,
+        TOTAL_STATE_VOTES,
+        RANK() OVER (PARTITION BY TERM, STATE_NAME ORDER BY TOTAL_STATE_VOTES DESC) AS VoteRank
+    FROM StatePartyVotes
+)
+SELECT
+    TERM,
+    STATE_NAME,
+    PARTY,
+    TOTAL_STATE_VOTES
+FROM RankedStateVotes
+WHERE VoteRank = 1
+ORDER BY TERM DESC, STATE_NAME;
