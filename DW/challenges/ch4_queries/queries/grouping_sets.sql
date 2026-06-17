@@ -1,0 +1,20 @@
+OPEN SCHEMA NOAH_JUTZ;
+
+-- What is the voter turnout across district, state and term?
+
+SELECT CASE
+           WHEN GROUPING(c.TERM) = 0 AND GROUPING(s.STATE_NAME) = 0 AND GROUPING(d.VOTING_DISTRICT_NAME) = 0
+               THEN 'District Level'
+           WHEN GROUPING(c.TERM) = 0 AND GROUPING(s.STATE_NAME) = 0 THEN 'State Level'
+           WHEN GROUPING(c.TERM) = 0 THEN 'Term Level'
+           ELSE 'Grand Total'
+           END                                                 AS GROUP_LEVEL,
+       c.TERM,
+       s.STATE_NAME,
+       d.VOTING_DISTRICT_NAME,
+       SUM(c.VOTERS) / SUM(c.VOTING_ELIGIBLE_POPULATION) * 100 AS TURNOUT_PERCENTAGE
+FROM BUNDESTAG_ELECTION_CENSUS c
+         JOIN VOTING_DISTRICT d ON c.DISTRICT_ID = d.VOTING_DISTRICT_ID
+         JOIN BUNDESLAND s ON d.STATE_ID = s.STATE_VALUE_ID
+GROUP BY ROLLUP (c.TERM, s.STATE_NAME, d.VOTING_DISTRICT_NAME)
+ORDER BY c.TERM, s.STATE_NAME, d.VOTING_DISTRICT_NAME;
