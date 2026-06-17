@@ -7,4 +7,6 @@ EXTRA_DIST += tex.frag tex.vert
 
 EXTRA_DIST += mask.frag mask.vert
 
+EXTRA_DIST += normalmapping.frag normalmapping.vert
+EXTRA_DIST += sky.frag sky.vert
 
