@@ -21,11 +21,11 @@ ORDER BY c.TERM, s.STATE_NAME, d.VOTING_DISTRICT_NAME;
 
 -- What is the average view on CDU/CSU given any combination of demographic indicators?
 
-SELECT lbl_gender.LABEL       AS GENDER,
-       lbl_edu.LABEL          AS EDUCATION,
-       lbl_emp.LABEL          AS EMPLOYMENT_STATUS,
-       COUNT(p.RESPONDENT_ID) AS TOTAL_RATINGS,
-       AVG(p.RATING)          AS AVG_PARTY_RATING
+SELECT lbl_gender.LABEL                         AS GENDER,
+       lbl_edu.LABEL                            AS EDUCATION,
+       lbl_emp.LABEL                            AS EMPLOYMENT_STATUS,
+       COUNT(p.RESPONDENT_ID)                   AS TOTAL_RATINGS,
+       SUM(p.RATING * p.WEIGHT) / SUM(p.WEIGHT) AS AVG_PARTY_RATING
 FROM POLITBAROMETER_PARTY_RATINGS p
          JOIN RESPONDENT r
               ON p.RESPONDENT_ID = r.RESPONDENT_ID
@@ -40,5 +40,8 @@ FROM POLITBAROMETER_PARTY_RATINGS p
          LEFT JOIN POLITBAROMETER_VALUE_LABELS lbl_emp
                    ON lbl_emp.VARIABLE_ID = 'v64'
                        AND r.EMPLOYMENT_STATUS = lbl_emp.VALUE_ID
-WHERE p.PARTY = 'afd'
-GROUP BY CUBE (lbl_gender.LABEL, lbl_edu.LABEL, lbl_emp.LABEL);
+WHERE p.PARTY = 'union'
+  AND p.DATE_MONTH BETWEEN '2016-01-01' AND '2026-01-01'
+GROUP BY CUBE (lbl_gender.LABEL, lbl_edu.LABEL, lbl_emp.LABEL)
+HAVING COUNT(p.RESPONDENT_ID) > 1000
+ORDER BY AVG_PARTY_RATING
