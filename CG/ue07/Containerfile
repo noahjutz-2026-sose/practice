@@ -4,6 +4,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
     automake \
     autoconf \
+    autoconf-archive \
     libassimp-dev \
     libglew-dev \
     libglfw3-dev \
@@ -39,4 +40,3 @@ WORKDIR /app
 RUN mkdir -p /app/render-data/models
 
 CMD ["sh", "-c", "ln -sf /deps/models /app/render-data/models && autoreconf -i && ./configure && make -j$(nproc) && ./src/cg"]
-
