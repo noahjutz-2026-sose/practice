@@ -48,7 +48,8 @@ CREATE TABLE Seat_Distribution
 (
     term  DATE, -- YYYY-01-01
     party VARCHAR(100) REFERENCES Party (shortname),
-    seats INT
+    seats INT,
+    PRIMARY KEY (term, party)
 );
 
 CREATE TABLE Bundestag_Election_Census
