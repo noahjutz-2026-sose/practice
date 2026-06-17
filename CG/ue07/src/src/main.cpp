@@ -72,6 +72,7 @@ int main(int argc, char** argv) {
 	shader_ptr shader_material     = make_shader("a2", "shaders/material.vert", "shaders/material.frag");
 	shader_ptr shader_lighting     = make_shader("a3", "shaders/shading.vert", "shaders/shading.frag");
 	shader_ptr shader_textured     = make_shader("a4", "shaders/tex.vert", "shaders/tex.frag");
+	shader_ptr shader_masked       = make_shader("a5", "shaders/mask.vert", "shaders/mask.frag");
 
 	shader_ptr light_rep_shader = make_shader("light-rep", "shaders/light_rep.vert", "shaders/light_rep.frag");
 	std::vector<drawelement_ptr> light_rep = MeshLoader::load("render-data/models/sphere.obj", false, [&](const material_ptr &) { return light_rep_shader; });
@@ -101,12 +102,14 @@ int main(int argc, char** argv) {
 		                               "Material Color",
 									   "Phong Lighting",
 									   "Textured",
+									   "Masked",
 		};
 		enum { 
 			PlainColor,
 			MaterialColor,
 			PhongLighting,
 			Textured,
+			Masked,
 			N
 		};
 		static int active_mode = PlainColor;
@@ -211,6 +214,7 @@ int main(int argc, char** argv) {
 				if (active_mode == MaterialColor)      shader = shader_material;
 				else if (active_mode == PhongLighting) shader = shader_lighting;
 				else if (active_mode == Textured)      shader = shader_textured;
+				else if (active_mode == Masked)        shader = shader_masked;
 
 				de->shader = shader;
 				de->bind();
@@ -221,6 +225,7 @@ int main(int argc, char** argv) {
 				shader->uniform("dirlight_dir", dirlight_dir);
 				shader->uniform("dirlight_col", glm::pow(dirlight_col, glm::vec3(2.2f)));
 				shader->uniform("dirlight_scale", dirlight_scale);
+				shader->uniform("has_alphamap", de->material->has_texture("alphamap") ? 1 : 0);
 				de->draw(glm::mat4(1));
 				de->unbind();
 			}
@@ -230,6 +235,7 @@ int main(int argc, char** argv) {
 				if (active_mode == MaterialColor)      shader = shader_material;
 				else if (active_mode == PhongLighting) shader = shader_lighting;
 				else if (active_mode == Textured)      shader = shader_textured;
+				else if (active_mode == Masked)        shader = shader_masked;
 
 				de->shader = shader;
 				de->bind();
@@ -240,6 +246,7 @@ int main(int argc, char** argv) {
 				shader->uniform("dirlight_dir", dirlight_dir);
 				shader->uniform("dirlight_col", glm::pow(dirlight_col, glm::vec3(2.2f)));
 				shader->uniform("dirlight_scale", dirlight_scale);
+				shader->uniform("has_alphamap", de->material->has_texture("alphamap") ? 1 : 0);
 				de->draw(glm::mat4x4(kart.rb.transform_matrix));
                 de->unbind();
 			}

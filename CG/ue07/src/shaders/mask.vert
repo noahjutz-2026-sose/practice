@@ -14,7 +14,6 @@ out vec3 pos_ws;
 out vec3 n_ws;
 out vec2 tc;
 
-
 void main() {
 	n_ws = normalize(mat3(model_normal) * in_norm);
 	pos_ws = (model * vec4(in_pos, 1.0)).xyz;

@@ -207,7 +207,7 @@ top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 EXTRA_DIST = default.frag default.vert light_rep.frag light_rep.vert \
 	material.frag material.vert shading.frag shading.vert tex.frag \
-	tex.vert
+	tex.vert mask.frag mask.vert
 all: all-am
 
 .SUFFIXES:
