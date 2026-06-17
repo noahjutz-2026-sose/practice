@@ -108,6 +108,7 @@ CREATE TABLE Politbarometer_Party_Ratings
     respondent_id        INT,
     respondent_study_id  INT,
     respondent_east_west INT,
+    WEIGHT               DOUBLE,
     date_month           DATE, -- YYYY-MM-01
     party                VARCHAR(100) REFERENCES Party (shortname),
     rating               INT,  -- v8, v9, v10, v11, v12, v13, v14
