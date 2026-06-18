@@ -293,7 +293,6 @@ ORDER BY AVG_PARTY_RATING
 -- Query 7:
 -- 🖊️
 -- Are powerful parties popular? How correlated is the number of seats with a party's average rating within that term?
-
 WITH term_boundaries AS (SELECT TERM                            AS term_start,
                                 LEAD(TERM) OVER (ORDER BY TERM) AS term_end
                          FROM (SELECT DISTINCT TERM FROM SEAT_DISTRIBUTION)),
@@ -306,15 +305,16 @@ WITH term_boundaries AS (SELECT TERM                            AS term_start,
                                               AND (r.DATE_MONTH < b.term_end OR b.term_end IS NULL)
                             WHERE r.RATING IS NOT NULL
                             GROUP BY b.term_start, r.PARTY),
-     term_metrics AS (SELECT s.TERM AS term_start,
-                             s.PARTY,
-                             s.SEATS,
+     term_metrics AS (SELECT r.term_start,
+                             r.PARTY,
+                             COALESCE(s.SEATS, 0) AS SEATS,
                              r.avg_rating
-                      FROM SEAT_DISTRIBUTION s
-                               JOIN party_term_ratings r
-                                    ON s.PARTY = r.PARTY
-                                        AND s.TERM = r.term_start)
-SELECT PARTY, CORR(SEATS, avg_rating)
+                      FROM party_term_ratings r
+                               LEFT JOIN SEAT_DISTRIBUTION s
+                                         ON r.PARTY = s.PARTY
+                                             AND r.term_start = s.TERM)
+SELECT COALESCE(PARTY, 'Total') AS PARTY,
+       CORR(SEATS, avg_rating)  AS correlation_seats_vs_rating
 FROM term_metrics
 GROUP BY ROLLUP (PARTY);
 ```
