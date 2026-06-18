@@ -34,7 +34,7 @@ _How did you perform your data transformation? Fill out the following list with 
     GROUP BY s.v22_left_right;
     ```
 
-All queries: [errors](https://github.com/noahjutz-2026-sose/practice/tree/main/DW/challenges/ch4_import/errors)
+All queries: [errors](https://github.com/noahjutz-2026-sose/practice/tree/main/DW/challenges/ch4_queries/errors)
 
 - Harmonization / Normalization: Allow one unique party name, consolidate duplicates, filter out negative values
 
@@ -50,7 +50,7 @@ All queries: [errors](https://github.com/noahjutz-2026-sose/practice/tree/main/D
     SELECT * WITH INVALID UNIQUE (SHORTNAME) FROM ST_META_BUNDESTAG_PARTIES;
     ```
 
-All queries: [duplicates](https://github.com/noahjutz-2026-sose/practice/tree/main/DW/challenges/ch4_import/duplicates)
+All queries: [duplicates](https://github.com/noahjutz-2026-sose/practice/tree/main/DW/challenges/ch4_queries/duplicates)
 
 - Fuzzy entity matching (Levensthein, Soundex, ...):
     - Match parties (st_meta_politbarometer_value_labels, st_bundestag_elections, st_seat_distribution (columns), st_meta_bundestag_parties)
@@ -140,7 +140,7 @@ WHEN NOT MATCHED THEN
     VALUES (s.RESPONDENT_ID, s.STUDY_ID, s.V4A_EAST_WEST, s.DATE_MONTH, s.party, s.rating)
 ```
 
-All queries: [merge](https://github.com/noahjutz-2026-sose/practice/tree/main/DW/challenges/ch4_import/merge)
+All queries: [merge](https://github.com/noahjutz-2026-sose/practice/tree/main/DW/challenges/ch4_queries/merge)
 
 ## Analytical Queries
 
