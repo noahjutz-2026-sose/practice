@@ -44,7 +44,7 @@ All queries: [errors](https://github.com/noahjutz-2026-sose/practice/tree/main/D
     WHERE PARTY = 'partei_fuer_gesundheitsforschung';
     ```
 
-- Deduplication: Determine unique constraint columns and find duplicates using `sql GROUP BY` or `sql WITH INVALID UNIQUE` or `sql OVER (PARTITION BY ...)`. For example:
+- Deduplication: Determine unique constraint columns and find duplicates using `GROUP BY` or `WITH INVALID UNIQUE`. For example:
 
     ```sql
     SELECT * WITH INVALID UNIQUE (SHORTNAME) FROM ST_META_BUNDESTAG_PARTIES;
@@ -69,7 +69,6 @@ All queries: [duplicates](https://github.com/noahjutz-2026-sose/practice/tree/ma
     ```
 
 - Data Fusion (merge multiple rows into one target row): N/A
-
 
 ## Data Integration
 
