@@ -1,6 +1,6 @@
 OPEN SCHEMA NOAH_JUTZ;
 
--- How correlated are personal financial standing and government approval?
+-- How correlated are personal financial standing and government approval in each state?
 
 SELECT
     b.STATE_NAME,
