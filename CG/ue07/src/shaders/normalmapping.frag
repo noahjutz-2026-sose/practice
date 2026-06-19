@@ -23,45 +23,45 @@ in vec2 tc;
 out vec4 out_col;
 
 float diff(vec3 l, vec3 n) {
-	return max(0,dot(l, n));
+    return max(0, dot(l, n));
 }
 
 float spec(vec3 l, vec3 n, float n_s) {
-	vec3 r = 2*dot(n,l)*n - l;
-	return pow(max(0, dot(r, v)), n_s);
+    vec3 r = 2 * dot(n, l) * n - l;
+    return pow(max(0, dot(r, v)), n_s);
 }
 
 void main() {
-	if (has_alphamap == 1) {
-		float alpha = texture(alphamap, tc).r;
-		if (alpha < 0.5) {
-			discard;
-			return;
-		}
-	}
-	// TODO:
-	// Falls eine normalmap definiert ist, lesen und konvertieren Sie die Normale.
-	// Achtung: Falls keine normalmap definiert ist muss trotzdem eine gültige
-	// TS-normale gesetzt werden da das folgende Shading im TS implementiert ist!
-	vec3 N = vec3(0,0,0);
+    if (has_alphamap == 1) {
+        float alpha = texture(alphamap, tc).r;
+        if (alpha < 0.5) {
+            discard;
+            return;
+        }
+    }
+    // TODO:
+    // Falls eine normalmap definiert ist, lesen und konvertieren Sie die Normale.
+    // Achtung: Falls keine normalmap definiert ist muss trotzdem eine gültige
+    // TS-normale gesetzt werden da das folgende Shading im TS implementiert ist!
+    vec3 N = vec3(0, 0, 0);
 
-	// directional lighting components
-	vec3 diff_dl = diff(to_dirlight, N)    * dirlight_col * dirlight_scale;
-	vec3 spec_dl = spec(to_dirlight, N, 4) * dirlight_col * dirlight_scale;
+    // directional lighting components
+    vec3 diff_dl = diff(to_dirlight, N) * dirlight_col * dirlight_scale;
+    vec3 spec_dl = spec(to_dirlight, N, 4) * dirlight_col * dirlight_scale;
 
-	// point lighting components
-	float dist = length(to_pointlight);
-	vec3 to_light = normalize(to_pointlight);
-	vec3 diff_pl = diff(to_light, N)     / (dist/100) * pointlight_col * pointlight_scale;
-	vec3 spec_pl = spec(to_light, N, 10) / (dist/100) * pointlight_col * pointlight_scale;
+    // point lighting components
+    float dist = length(to_pointlight);
+    vec3 to_light = normalize(to_pointlight);
+    vec3 diff_pl = diff(to_light, N) / (dist / 100) * pointlight_col * pointlight_scale;
+    vec3 spec_pl = spec(to_light, N, 10) / (dist / 100) * pointlight_col * pointlight_scale;
 
-	// material color
-	vec3 k_diff = texture(diffuse, tc).rgb;
-	vec3 k_spec = texture(specular, tc).rrr;
+    // material color
+    vec3 k_diff = texture(diffuse, tc).rgb;
+    vec3 k_spec = texture(specular, tc).rrr;
 
-	out_col = vec4(k_diff * (diff_pl + diff_dl) + k_spec * (spec_pl + spec_dl), 1.0);
+    out_col = vec4(k_diff * (diff_pl + diff_dl) + k_spec * (spec_pl + spec_dl), 1.0);
 
-	// Debug: So kann die normale als Farbe ausgegeben werden
-	// if (has_normalmap == 1)
-	// 	out_col = vec4(N,0);
+    // Debug: So kann die normale als Farbe ausgegeben werden
+    // if (has_normalmap == 1)
+    // 	out_col = vec4(N,0);
 }

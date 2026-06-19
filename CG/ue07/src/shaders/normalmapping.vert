@@ -22,15 +22,15 @@ out vec3 v;
 out vec2 tc;
 
 void main() {
-	vec3 bi_tan = cross(in_norm, in_tan);
-	// TODO:
-	// Transformieren Sie die T, B und N Komponenten in den World-Space und setzen Sie die TBN Matrix auf
+    vec3 bi_tan = cross(in_norm, in_tan);
+    // TODO:
+    // Transformieren Sie die T, B und N Komponenten in den World-Space und setzen Sie die TBN Matrix auf
 
-	pos_ws = (model * vec4(in_pos, 1.0)).xyz;
+    pos_ws = (model * vec4(in_pos, 1.0)).xyz;
 
-	// TODO:
-	// Überführen Sie die Richtung zur Kamera und die beiden Lichtrichtungen in den TS
+    // TODO:
+    // Überführen Sie die Richtung zur Kamera und die beiden Lichtrichtungen in den TS
 
-	tc = in_tc;
-	gl_Position = proj * view * vec4(pos_ws, 1);
+    tc = in_tc;
+    gl_Position = proj * view * vec4(pos_ws, 1);
 }
