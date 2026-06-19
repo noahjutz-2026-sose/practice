@@ -20,11 +20,9 @@ end
 function y = interp_l(x, n, xs, ys)
     y = 0;
     for i=0:n
-        y = y + ys(i + 1) * l(x, i, n, xs, ys);
+        y = y + ys(i + 1) * lagrange(x, i, n, xs, ys);
     end
 end
-
-
 
 % Newton
 
@@ -54,13 +52,33 @@ function y = interp_n(x, n, xs, ys)
     end
 end
 
+% Vandermonde-Matrix
+
+syms x;
+
+function V = vandermonde(xs, n)
+    V = ones(n+1, n+1);
+    for i=2:n+1
+        V(:, i) = xs .^ (i - 1); 
+    end
+end
+
+V = vandermonde(xs, n);
+
+a = V \ ys;
+
 figure;
-xValues = linspace(-1, 3, 100);
-yValues = arrayfun(@(x) interp_n(x, n, xs, ys), xValues);
-plot(xValues, yValues, 'b-', 'DisplayName', 'interp');
 hold on;
-scatter(xs, ys, 'ro');
+x_vals = linspace(min(xs), max(xs), 100);
+y_lagrange = arrayfun(@(x) interp_l(x, n, xs, ys), x_vals);
+y_newton = arrayfun(@(x) interp_n(x, n, xs, ys), x_vals);
+y_vandermonde = polyval(flip(a), x_vals);
+
+plot(xs, ys, 'o', 'DisplayName', 'Points');
+plot(x_vals, y_lagrange, 'DisplayName', 'lagrange');
+plot(x_vals, y_newton, 'DisplayName', 'newton');
+plot(x_vals, y_vandermonde, 'DisplayName', 'vandermonde');
 xlabel('x');
 ylabel('Interpolated y');
-title('Lagrange Interpolation');
+title('Polynomial Interpolation using Vandermonde Matrix');
 legend;
