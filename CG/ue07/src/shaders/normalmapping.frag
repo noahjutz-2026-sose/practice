@@ -43,7 +43,12 @@ void main() {
     // Falls eine normalmap definiert ist, lesen und konvertieren Sie die Normale.
     // Achtung: Falls keine normalmap definiert ist muss trotzdem eine gültige
     // TS-normale gesetzt werden da das folgende Shading im TS implementiert ist!
-    vec3 N = vec3(0, 0, 0);
+    vec3 N = vec3(0, 0, 1);
+
+    if (has_normalmap == 1) {
+        N = texture(normalmap, tc).rgb;
+        N = N * 2.0 - 1.0;
+    }
 
     // directional lighting components
     vec3 diff_dl = diff(to_dirlight, N) * dirlight_col * dirlight_scale;
@@ -63,5 +68,5 @@ void main() {
 
     // Debug: So kann die normale als Farbe ausgegeben werden
     // if (has_normalmap == 1)
-    // 	out_col = vec4(N,0);
+    //     out_col = vec4(N, 0);
 }
