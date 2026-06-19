@@ -10,14 +10,15 @@ uniform vec3 pointlight_pos;
 uniform vec3 pointlight_col;
 uniform float pointlight_scale;
 
+uniform sampler2D diffuse;
+uniform sampler2D specular;
+
+uniform int has_alphamap;
+uniform sampler2D alphamap;
 
 in vec3 pos_ws;
 in vec3 n_ws;
-
-uniform sampler2D diffuse;
-uniform sampler2D specular;
 in vec2 tc;
-
 out vec4 out_col;
 
 float diff(vec3 l) {
@@ -30,6 +31,14 @@ float spec(vec3 l, float n_s) {
 }
 
 void main() {
+	if (has_alphamap == 1) {
+		float alpha = texture(alphamap, tc).r;
+		if (alpha < 0.5) {
+			discard;
+			return;
+		}
+	}
+
 	// directional lighting components
 	vec3 diff_dl = diff(-dirlight_dir)    * dirlight_col * dirlight_scale;
 	vec3 spec_dl = spec(-dirlight_dir, 4) * dirlight_col * dirlight_scale;

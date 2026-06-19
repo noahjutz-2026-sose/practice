@@ -4,10 +4,8 @@ OPEN SCHEMA NOAH_JUTZ;
 
 CREATE TABLE Party
 (
-    value_id    INT PRIMARY KEY,
-    value_label VARCHAR(100),
-    shortname   VARCHAR(100),
-    full_name   VARCHAR(200)
+    shortname VARCHAR(100) PRIMARY KEY,
+    full_name VARCHAR(200)
 );
 
 CREATE TABLE Bundesland
@@ -48,9 +46,10 @@ CREATE TABLE Respondent
 
 CREATE TABLE Seat_Distribution
 (
-    term     DATE, -- YYYY-01-01
-    party_id INT REFERENCES Party (value_id),
-    seats    INT
+    term  DATE, -- YYYY-01-01
+    party VARCHAR(100) REFERENCES Party (shortname),
+    seats INT,
+    PRIMARY KEY (term, party)
 );
 
 CREATE TABLE Bundestag_Election_Census
@@ -67,45 +66,69 @@ CREATE TABLE Bundestag_Election_Census
 CREATE TABLE Bundestag_Election_Result
 (
     term        DATE, -- YYYY-01-01
-    party_id    INT REFERENCES Party (value_id),
+    party       VARCHAR(100) REFERENCES Party (shortname),
     district_id INT REFERENCES Voting_District (VOTING_DISTRICT_ID),
     votes       INT,
-    percentage  DOUBLE
+    percentage  DOUBLE,
+    PRIMARY KEY (term, party, district_id)
 );
 
-CREATE TABLE Politbarometer_Opinion_Poll
+CREATE TABLE Politbarometer_Survey
 (
     respondent_id          INT,
     respondent_study_id    INT,
     respondent_east_west   INT,
-    date_month             DATE,   -- YYYY-MM-01
-    weight                 DOUBLE, -- p_weight and d_weight
-    turnout                INT,    -- v5
-    rating_government      INT,    -- v15
-    rating_opposition      INT,    -- v16
-    democracy_satisfaction INT,    -- v18
-    political_interest     INT,    -- v20 and v21
-    left_right             INT,    -- v22
-    economy_current        INT,    -- v25
-    economy_forecast       INT,    -- v26
-    reunification          INT,    -- v29
-    asylum                 INT,    -- v30
-    crime_threat           INT,    -- v41
-    eu_membership          INT,    -- v42
-    society                INT,    -- v44
-    year_review            INT,    -- v50
-    year_forecast          INT,    -- v51
-    FOREIGN KEY (respondent_id, respondent_study_id, respondent_east_west) REFERENCES respondent
+    date_month             DATE,                                      -- YYYY-MM-01
+    weight                 DOUBLE,                                    -- p_weight and d_weight
+    turnout                INT,                                       -- v5
+    rating_government      INT,                                       -- v15
+    rating_opposition      INT,                                       -- v16
+    democracy_satisfaction INT,                                       -- v18
+    political_interest     INT,                                       -- v20 and v21
+    left_right             INT,                                       -- v22
+    economy_current        INT,                                       -- v25
+    economy_forecast       INT,                                       -- v26
+    reunification          INT,                                       -- v29
+    asylum                 INT,                                       -- v30
+    crime_threat           INT,                                       -- v41
+    eu_membership          INT,                                       -- v42
+    society                INT,                                       -- v44
+    year_review            INT,                                       -- v50
+    year_forecast          INT,                                       -- v51
+    intended_vote          VARCHAR(100) REFERENCES Party (shortname), -- v6
+    last_vote              VARCHAR(100) REFERENCES Party (shortname), -- v7
+    preferred_party        VARCHAR(100) REFERENCES Party (shortname), -- v72
+    preference_intensity   INT,                                       -- v73
+    FOREIGN KEY (respondent_id, respondent_study_id, respondent_east_west) REFERENCES respondent,
+    PRIMARY KEY (respondent_id, respondent_study_id, respondent_east_west, date_month)
 );
 
-CREATE TABLE Politbarometer_Election_Poll
+CREATE TABLE Politbarometer_Party_Ratings
 (
+    respondent_id        INT,
+    respondent_study_id  INT,
+    respondent_east_west INT,
+    WEIGHT               DOUBLE,
     date_month           DATE, -- YYYY-MM-01
-    respondent_id        INT REFERENCES Respondent (id),
-    party_id             INT REFERENCES Party (value_id),
-    is_intended_vote     BOOL, -- v6
-    was_last_vote        BOOL, -- v7
-    is_preferred_party   BOOL, -- v72
-    preference_intensity INT,  -- v73
-    rating               INT   -- v8
+    party                VARCHAR(100) REFERENCES Party (shortname),
+    rating               INT,  -- v8, v9, v10, v11, v12, v13, v14
+    FOREIGN KEY (respondent_id, respondent_study_id, respondent_east_west) REFERENCES respondent,
+    PRIMARY KEY (respondent_id, respondent_study_id, respondent_east_west, date_month)
 );
+
+CREATE TABLE Politbarometer_Value_Labels
+(
+    variable_id VARCHAR(50),
+    value_id    INT,
+    label       VARCHAR(500),
+    PRIMARY KEY (variable_id, value_id)
+)
+
+CREATE TABLE Mapping_Party_Politbarometer_Value_Labels
+(
+    vid       VARCHAR(50) DEFAULT 'v6', -- do not change
+    value_id  INT,
+    shortname VARCHAR(100) REFERENCES PARTY (shortname),
+    PRIMARY KEY (value_id, shortname),
+    FOREIGN KEY (vid, value_id) REFERENCES POLITBAROMETER_VALUE_LABELS (VARIABLE_ID, value_id)
+)

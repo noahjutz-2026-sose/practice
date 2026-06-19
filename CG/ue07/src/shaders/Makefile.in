@@ -138,6 +138,7 @@ ECHO_N = @ECHO_N@
 ECHO_T = @ECHO_T@
 ETAGS = @ETAGS@
 EXEEXT = @EXEEXT@
+HAVE_CXX11 = @HAVE_CXX11@
 INSTALL = @INSTALL@
 INSTALL_DATA = @INSTALL_DATA@
 INSTALL_PROGRAM = @INSTALL_PROGRAM@
@@ -207,7 +208,8 @@ top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 EXTRA_DIST = default.frag default.vert light_rep.frag light_rep.vert \
 	material.frag material.vert shading.frag shading.vert tex.frag \
-	tex.vert
+	tex.vert mask.frag mask.vert normalmapping.frag \
+	normalmapping.vert sky.frag sky.vert
 all: all-am
 
 .SUFFIXES:

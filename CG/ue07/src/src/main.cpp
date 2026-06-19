@@ -72,10 +72,18 @@ int main(int argc, char** argv) {
 	shader_ptr shader_material     = make_shader("a2", "shaders/material.vert", "shaders/material.frag");
 	shader_ptr shader_lighting     = make_shader("a3", "shaders/shading.vert", "shaders/shading.frag");
 	shader_ptr shader_textured     = make_shader("a4", "shaders/tex.vert", "shaders/tex.frag");
+	shader_ptr shader_masked       = make_shader("a5", "shaders/mask.vert", "shaders/mask.frag");
+	shader_ptr shader_normalmapped = make_shader("a6", "shaders/normalmapping.vert", "shaders/normalmapping.frag");
 
 	shader_ptr light_rep_shader = make_shader("light-rep", "shaders/light_rep.vert", "shaders/light_rep.frag");
 	std::vector<drawelement_ptr> light_rep = MeshLoader::load("render-data/models/sphere.obj", false, [&](const material_ptr &) { return light_rep_shader; });
 	
+	shader_ptr sky_shader = make_shader("sky", "shaders/sky.vert", "shaders/sky.frag");
+	material_ptr sky_mat = make_material("sky");
+	sky_mat->k_diff = glm::vec4(.3,.3,1,1);
+	shared_ptr<Texture2D> sky_tex = make_texture("sky", "render-data/cgskies-0319-free.jpg", false);
+	sky_mat->add_texture("tex", sky_tex);
+	drawelement_ptr sky = make_drawelement("sky", sky_shader, sky_mat, light_rep[0]->meshes);
 
 	TimerQuery input_timer("input");
 	TimerQuery update_timer("update");
@@ -101,12 +109,18 @@ int main(int argc, char** argv) {
 		                               "Material Color",
 									   "Phong Lighting",
 									   "Textured",
+									   "Masked",
+									   "Normalmapped",
+									   "With Sky",
 		};
 		enum { 
 			PlainColor,
 			MaterialColor,
 			PhongLighting,
 			Textured,
+			Masked,
+			Normalmapped,
+			Sky,
 			N
 		};
 		static int active_mode = PlainColor;
@@ -211,6 +225,9 @@ int main(int argc, char** argv) {
 				if (active_mode == MaterialColor)      shader = shader_material;
 				else if (active_mode == PhongLighting) shader = shader_lighting;
 				else if (active_mode == Textured)      shader = shader_textured;
+				else if (active_mode == Masked)        shader = shader_masked;
+				else if (active_mode == Normalmapped)  shader = shader_normalmapped;
+				else if (active_mode == Sky)           shader = shader_normalmapped; // no change here
 
 				de->shader = shader;
 				de->bind();
@@ -221,6 +238,8 @@ int main(int argc, char** argv) {
 				shader->uniform("dirlight_dir", dirlight_dir);
 				shader->uniform("dirlight_col", glm::pow(dirlight_col, glm::vec3(2.2f)));
 				shader->uniform("dirlight_scale", dirlight_scale);
+				shader->uniform("has_alphamap", de->material->has_texture("alphamap") ? 1 : 0);
+				shader->uniform("has_normalmap", de->material->has_texture("normalmap") ? 1 : 0);
 				de->draw(glm::mat4(1));
 				de->unbind();
 			}
@@ -230,6 +249,9 @@ int main(int argc, char** argv) {
 				if (active_mode == MaterialColor)      shader = shader_material;
 				else if (active_mode == PhongLighting) shader = shader_lighting;
 				else if (active_mode == Textured)      shader = shader_textured;
+				else if (active_mode == Masked)        shader = shader_masked;
+				else if (active_mode == Normalmapped)  shader = shader_normalmapped;
+				else if (active_mode == Sky)           shader = shader_normalmapped; // no change here
 
 				de->shader = shader;
 				de->bind();
@@ -240,11 +262,27 @@ int main(int argc, char** argv) {
 				shader->uniform("dirlight_dir", dirlight_dir);
 				shader->uniform("dirlight_col", glm::pow(dirlight_col, glm::vec3(2.2f)));
 				shader->uniform("dirlight_scale", dirlight_scale);
+				shader->uniform("has_alphamap", de->material->has_texture("alphamap") ? 1 : 0);
+				shader->uniform("has_normalmap", de->material->has_texture("normalmap") ? 1 : 0);
 				de->draw(glm::mat4x4(kart.rb.transform_matrix));
                 de->unbind();
 			}
 #endif //CG_KART
 
+		}
+		if ((int)active_mode >= Sky) {
+			glDisable(GL_CULL_FACE);
+			float n = Camera::current()->near;
+			float f = Camera::current()->far;
+			Camera::current()->near = 10;
+			Camera::current()->far = 20000;
+			Camera::current()->update();
+			sky->bind();
+			sky->draw(glm::scale(glm::mat4(1), glm::vec3(15000,15000,15000)));
+			sky->unbind();
+			Camera::current()->near = n;
+			Camera::current()->far = f;
+			glEnable(GL_CULL_FACE);
 		}
 		render_timer.end();
 

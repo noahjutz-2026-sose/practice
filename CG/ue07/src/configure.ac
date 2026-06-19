@@ -1,4 +1,4 @@
-AC_INIT([cg], [2025-a02], [selgrad])
+AC_INIT([cg], [2024-a04], [selgrad])
 
 AC_CONFIG_SRCDIR([src/main.cpp])
 AC_CONFIG_HEADERS(config.h)
@@ -8,7 +8,7 @@ AM_INIT_AUTOMAKE(dist-bzip2 no-dist-gzip)
 
 AC_PROG_CXX
 AC_LANG([C++])
-#AX_CXX_COMPILE_STDCXX(11)
+AX_CXX_COMPILE_STDCXX(11)
 
 AC_CHECK_LIB([bigduckgl], [main])
 AC_CHECK_LIB([imgui], [main])

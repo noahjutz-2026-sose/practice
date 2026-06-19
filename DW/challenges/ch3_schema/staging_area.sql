@@ -74,7 +74,7 @@ CREATE TABLE st_Politbarometer_Survey
 CREATE TABLE st_Seat_Distribution
 (
     intyear     INT,
-    total_seats INT, -- TODO add to M/ER
+    total_seats INT,
     cdu         INT,
     afd         INT,
     spd         INT,
