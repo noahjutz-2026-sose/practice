@@ -57,7 +57,9 @@ USING (
            CASE WHEN s.V75_STATE >= 0 THEN s.V75_STATE END                           AS V75_STATE,
            p_v6.SHORTNAME                                                            AS intended_vote,
            p_v7.SHORTNAME                                                            AS last_vote,
-           p_v72.SHORTNAME                                                           AS preferred
+           p_v72.SHORTNAME                                                           AS preferred,
+           (RESPONDENT_ID * 10000000) + (V4A_EAST_WEST * 1000000) + STUDY_ID         AS NEW_RESPONDENT_ID,
+           TO_DATE(INTYEAR || '-' || LPAD(INTMONTH, 2, '0'), 'YYYY-MM')              AS DATE_MONTH
     FROM ST_POLITBAROMETER_SURVEY s
              LEFT JOIN MAPPING_PARTY_POLITBAROMETER_VALUE_LABELS p_v6
                        ON p_v6.VALUE_ID = s.V6_INTENDED_VOTE
@@ -65,13 +67,13 @@ USING (
                        ON p_v7.VALUE_ID = s.V7_LAST_VOTE
              LEFT JOIN MAPPING_PARTY_POLITBAROMETER_VALUE_LABELS p_v72
                        ON p_v72.VALUE_ID = s.V72_PREFERRED_PARTY
+    WHERE V4A_EAST_WEST > 0
     QUALIFY ROW_NUMBER() OVER (PARTITION BY RESPONDENT_ID, STUDY_ID, V4A_EAST_WEST) = 1
     ) AS s
-ON s.RESPONDENT_ID = t.RESPONDENT_ID AND s.V4A_EAST_WEST = t.RESPONDENT_EAST_WEST AND s.STUDY_ID = t.RESPONDENT_STUDY_ID
+ON s.NEW_RESPONDENT_ID = t.RESPONDENT_ID AND t.DATE_MONTH = s.DATE_MONTH
 WHEN MATCHED THEN
     UPDATE
-    SET t.DATE_MONTH             = TO_DATE(INTYEAR || '-' || LPAD(INTMONTH, 2, '0'), 'YYYY-MM'),
-        t.WEIGHT                 = s.D_WEIGHT,
+    SET t.WEIGHT                 = s.D_WEIGHT,
         t.TURNOUT                = s.V5_TURNOUT,
         t.RATING_GOVERNMENT      = s.V15_RATING_GOVERNMENT,
         t.RATING_OPPOSITION      = s.V16_RATING_OPPOSITION,
@@ -93,10 +95,8 @@ WHEN MATCHED THEN
         t.PREFERENCE_INTENSITY   = s.V73_PREFERENCE_INTENSITY
 WHEN NOT MATCHED THEN
     INSERT
-    VALUES (s.RESPONDENT_ID,
-            s.STUDY_ID,
-            s.V4A_EAST_WEST,
-            TO_DATE(INTYEAR || '-' || LPAD(INTMONTH, 2, '0'), 'YYYY-MM'),
+    VALUES (s.NEW_RESPONDENT_ID,
+            s.DATE_MONTH,
             s.D_WEIGHT,
             s.V5_TURNOUT,
             s.V15_RATING_GOVERNMENT,

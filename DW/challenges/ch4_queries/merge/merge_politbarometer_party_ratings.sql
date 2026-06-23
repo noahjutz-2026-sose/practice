@@ -2,70 +2,45 @@ OPEN SCHEMA NOAH_JUTZ;
 
 MERGE INTO POLITBAROMETER_PARTY_RATINGS t
 USING (
-    SELECT *
+    WITH base AS (SELECT (RESPONDENT_ID * 10000000) + (V4A_EAST_WEST * 1000000) + STUDY_ID AS NEW_RESPONDENT_ID,
+                         TO_DATE(INTYEAR || '-' || LPAD(INTMONTH, 2, '0'), 'YYYY-MM')      AS DATE_MONTH,
+                         D_WEIGHT,
+                         V8_RATING_SPD,
+                         V9_RATING_CDU,
+                         V11_RATING_FDP,
+                         V12_RATING_GRUENE,
+                         V13_RATING_AFD,
+                         V14_RATING_LINKE
+                  FROM ST_POLITBAROMETER_SURVEY
+                  WHERE V4A_EAST_WEST > 0)
+    SELECT NEW_RESPONDENT_ID, DATE_MONTH, D_WEIGHT, party, rating
     FROM (
-             SELECT RESPONDENT_ID,
-                    STUDY_ID,
-                    V4A_EAST_WEST,
-                    D_WEIGHT,
-                    TO_DATE(INTYEAR || '-' || LPAD(INTMONTH, 2, '0'), 'YYYY-MM') AS DATE_MONTH,
-                    'spd'                                                        AS party,
-                    V8_RATING_SPD                                                AS rating
-             FROM ST_POLITBAROMETER_SURVEY
+             SELECT NEW_RESPONDENT_ID, DATE_MONTH, D_WEIGHT, 'spd' AS party, V8_RATING_SPD AS rating
+             FROM base
              UNION ALL
-             SELECT RESPONDENT_ID,
-                    STUDY_ID,
-                    V4A_EAST_WEST,
-                    D_WEIGHT,
-                    TO_DATE(INTYEAR || '-' || LPAD(INTMONTH, 2, '0'), 'YYYY-MM') AS DATE_MONTH,
-                    'union'                                                      AS party,
-                    V9_RATING_CDU                                                AS rating
-             FROM ST_POLITBAROMETER_SURVEY
+             SELECT NEW_RESPONDENT_ID, DATE_MONTH, D_WEIGHT, 'union', V9_RATING_CDU
+             FROM base
              UNION ALL
-             SELECT RESPONDENT_ID,
-                    STUDY_ID,
-                    V4A_EAST_WEST,
-                    D_WEIGHT,
-                    TO_DATE(INTYEAR || '-' || LPAD(INTMONTH, 2, '0'), 'YYYY-MM') AS DATE_MONTH,
-                    'fdp'                                                        AS party,
-                    V11_RATING_FDP                                               AS rating
-             FROM ST_POLITBAROMETER_SURVEY
+             SELECT NEW_RESPONDENT_ID, DATE_MONTH, D_WEIGHT, 'fdp', V11_RATING_FDP
+             FROM base
              UNION ALL
-             SELECT RESPONDENT_ID,
-                    STUDY_ID,
-                    V4A_EAST_WEST,
-                    D_WEIGHT,
-                    TO_DATE(INTYEAR || '-' || LPAD(INTMONTH, 2, '0'), 'YYYY-MM') AS DATE_MONTH,
-                    'gruene'                                                     AS party,
-                    V12_RATING_GRUENE                                            AS rating
-             FROM ST_POLITBAROMETER_SURVEY
+             SELECT NEW_RESPONDENT_ID, DATE_MONTH, D_WEIGHT, 'gruene', V12_RATING_GRUENE
+             FROM base
              UNION ALL
-             SELECT RESPONDENT_ID,
-                    STUDY_ID,
-                    V4A_EAST_WEST,
-                    D_WEIGHT,
-                    TO_DATE(INTYEAR || '-' || LPAD(INTMONTH, 2, '0'), 'YYYY-MM') AS DATE_MONTH,
-                    'afd'                                                        AS party,
-                    V13_RATING_AFD                                               AS rating
-             FROM ST_POLITBAROMETER_SURVEY
+             SELECT NEW_RESPONDENT_ID, DATE_MONTH, D_WEIGHT, 'afd', V13_RATING_AFD
+             FROM base
              UNION ALL
-             SELECT RESPONDENT_ID,
-                    STUDY_ID,
-                    V4A_EAST_WEST,
-                    D_WEIGHT,
-                    TO_DATE(INTYEAR || '-' || LPAD(INTMONTH, 2, '0'), 'YYYY-MM') AS DATE_MONTH,
-                    'linke'                                                      AS party,
-                    V14_RATING_LINKE                                             AS rating
-             FROM ST_POLITBAROMETER_SURVEY
-             ) AS x
+             SELECT NEW_RESPONDENT_ID, DATE_MONTH, D_WEIGHT, 'linke', V14_RATING_LINKE
+             FROM base
+             )
     WHERE rating > 0
-    QUALIFY row_number() OVER (PARTITION BY RESPONDENT_ID, STUDY_ID, V4A_EAST_WEST, DATE_MONTH) = 1
+    QUALIFY ROW_NUMBER() OVER (PARTITION BY NEW_RESPONDENT_ID, DATE_MONTH) = 1
     ) AS s
-ON t.RESPONDENT_ID = s.RESPONDENT_ID AND t.RESPONDENT_STUDY_ID = s.STUDY_ID AND
-   t.RESPONDENT_EAST_WEST = s.V4A_EAST_WEST AND t.PARTY = s.party
+ON t.RESPONDENT_ID = s.NEW_RESPONDENT_ID AND t.DATE_MONTH = s.DATE_MONTH AND t.PARTY = s.party
 WHEN MATCHED THEN
     UPDATE
-    SET t.RATING = s.RATING, t.WEIGHT = s.D_WEIGHT
+    SET t.RATING = s.rating,
+        t.WEIGHT = s.D_WEIGHT
 WHEN NOT MATCHED THEN
-    INSERT
-    VALUES (s.RESPONDENT_ID, s.STUDY_ID, s.V4A_EAST_WEST, s.D_WEIGHT, s.DATE_MONTH, s.party, s.rating);
+    INSERT (RESPONDENT_ID, DATE_MONTH, WEIGHT, PARTY, RATING)
+    VALUES (s.NEW_RESPONDENT_ID, s.DATE_MONTH, s.D_WEIGHT, s.party, s.rating);

@@ -25,8 +25,7 @@ CREATE TABLE Voting_District
 
 CREATE TABLE Respondent
 (
-    respondent_id               INT,
-    study_id                    INT,
+    respondent_id               BIGINT PRIMARY KEY,
     east_west                   INT,
     bundesland_id               INT REFERENCES Bundesland (state_value_id),
     financial_standing          INT,
@@ -38,8 +37,7 @@ CREATE TABLE Respondent
     education                   INT,
     employment_status           INT,
     occupation                  INT,
-    workers_union               INT,
-    PRIMARY KEY (respondent_id, study_id, east_west)
+    workers_union               INT
 );
 
 -- Facts
@@ -75,9 +73,7 @@ CREATE TABLE Bundestag_Election_Result
 
 CREATE TABLE Politbarometer_Survey
 (
-    respondent_id          INT,
-    respondent_study_id    INT,
-    respondent_east_west   INT,
+    respondent_id          BIGINT REFERENCES RESPONDENT,
     date_month             DATE,                                      -- YYYY-MM-01
     weight                 DOUBLE,                                    -- p_weight and d_weight
     turnout                INT,                                       -- v5
@@ -99,21 +95,17 @@ CREATE TABLE Politbarometer_Survey
     last_vote              VARCHAR(100) REFERENCES Party (shortname), -- v7
     preferred_party        VARCHAR(100) REFERENCES Party (shortname), -- v72
     preference_intensity   INT,                                       -- v73
-    FOREIGN KEY (respondent_id, respondent_study_id, respondent_east_west) REFERENCES respondent,
-    PRIMARY KEY (respondent_id, respondent_study_id, respondent_east_west, date_month)
+    PRIMARY KEY (respondent_id, date_month)
 );
 
 CREATE TABLE Politbarometer_Party_Ratings
 (
-    respondent_id        INT,
-    respondent_study_id  INT,
-    respondent_east_west INT,
-    WEIGHT               DOUBLE,
+    respondent_id        BIGINT REFERENCES RESPONDENT,
+    weight               DOUBLE,
     date_month           DATE, -- YYYY-MM-01
     party                VARCHAR(100) REFERENCES Party (shortname),
     rating               INT,  -- v8, v9, v10, v11, v12, v13, v14
-    FOREIGN KEY (respondent_id, respondent_study_id, respondent_east_west) REFERENCES respondent,
-    PRIMARY KEY (respondent_id, respondent_study_id, respondent_east_west, date_month)
+    PRIMARY KEY (respondent_id, date_month)
 );
 
 CREATE TABLE Politbarometer_Value_Labels
