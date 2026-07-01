@@ -22,7 +22,6 @@ CREATE TABLE Voting_District
     is_west_germany      BOOL
 );
 
-
 CREATE TABLE Respondent
 (
     respondent_id               BIGINT PRIMARY KEY,
@@ -32,7 +31,8 @@ CREATE TABLE Respondent
     financial_standing_forecast INT,
     religion                    INT,
     gender                      INT,
-    age                         INT,
+    min_age                     INT,
+    max_age                     INT,
     marital_status              INT,
     education                   INT,
     employment_status           INT,
@@ -100,11 +100,11 @@ CREATE TABLE Politbarometer_Survey
 
 CREATE TABLE Politbarometer_Party_Ratings
 (
-    respondent_id        BIGINT REFERENCES RESPONDENT,
-    weight               DOUBLE,
-    date_month           DATE, -- YYYY-MM-01
-    party                VARCHAR(100) REFERENCES Party (shortname),
-    rating               INT,  -- v8, v9, v10, v11, v12, v13, v14
+    respondent_id BIGINT REFERENCES RESPONDENT,
+    weight        DOUBLE,
+    date_month    DATE, -- YYYY-MM-01
+    party         VARCHAR(100) REFERENCES Party (shortname),
+    rating        INT,  -- v8, v9, v10, v11, v12, v13, v14
     PRIMARY KEY (respondent_id, date_month)
 );
 
