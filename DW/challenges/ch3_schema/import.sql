@@ -84,6 +84,7 @@ IMPORT INTO ST_POLITBAROMETER_SURVEY
      v52_religion,
      v54_gender,
      v55_age,
+     v56_age_group,
      v57_marital_status,
      v59_education_pre_87,
      v60_education,
@@ -95,8 +96,10 @@ IMPORT INTO ST_POLITBAROMETER_SURVEY
      v75_state
         )
     FROM LOCAL CSV FILE '/tmp/st_politbarometer_survey.csv'
-    (4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 25, 28, 29, 32, 33, 34, 35, 36, 37, 48, 49, 51, 57, 58, 59, 61, 62, 64, 66, 67, 71, 72, 79, 80, 81, 82)
+    (4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 25, 28, 29, 32, 33, 34, 35, 36, 37, 48, 49, 51, 57, 58, 59, 61, 62, 63, 64, 66, 67, 71, 72, 79, 80, 81, 82)
     SKIP = 1 IGNORE CERTIFICATE ERRORS INTO error_tbl REJECT LIMIT UNLIMITED;
+
+TRUNCATE TABLE ST_POLITBAROMETER_SURVEY;
 
 IMPORT INTO ST_META_POLITBAROMETER_COLUMN_LABELS (variable_id, label)
     FROM LOCAL CSV FILE '/tmp/st_meta_politbarometer_column_labels.csv' ROW SEPARATOR = 'CRLF' IGNORE CERTIFICATE ERRORS INTO error_tbl REJECT LIMIT UNLIMITED;
